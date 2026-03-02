@@ -10,12 +10,13 @@ import (
 type LR struct{}
 
 // columnOrder defines L→R ordering of account types.
+// Sources of funds on the left, Asset in the middle, Expense on the right.
 var columnOrder = []model.AccountType{
+	model.Equity,
 	model.Income,
-	model.Expense,
 	model.Liability,
 	model.Asset,
-	model.Equity,
+	model.Expense,
 	model.External,
 }
 
@@ -83,6 +84,27 @@ func (LR) Layout(d *model.Diagram, opts LayoutOptions) *Graph {
 				Index:    idx,
 			})
 			idx++
+		}
+	}
+
+	// Populate balances and commodities from diagram
+	for name, bal := range d.Balances {
+		if n, ok := g.NodeMap[name]; ok {
+			n.Balance = bal
+		}
+	}
+	// Infer commodity per node from movements
+	for _, tx := range d.Transactions {
+		for _, m := range tx.Movements {
+			if m.Commodity == "" {
+				continue
+			}
+			if n, ok := g.NodeMap[m.From.Name]; ok && n.Commodity == "" {
+				n.Commodity = m.Commodity
+			}
+			if n, ok := g.NodeMap[m.To.Name]; ok && n.Commodity == "" {
+				n.Commodity = m.Commodity
+			}
 		}
 	}
 

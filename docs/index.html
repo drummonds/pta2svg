@@ -4,284 +4,43 @@
 <meta charset="utf-8">
 <title>pta2svg — Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-<style>
-  pre.source { background: #1e1e2e; color: #cdd6f4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
-  .svg-container { display: flex; align-items: center; justify-content: center; overflow-x: auto; }
-  .svg-container svg { max-width: 100%; height: auto; }
-</style>
 </head>
 <body>
 <section class="section">
 <div class="container">
   <h1 class="title">pta2svg — Demo</h1>
   <p class="subtitle">Generate SVG flowcharts from plain text accounting files</p>
+  <div class="content">
   
-  <div class="box mb-5">
-    <h2 class="subtitle is-4">arrows.pta</h2>
-    <div class="columns">
-      <div class="column is-5">
-        <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Arrow variants supported by pta2svg
-
-2024-03-01 * Standard arrow
-  Income:Salary -&amp;gt; Asset:Bank pay 3000.00 GBP
-
-2024-03-02 * Slash arrow
-  Asset:Bank // Expense:Groceries weekly shop 85.50 GBP
-
-2024-03-03 * Unicode arrow
-  Asset:Bank → Expense:Utilities electric bill 120.00 GBP
-
-2024-03-04 * Bare greater-than
-  Asset:Bank &amp;gt; Expense:Transport commute 45.00 GBP
-</pre>
-      </div>
-      <div class="column is-7">
-        <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 290" width="660" height="290">
-<defs>
-  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
-  </marker>
-</defs>
-<style>
-  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
-  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
-  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
-  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
-</style>
-
-<g class="node" transform="translate(40,40)">
-  <rect width="140" height="50" fill="#BCE"/>
-  <text x="70" y="25">Salary</text>
-</g>
-<g class="node" transform="translate(260,40)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Groceries</text>
-</g>
-<g class="node" transform="translate(260,120)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Transport</text>
-</g>
-<g class="node" transform="translate(260,200)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Utilities</text>
-</g>
-<g class="node" transform="translate(480,40)">
-  <rect width="140" height="50" fill="#CDA"/>
-  <text x="70" y="25">Bank</text>
-</g>
-
-<g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">pay 3000.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-145.0 260.0,65.0"/>
-  <text x="440" y="57">weekly shop 85.50 GBP</text>
-</g>
-<g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,15.0 260.0,225.0"/>
-  <text x="440" y="137">electric bill 120.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-65.0 260.0,145.0"/>
-  <text x="440" y="97">commute 45.00 GBP</text>
-</g>
-</svg>
-</div>
-      </div>
-    </div>
+  <div class="box">
+    <h2 class="title is-4"><a href="oranges.html">Orange Trading Business</a></h2>
+    <ul>
+    
+      <li>01_investment.pta</li>
+    
+      <li>02_buy_oranges.pta</li>
+    
+      <li>03_sell_oranges.pta</li>
+    
+      <li>04_buy_on_credit.pta</li>
+    
+    </ul>
   </div>
   
-  <div class="box mb-5">
-    <h2 class="subtitle is-4">budget.pta</h2>
-    <div class="columns">
-      <div class="column is-5">
-        <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Monthly household budget
-
-2024-04-01 * April salary
-  Income:Salary -&amp;gt; Asset:Bank net pay 3,200.00 GBP
-
-2024-04-01 * Tax withholding
-  Income:Salary -&amp;gt; Expense:Tax PAYE 800.00 GBP
-
-2024-04-03 * Mortgage payment
-  Asset:Bank -&amp;gt; Liability:Mortgage monthly 1,100.00 GBP
-
-2024-04-05 * Groceries
-  Asset:Bank -&amp;gt; Expense:Food weekly shop 95.00 GBP
-
-2024-04-07 * Savings transfer
-  Asset:Bank -&amp;gt; Asset:Savings rainy day 500.00 GBP
-
-2024-04-10 * Utilities
-  Asset:Bank -&amp;gt; Expense:Utilities gas and electric 145.00 GBP
-
-2024-04-15 * Council tax
-  Asset:Bank -&amp;gt; Expense:Tax council tax 180.00 GBP
-</pre>
-      </div>
-      <div class="column is-7">
-        <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 290" width="880" height="290">
-<defs>
-  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
-  </marker>
-</defs>
-<style>
-  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
-  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
-  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
-  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
-</style>
-
-<g class="node" transform="translate(40,40)">
-  <rect width="140" height="50" fill="#BCE"/>
-  <text x="70" y="25">Salary</text>
-</g>
-<g class="node" transform="translate(260,40)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Food</text>
-</g>
-<g class="node" transform="translate(260,120)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Tax</text>
-</g>
-<g class="node" transform="translate(260,200)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Utilities</text>
-</g>
-<g class="node" transform="translate(480,40)">
-  <rect width="140" height="50" fill="#DDD"/>
-  <text x="70" y="25">Mortgage</text>
-</g>
-<g class="node" transform="translate(700,40)">
-  <rect width="140" height="50" fill="#CDA"/>
-  <text x="70" y="25">Bank</text>
-</g>
-<g class="node" transform="translate(700,120)">
-  <rect width="140" height="50" fill="#CDA"/>
-  <text x="70" y="25">Savings</text>
-</g>
-
-<g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,65.0 700.0,65.0"/>
-  <text x="440" y="57">net pay 3200.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M180.0,65.0 C220.0,65.0 220.0,145.0 260.0,145.0"/>
-  <text x="220" y="97">PAYE 800.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1050.0,-145.0 270.0,-145.0 480.0,65.0"/>
-  <text x="660" y="57">monthly 1100.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1160.0,-255.0 -60.0,-255.0 260.0,65.0"/>
-  <text x="550" y="57">weekly shop 95.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C940.0,-35.0 600.0,45.0 700.0,145.0"/>
-  <text x="770" y="97">rainy day 500.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1160.0,-255.0 -60.0,-95.0 260.0,225.0"/>
-  <text x="550" y="137">gas and electric 145.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1160.0,-255.0 -60.0,-175.0 260.0,145.0"/>
-  <text x="550" y="97">council tax 180.00 GBP</text>
-</g>
-</svg>
-</div>
-      </div>
-    </div>
+  <div class="box">
+    <h2 class="title is-4"><a href="examples.html">General Examples</a></h2>
+    <ul>
+    
+      <li>arrows.pta</li>
+    
+      <li>budget.pta</li>
+    
+      <li>simple.pta</li>
+    
+    </ul>
   </div>
   
-  <div class="box mb-5">
-    <h2 class="subtitle is-4">simple.pta</h2>
-    <div class="columns">
-      <div class="column is-5">
-        <h3 class="heading">PTA Source</h3>
-        <pre class="source">2024-01-15 * Salary deposit
-  Income:Salary -&amp;gt; Asset:Bank salary payment 5000.00 GBP
-
-2024-01-20 * Pay rent
-  Asset:Bank -&amp;gt; Expense:Rent monthly rent 1200.00 GBP
-
-2024-01-25 * Loan repayment
-  Asset:Bank -&amp;gt; Liability:Mortgage repayment 800.00 GBP
-
-2024-02-01 * Multi-leg payroll
-  &#43;Income:Salary -&amp;gt; Asset:Bank net salary 4000.00 GBP
-  &#43;Income:Salary -&amp;gt; Expense:Tax income tax 1000.00 GBP
-</pre>
-      </div>
-      <div class="column is-7">
-        <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 210" width="880" height="210">
-<defs>
-  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
-  </marker>
-</defs>
-<style>
-  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
-  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
-  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
-  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
-</style>
-
-<g class="node" transform="translate(40,40)">
-  <rect width="140" height="50" fill="#BCE"/>
-  <text x="70" y="25">Salary</text>
-</g>
-<g class="node" transform="translate(260,40)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Rent</text>
-</g>
-<g class="node" transform="translate(260,120)">
-  <rect width="140" height="50" fill="#FCC"/>
-  <text x="70" y="25">Tax</text>
-</g>
-<g class="node" transform="translate(480,40)">
-  <rect width="140" height="50" fill="#DDD"/>
-  <text x="70" y="25">Mortgage</text>
-</g>
-<g class="node" transform="translate(700,40)">
-  <rect width="140" height="50" fill="#CDA"/>
-  <text x="70" y="25">Bank</text>
-</g>
-
-<g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,65.0 700.0,65.0"/>
-  <text x="440" y="57">salary payment 5000.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1160.0,-255.0 -60.0,-255.0 260.0,65.0"/>
-  <text x="550" y="57">monthly rent 1200.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M840.0,65.0 C1050.0,-145.0 270.0,-145.0 480.0,65.0"/>
-  <text x="660" y="57">repayment 800.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,65.0 700.0,65.0"/>
-  <text x="440" y="57">net salary 4000.00 GBP</text>
-</g>
-<g class="edge">
-  <path d="M180.0,65.0 C220.0,65.0 220.0,145.0 260.0,145.0"/>
-  <text x="220" y="97">income tax 1000.00 GBP</text>
-</g>
-</svg>
-</div>
-      </div>
-    </div>
   </div>
-  
 </div>
 </section>
 </body>

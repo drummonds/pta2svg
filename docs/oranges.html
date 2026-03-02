@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>pta2svg — Orange Trading Business</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+<style>
+  pre.source { background: #1e1e2e; color: #cdd6f4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+  .svg-container { display: flex; align-items: center; justify-content: center; overflow-x: auto; }
+  .svg-container svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<section class="section">
+<div class="container">
+  <nav class="breadcrumb">
+    <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>Orange Trading Business</a></li></ul>
+  </nav>
+  <h1 class="title">Orange Trading Business</h1>
+  
+  <div class="box mb-5">
+    <h2 class="subtitle is-4">01_investment.pta</h2>
+    <div class="columns">
+      <div class="column is-5">
+        <h3 class="heading">PTA Source</h3>
+        <pre class="source"># Step 1: Equity investment
+# Investor puts £25 cash into the business
+
+2024-01-01 * Investor puts cash into business
+  Equity:Input -&amp;gt; Asset:Cash investment 25.00 GBP
+</pre>
+      </div>
+      <div class="column is-7">
+        <h3 class="heading">SVG Output</h3>
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 170" width="440" height="170">
+<defs>
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+  </marker>
+</defs>
+<style>
+  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
+  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
+  .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
+  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
+  .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
+</style>
+
+<g class="node" transform="translate(40,40)">
+  <rect width="140" height="50" fill="#EEB"/>
+  <text x="70" y="25">Input</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-25.00 GBP</text>
+</g>
+<g class="node" transform="translate(260,40)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Cash</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">25.00 GBP</text>
+</g>
+
+<g class="edge">
+  <path d="M180.0,65.0 C220.0,65.0 220.0,65.0 260.0,65.0"/>
+  <text x="220" y="57">investment</text>
+  <text x="220" y="79">25.00 GBP</text>
+</g>
+<g class="legend" transform="translate(20,170)" dy="-30">
+  <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
+  <text x="18" y="-23">Equity</text>
+  <rect x="100" y="-30" width="14" height="14" fill="#CDA"/>
+  <text x="118" y="-23">Asset</text>
+</g>
+</svg>
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="box mb-5">
+    <h2 class="subtitle is-4">02_buy_oranges.pta</h2>
+    <div class="columns">
+      <div class="column is-5">
+        <h3 class="heading">PTA Source</h3>
+        <pre class="source"># Step 2: Buy oranges for cash
+# Business spends £25 buying 25 oranges from farmer
+
+2024-01-01 * Investor puts cash into business
+  Equity:Input -&amp;gt; Asset:Cash investment 25.00 GBP
+
+2024-01-02 * Buy 25 oranges from farmer
+  Asset:Cash -&amp;gt; Expense:Purchases oranges 25.00 GBP
+</pre>
+      </div>
+      <div class="column is-7">
+        <h3 class="heading">SVG Output</h3>
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 170" width="660" height="170">
+<defs>
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+  </marker>
+</defs>
+<style>
+  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
+  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
+  .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
+  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
+  .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
+</style>
+
+<g class="node" transform="translate(40,40)">
+  <rect width="140" height="50" fill="#EEB"/>
+  <text x="70" y="25">Input</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-25.00 GBP</text>
+</g>
+<g class="node" transform="translate(260,40)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Cash</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">0.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,40)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Purchases</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">25.00 GBP</text>
+</g>
+
+<g class="edge">
+  <path d="M180.0,65.0 C220.0,65.0 220.0,65.0 260.0,65.0"/>
+  <text x="220" y="57">investment</text>
+  <text x="220" y="79">25.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,65.0 C440.0,65.0 440.0,65.0 480.0,65.0"/>
+  <text x="440" y="57">oranges</text>
+  <text x="440" y="79">25.00 GBP</text>
+</g>
+<g class="legend" transform="translate(20,170)" dy="-30">
+  <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
+  <text x="18" y="-23">Equity</text>
+  <rect x="100" y="-30" width="14" height="14" fill="#CDA"/>
+  <text x="118" y="-23">Asset</text>
+  <rect x="200" y="-30" width="14" height="14" fill="#FCC"/>
+  <text x="218" y="-23">Expense</text>
+</g>
+</svg>
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="box mb-5">
+    <h2 class="subtitle is-4">03_sell_oranges.pta</h2>
+    <div class="columns">
+      <div class="column is-5">
+        <h3 class="heading">PTA Source</h3>
+        <pre class="source"># Step 3: Sell oranges at market
+# Sell 25 oranges for £37.50, making £12.50 profit
+
+2024-01-01 * Investor puts cash into business
+  Equity:Input -&amp;gt; Asset:Cash investment 25.00 GBP
+
+2024-01-02 * Buy 25 oranges from farmer
+  Asset:Cash -&amp;gt; Expense:Purchases oranges 25.00 GBP
+
+2024-01-03 * Sell 25 oranges at market
+  Income:Sales -&amp;gt; Asset:Cash market sales 37.50 GBP
+</pre>
+      </div>
+      <div class="column is-7">
+        <h3 class="heading">SVG Output</h3>
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 170" width="880" height="170">
+<defs>
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+  </marker>
+</defs>
+<style>
+  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
+  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
+  .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
+  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
+  .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
+</style>
+
+<g class="node" transform="translate(40,40)">
+  <rect width="140" height="50" fill="#EEB"/>
+  <text x="70" y="25">Input</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-25.00 GBP</text>
+</g>
+<g class="node" transform="translate(260,40)">
+  <rect width="140" height="50" fill="#BCE"/>
+  <text x="70" y="25">Sales</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-37.50 GBP</text>
+</g>
+<g class="node" transform="translate(480,40)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Cash</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">37.50 GBP</text>
+</g>
+<g class="node" transform="translate(700,40)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Purchases</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">25.00 GBP</text>
+</g>
+
+<g class="edge">
+  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
+  <text x="330" y="57">investment</text>
+  <text x="330" y="79">25.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
+  <text x="660" y="57">oranges</text>
+  <text x="660" y="79">25.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,65.0 C440.0,65.0 440.0,65.0 480.0,65.0"/>
+  <text x="440" y="57">market sales</text>
+  <text x="440" y="79">37.50 GBP</text>
+</g>
+<g class="legend" transform="translate(20,170)" dy="-30">
+  <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
+  <text x="18" y="-23">Equity</text>
+  <rect x="100" y="-30" width="14" height="14" fill="#BCE"/>
+  <text x="118" y="-23">Income</text>
+  <rect x="200" y="-30" width="14" height="14" fill="#CDA"/>
+  <text x="218" y="-23">Asset</text>
+  <rect x="300" y="-30" width="14" height="14" fill="#FCC"/>
+  <text x="318" y="-23">Expense</text>
+</g>
+</svg>
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="box mb-5">
+    <h2 class="subtitle is-4">04_buy_on_credit.pta</h2>
+    <div class="columns">
+      <div class="column is-5">
+        <h3 class="heading">PTA Source</h3>
+        <pre class="source"># Step 4: Buying on credit
+# Instead of paying cash, farmer extends credit (a liability)
+
+2024-01-01 * Investor puts cash into business
+  Equity:Input -&amp;gt; Asset:Cash investment 25.00 GBP
+
+2024-01-02 * Buy oranges on credit from farmer
+  Liability:Farmer -&amp;gt; Expense:Purchases oranges on credit 25.00 GBP
+
+2024-01-03 * Sell oranges at market
+  Income:Sales -&amp;gt; Asset:Cash market sales 37.50 GBP
+</pre>
+      </div>
+      <div class="column is-7">
+        <h3 class="heading">SVG Output</h3>
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 170" width="1100" height="170">
+<defs>
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+  </marker>
+</defs>
+<style>
+  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
+  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
+  .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
+  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
+  .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
+</style>
+
+<g class="node" transform="translate(40,40)">
+  <rect width="140" height="50" fill="#EEB"/>
+  <text x="70" y="25">Input</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-25.00 GBP</text>
+</g>
+<g class="node" transform="translate(260,40)">
+  <rect width="140" height="50" fill="#BCE"/>
+  <text x="70" y="25">Sales</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-37.50 GBP</text>
+</g>
+<g class="node" transform="translate(480,40)">
+  <rect width="140" height="50" fill="#DDD"/>
+  <text x="70" y="25">Farmer</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-25.00 GBP</text>
+</g>
+<g class="node" transform="translate(700,40)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Cash</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">62.50 GBP</text>
+</g>
+<g class="node" transform="translate(920,40)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Purchases</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">25.00 GBP</text>
+</g>
+
+<g class="edge">
+  <path d="M180.0,65.0 C440.0,65.0 440.0,65.0 700.0,65.0"/>
+  <text x="440" y="57">investment</text>
+  <text x="440" y="79">25.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M620.0,65.0 C770.0,65.0 770.0,65.0 920.0,65.0"/>
+  <text x="770" y="57">oranges on credit</text>
+  <text x="770" y="79">25.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,65.0 C550.0,65.0 550.0,65.0 700.0,65.0"/>
+  <text x="550" y="57">market sales</text>
+  <text x="550" y="79">37.50 GBP</text>
+</g>
+<g class="legend" transform="translate(20,170)" dy="-30">
+  <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
+  <text x="18" y="-23">Equity</text>
+  <rect x="100" y="-30" width="14" height="14" fill="#BCE"/>
+  <text x="118" y="-23">Income</text>
+  <rect x="200" y="-30" width="14" height="14" fill="#DDD"/>
+  <text x="218" y="-23">Liability</text>
+  <rect x="300" y="-30" width="14" height="14" fill="#CDA"/>
+  <text x="318" y="-23">Asset</text>
+  <rect x="400" y="-30" width="14" height="14" fill="#FCC"/>
+  <text x="418" y="-23">Expense</text>
+</g>
+</svg>
+</div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+</section>
+</body>
+</html>

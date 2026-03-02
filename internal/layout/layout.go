@@ -6,9 +6,11 @@ import (
 
 // Node represents a positioned account box in the SVG.
 type Node struct {
-	Account *model.Account
-	X, Y    float64
-	W, H    float64
+	Account   *model.Account
+	X, Y      float64
+	W, H      float64
+	Balance   float64
+	Commodity string
 }
 
 // Edge represents a positioned flow arrow.

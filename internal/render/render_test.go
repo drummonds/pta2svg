@@ -43,6 +43,12 @@ func TestRenderBasic(t *testing.T) {
 	if !strings.Contains(svg, "5000.00 GBP") {
 		t.Error("output should contain amount")
 	}
+	if !strings.Contains(svg, "salary") {
+		t.Error("output should contain description")
+	}
+	if !strings.Contains(svg, "legend") {
+		t.Error("output should contain legend")
+	}
 }
 
 func TestRenderAnimate(t *testing.T) {

@@ -21,11 +21,53 @@ type fileData struct {
 	SVG    template.HTML
 }
 
-const tmpl = `<!DOCTYPE html>
+type section struct {
+	Title string
+	Slug  string // html filename without extension
+	Dir   string
+	Files []fileData
+}
+
+var sections = []section{
+	{Title: "Orange Trading Business", Slug: "oranges", Dir: "testdata/oranges"},
+	{Title: "General Examples", Slug: "examples", Dir: "testdata/examples"},
+}
+
+const indexTmpl = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>pta2svg — Demo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+<div class="container">
+  <h1 class="title">pta2svg — Demo</h1>
+  <p class="subtitle">Generate SVG flowcharts from plain text accounting files</p>
+  <div class="content">
+  {{range .}}
+  <div class="box">
+    <h2 class="title is-4"><a href="{{.Slug}}.html">{{.Title}}</a></h2>
+    <ul>
+    {{range .Files}}
+      <li>{{.Name}}</li>
+    {{end}}
+    </ul>
+  </div>
+  {{end}}
+  </div>
+</div>
+</section>
+</body>
+</html>
+`
+
+const pageTmpl = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>pta2svg — {{.Title}}</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 <style>
   pre.source { background: #1e1e2e; color: #cdd6f4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
@@ -36,9 +78,11 @@ const tmpl = `<!DOCTYPE html>
 <body>
 <section class="section">
 <div class="container">
-  <h1 class="title">pta2svg — Demo</h1>
-  <p class="subtitle">Generate SVG flowcharts from plain text accounting files</p>
-  {{range .}}
+  <nav class="breadcrumb">
+    <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>{{.Title}}</a></li></ul>
+  </nav>
+  <h1 class="title">{{.Title}}</h1>
+  {{range .Files}}
   <div class="box mb-5">
     <h2 class="subtitle is-4">{{.Name}}</h2>
     <div class="columns">
@@ -60,65 +104,87 @@ const tmpl = `<!DOCTYPE html>
 `
 
 func main() {
-	files, err := filepath.Glob("testdata/*.pta")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "glob: %v\n", err)
-		os.Exit(1)
-	}
-	sort.Strings(files)
-
-	var data []fileData
-	for _, path := range files {
-		src, err := os.ReadFile(path)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "read %s: %v\n", path, err)
-			os.Exit(1)
-		}
-
-		d, err := parser.Parse(strings.NewReader(string(src)))
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "parse %s: %v\n", path, err)
-			os.Exit(1)
-		}
-
-		g := layout.GraphFromDiagram(d, layout.LR{}, layout.DefaultOptions())
-
-		var buf bytes.Buffer
-		err = render.Render(&buf, g, render.Options{})
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "render %s: %v\n", path, err)
-			os.Exit(1)
-		}
-
-		data = append(data, fileData{
-			Name:   filepath.Base(path),
-			Source: html.EscapeString(string(src)),
-			SVG:    template.HTML(buf.String()),
-		})
-	}
-
-	t, err := template.New("page").Parse(tmpl)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "template: %v\n", err)
-		os.Exit(1)
-	}
-
 	if err := os.MkdirAll("docs", 0o755); err != nil {
 		fmt.Fprintf(os.Stderr, "mkdir: %v\n", err)
 		os.Exit(1)
 	}
 
-	out, err := os.Create("docs/index.html")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "create: %v\n", err)
-		os.Exit(1)
-	}
-	defer out.Close()
-
-	if err := t.Execute(out, data); err != nil {
-		fmt.Fprintf(os.Stderr, "execute: %v\n", err)
-		os.Exit(1)
+	for i := range sections {
+		if err := loadSection(&sections[i]); err != nil {
+			fmt.Fprintf(os.Stderr, "%s: %v\n", sections[i].Dir, err)
+			os.Exit(1)
+		}
 	}
 
+	// Write index page
+	if err := writePage("docs/index.html", indexTmpl, sections); err != nil {
+		fmt.Fprintf(os.Stderr, "index: %v\n", err)
+		os.Exit(1)
+	}
 	fmt.Println("wrote docs/index.html")
+
+	// Write section pages
+	for _, s := range sections {
+		path := fmt.Sprintf("docs/%s.html", s.Slug)
+		if err := writePage(path, pageTmpl, s); err != nil {
+			fmt.Fprintf(os.Stderr, "%s: %v\n", path, err)
+			os.Exit(1)
+		}
+		fmt.Printf("wrote %s\n", path)
+	}
+}
+
+func loadSection(s *section) error {
+	files, err := filepath.Glob(filepath.Join(s.Dir, "*.pta"))
+	if err != nil {
+		return err
+	}
+	sort.Strings(files)
+
+	for _, path := range files {
+		fd, err := renderFile(path)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		s.Files = append(s.Files, fd)
+	}
+	return nil
+}
+
+func renderFile(path string) (fileData, error) {
+	src, err := os.ReadFile(path)
+	if err != nil {
+		return fileData{}, err
+	}
+
+	d, err := parser.Parse(strings.NewReader(string(src)))
+	if err != nil {
+		return fileData{}, fmt.Errorf("parse: %w", err)
+	}
+
+	g := layout.GraphFromDiagram(d, layout.LR{}, layout.DefaultOptions())
+
+	var buf bytes.Buffer
+	if err := render.Render(&buf, g, render.Options{}); err != nil {
+		return fileData{}, fmt.Errorf("render: %w", err)
+	}
+
+	return fileData{
+		Name:   filepath.Base(path),
+		Source: html.EscapeString(string(src)),
+		SVG:    template.HTML(buf.String()),
+	}, nil
+}
+
+func writePage(path, tmplStr string, data any) error {
+	t, err := template.New("page").Parse(tmplStr)
+	if err != nil {
+		return err
+	}
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	return t.Execute(f, data)
 }

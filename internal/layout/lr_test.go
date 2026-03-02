@@ -31,7 +31,7 @@ func TestLRLayout(t *testing.T) {
 		t.Fatalf("got %d edges, want 2", len(g.Edges))
 	}
 
-	// Income and Expense should be in earlier columns than Asset
+	// Income should be left of Asset, Expense should be right of Asset
 	incomeNode := g.NodeMap["Income:Salary"]
 	expenseNode := g.NodeMap["Expense:Rent"]
 	assetNode := g.NodeMap["Asset:Bank"]
@@ -39,8 +39,8 @@ func TestLRLayout(t *testing.T) {
 	if incomeNode.X >= assetNode.X {
 		t.Errorf("Income column (%f) should be left of Asset column (%f)", incomeNode.X, assetNode.X)
 	}
-	if expenseNode.X >= assetNode.X {
-		t.Errorf("Expense column (%f) should be left of Asset column (%f)", expenseNode.X, assetNode.X)
+	if expenseNode.X <= assetNode.X {
+		t.Errorf("Expense column (%f) should be right of Asset column (%f)", expenseNode.X, assetNode.X)
 	}
 }
 
