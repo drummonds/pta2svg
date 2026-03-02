@@ -1,0 +1,22 @@
+# Monthly household budget
+
+2024-04-01 * April salary
+  Income:Salary -> Asset:Bank net pay 3,200.00 GBP
+
+2024-04-01 * Tax withholding
+  Income:Salary -> Expense:Tax PAYE 800.00 GBP
+
+2024-04-03 * Mortgage payment
+  Asset:Bank -> Liability:Mortgage monthly 1,100.00 GBP
+
+2024-04-05 * Groceries
+  Asset:Bank -> Expense:Food weekly shop 95.00 GBP
+
+2024-04-07 * Savings transfer
+  Asset:Bank -> Asset:Savings rainy day 500.00 GBP
+
+2024-04-10 * Utilities
+  Asset:Bank -> Expense:Utilities gas and electric 145.00 GBP
+
+2024-04-15 * Council tax
+  Asset:Bank -> Expense:Tax council tax 180.00 GBP

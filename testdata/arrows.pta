@@ -1,0 +1,13 @@
+# Arrow variants supported by pta2svg
+
+2024-03-01 * Standard arrow
+  Income:Salary -> Asset:Bank pay 3000.00 GBP
+
+2024-03-02 * Slash arrow
+  Asset:Bank // Expense:Groceries weekly shop 85.50 GBP
+
+2024-03-03 * Unicode arrow
+  Asset:Bank → Expense:Utilities electric bill 120.00 GBP
+
+2024-03-04 * Bare greater-than
+  Asset:Bank > Expense:Transport commute 45.00 GBP
