@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"html"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -169,9 +168,12 @@ func renderFile(path string) (fileData, error) {
 		return fileData{}, fmt.Errorf("render: %w", err)
 	}
 
+	// Replace ASCII arrow with unicode for display
+	display := strings.ReplaceAll(string(src), "->", "→")
+
 	return fileData{
 		Name:   filepath.Base(path),
-		Source: html.EscapeString(string(src)),
+		Source: display,
 		SVG:    template.HTML(buf.String()),
 	}, nil
 }
