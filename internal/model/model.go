@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 // AccountType classifies accounts for coloring and layout.
 type AccountType int
 
@@ -9,6 +11,7 @@ const (
 	Equity
 	Income
 	Expense
+	Hub      // synthetic hub for multi-posting beancount transactions
 	External // catch-all for unknown prefixes
 )
 
@@ -24,6 +27,8 @@ func (t AccountType) String() string {
 		return "Income"
 	case Expense:
 		return "Expense"
+	case Hub:
+		return "Hub"
 	default:
 		return "External"
 	}
@@ -42,6 +47,8 @@ func (t AccountType) Fill() string {
 		return "#BCE"
 	case Expense:
 		return "#FCC"
+	case Hub:
+		return "#FEE"
 	default:
 		return "#ECECFF"
 	}
@@ -96,6 +103,22 @@ func (d *Diagram) GetOrCreateAccount(name string) *Account {
 		Name:      name,
 		ShortName: shortName(name),
 		Type:      inferType(name),
+	}
+	d.Accounts[name] = a
+	return a
+}
+
+// GetOrCreateHubAccount returns a hub account with a unique name based on
+// the transaction date, payee, and sequence number.
+func (d *Diagram) GetOrCreateHubAccount(date, payee string, seq int) *Account {
+	name := fmt.Sprintf("hub:%s:%s:%d", date, payee, seq)
+	if a, ok := d.Accounts[name]; ok {
+		return a
+	}
+	a := &Account{
+		Name:      name,
+		ShortName: payee,
+		Type:      Hub,
 	}
 	d.Accounts[name] = a
 	return a

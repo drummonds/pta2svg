@@ -15,21 +15,28 @@ func main() {
 	animate := flag.Bool("animate", false, "enable CSS flow animations")
 	title := flag.String("title", "", "SVG title")
 	layoutName := flag.String("layout", "lr", "layout engine")
+	formatStr := flag.String("format", "auto", "input format: auto, pta, goluca, beancount")
 	flag.Parse()
 
 	if flag.NArg() != 1 {
-		fmt.Fprintf(os.Stderr, "usage: pta2svg [flags] <file.pta>\n")
+		fmt.Fprintf(os.Stderr, "usage: pta2svg [flags] <file>\n")
 		os.Exit(1)
 	}
 
-	f, err := os.Open(flag.Arg(0))
+	filename := flag.Arg(0)
+	src, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
-	defer f.Close()
 
-	d, err := parser.Parse(f)
+	format, err := parser.FormatFromString(*formatStr)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	d, err := parser.Parse(filename, src, format)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "parse error: %v\n", err)
 		os.Exit(1)

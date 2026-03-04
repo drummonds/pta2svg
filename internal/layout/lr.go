@@ -15,6 +15,7 @@ var columnOrder = []model.AccountType{
 	model.Equity,
 	model.Income,
 	model.Liability,
+	model.Hub,
 	model.Asset,
 	model.Expense,
 	model.External,

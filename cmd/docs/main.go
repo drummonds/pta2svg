@@ -156,7 +156,7 @@ func renderFile(path string) (fileData, error) {
 		return fileData{}, err
 	}
 
-	d, err := parser.Parse(strings.NewReader(string(src)))
+	d, err := parser.Parse(path, src, parser.FormatAuto)
 	if err != nil {
 		return fileData{}, fmt.Errorf("parse: %w", err)
 	}
