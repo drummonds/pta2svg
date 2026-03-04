@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).## [0.1.1
  - Starting to work## [0.1.3] - 2026-03-03
 
  - Hope to update docs
+## [0.1.4] - 2026-03-04
+
+ - Refactoring to use gotreesitter parser
 
 ## [0.1.2] - 2026-03-02
 
