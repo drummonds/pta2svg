@@ -6,6 +6,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 <style>
   pre.source { background: #1e1e2e; color: #cdd6f4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+  .hl-keyword  { color: #cba6f7; }
+  .hl-string   { color: #a6e3a1; }
+  .hl-type     { color: #f9e2af; }
+  .hl-number   { color: #fab387; }
+  .hl-constant { color: #89dceb; }
+  .hl-operator { color: #94e2d5; }
+  .hl-comment  { color: #6c7086; }
   .svg-container { display: flex; align-items: center; justify-content: center; overflow-x: auto; }
   .svg-container svg { max-width: 100%; height: auto; }
 </style>
@@ -19,15 +26,15 @@
   <h1 class="title">Orange Trading Business</h1>
   
   <div class="box mb-5">
-    <h2 class="subtitle is-4">01_investment.pta</h2>
+    <h2 class="subtitle is-4">01_investment.goluca</h2>
     <div class="columns">
       <div class="column is-5">
         <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Step 1: Equity investment
-# Investor puts £25 cash into the business
+        <pre class="source"><span class="hl-comment"># Step 1: Equity investment</span>
+<span class="hl-comment"># Investor puts £25 cash into the business</span>
 
-2024-01-01 * Investor puts cash into business
-  Equity:Input → Asset:Cash investment 25.00 GBP
+<span class="hl-constant">2024-01-01</span> <span class="hl-keyword">*</span> <span class="hl-string">Investor puts cash into business</span>
+  <span class="hl-type">Equity:Input</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> investment <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 </pre>
       </div>
       <div class="column is-7">
@@ -61,7 +68,6 @@
 
 <g class="edge">
   <path d="M180.0,65.0 C220.0,65.0 220.0,65.0 260.0,65.0"/>
-  <text x="220" y="57">investment</text>
   <text x="220" y="79">25.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,170)" dy="-30">
@@ -77,18 +83,18 @@
   </div>
   
   <div class="box mb-5">
-    <h2 class="subtitle is-4">02_buy_oranges.pta</h2>
+    <h2 class="subtitle is-4">02_buy_oranges.goluca</h2>
     <div class="columns">
       <div class="column is-5">
         <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Step 2: Buy oranges for cash
-# Business spends £25 buying 25 oranges from farmer
+        <pre class="source"><span class="hl-comment"># Step 2: Buy oranges for cash</span>
+<span class="hl-comment"># Business spends £25 buying 25 oranges from farmer</span>
 
-2024-01-01 * Investor puts cash into business
-  Equity:Input → Asset:Cash investment 25.00 GBP
+<span class="hl-constant">2024-01-01</span> <span class="hl-keyword">*</span> <span class="hl-string">Investor puts cash into business</span>
+  <span class="hl-type">Equity:Input</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> investment <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 
-2024-01-02 * Buy 25 oranges from farmer
-  Asset:Cash → Expense:Purchases oranges 25.00 GBP
+<span class="hl-constant">2024-01-02</span> <span class="hl-keyword">*</span> <span class="hl-string">Buy 25 oranges from farmer</span>
+  <span class="hl-type">Asset:Cash</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Purchases</span> oranges <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 </pre>
       </div>
       <div class="column is-7">
@@ -127,12 +133,10 @@
 
 <g class="edge">
   <path d="M180.0,65.0 C220.0,65.0 220.0,65.0 260.0,65.0"/>
-  <text x="220" y="57">investment</text>
   <text x="220" y="79">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M400.0,65.0 C440.0,65.0 440.0,65.0 480.0,65.0"/>
-  <text x="440" y="57">oranges</text>
   <text x="440" y="79">25.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,170)" dy="-30">
@@ -150,21 +154,21 @@
   </div>
   
   <div class="box mb-5">
-    <h2 class="subtitle is-4">03_sell_oranges.pta</h2>
+    <h2 class="subtitle is-4">03_sell_oranges.goluca</h2>
     <div class="columns">
       <div class="column is-5">
         <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Step 3: Sell oranges at market
-# Sell 25 oranges for £37.50, making £12.50 profit
+        <pre class="source"><span class="hl-comment"># Step 3: Sell oranges at market</span>
+<span class="hl-comment"># Sell 25 oranges for £37.50, making £12.50 profit</span>
 
-2024-01-01 * Investor puts cash into business
-  Equity:Input → Asset:Cash investment 25.00 GBP
+<span class="hl-constant">2024-01-01</span> <span class="hl-keyword">*</span> <span class="hl-string">Investor puts cash into business</span>
+  <span class="hl-type">Equity:Input</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> investment <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 
-2024-01-02 * Buy 25 oranges from farmer
-  Asset:Cash → Expense:Purchases oranges 25.00 GBP
+<span class="hl-constant">2024-01-02</span> <span class="hl-keyword">*</span> <span class="hl-string">Buy 25 oranges from farmer</span>
+  <span class="hl-type">Asset:Cash</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Purchases</span> oranges <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 
-2024-01-03 * Sell 25 oranges at market
-  Income:Sales → Asset:Cash market sales 37.50 GBP
+<span class="hl-constant">2024-01-03</span> <span class="hl-keyword">*</span> <span class="hl-string">Sell 25 oranges at market</span>
+  <span class="hl-type">Income:Sales</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> market sales <span class="hl-number">37.50</span> <span class="hl-constant">GBP</span>
 </pre>
       </div>
       <div class="column is-7">
@@ -208,17 +212,14 @@
 
 <g class="edge">
   <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">investment</text>
   <text x="330" y="79">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
-  <text x="660" y="57">oranges</text>
   <text x="660" y="79">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M400.0,65.0 C440.0,65.0 440.0,65.0 480.0,65.0"/>
-  <text x="440" y="57">market sales</text>
   <text x="440" y="79">37.50 GBP</text>
 </g>
 <g class="legend" transform="translate(20,170)" dy="-30">
@@ -238,21 +239,21 @@
   </div>
   
   <div class="box mb-5">
-    <h2 class="subtitle is-4">04_buy_on_credit.pta</h2>
+    <h2 class="subtitle is-4">04_buy_on_credit.goluca</h2>
     <div class="columns">
       <div class="column is-5">
         <h3 class="heading">PTA Source</h3>
-        <pre class="source"># Step 4: Buying on credit
-# Instead of paying cash, farmer extends credit (a liability)
+        <pre class="source"><span class="hl-comment"># Step 4: Buying on credit</span>
+<span class="hl-comment"># Instead of paying cash, farmer extends credit (a liability)</span>
 
-2024-01-01 * Investor puts cash into business
-  Equity:Input → Asset:Cash investment 25.00 GBP
+<span class="hl-constant">2024-01-01</span> <span class="hl-keyword">*</span> <span class="hl-string">Investor puts cash into business</span>
+  <span class="hl-type">Equity:Input</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> investment <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 
-2024-01-02 * Buy oranges on credit from farmer
-  Liability:Farmer → Expense:Purchases oranges on credit 25.00 GBP
+<span class="hl-constant">2024-01-02</span> <span class="hl-keyword">*</span> <span class="hl-string">Buy oranges on credit from farmer</span>
+  <span class="hl-type">Liability:Farmer</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Purchases</span> oranges on credit <span class="hl-number">25.00</span> <span class="hl-constant">GBP</span>
 
-2024-01-03 * Sell oranges at market
-  Income:Sales → Asset:Cash market sales 37.50 GBP
+<span class="hl-constant">2024-01-03</span> <span class="hl-keyword">*</span> <span class="hl-string">Sell oranges at market</span>
+  <span class="hl-type">Income:Sales</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Cash</span> market sales <span class="hl-number">37.50</span> <span class="hl-constant">GBP</span>
 </pre>
       </div>
       <div class="column is-7">
@@ -301,17 +302,14 @@
 
 <g class="edge">
   <path d="M180.0,65.0 C440.0,65.0 440.0,65.0 700.0,65.0"/>
-  <text x="440" y="57">investment</text>
   <text x="440" y="79">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M620.0,65.0 C770.0,65.0 770.0,65.0 920.0,65.0"/>
-  <text x="770" y="57">oranges on credit</text>
   <text x="770" y="79">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M400.0,65.0 C550.0,65.0 550.0,65.0 700.0,65.0"/>
-  <text x="550" y="57">market sales</text>
   <text x="550" y="79">37.50 GBP</text>
 </g>
 <g class="legend" transform="translate(20,170)" dy="-30">

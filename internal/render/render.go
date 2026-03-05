@@ -100,14 +100,25 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 	}
 
 	for _, e := range g.Edges {
-		sx := e.From.X + e.From.W // right edge
-		sy := e.From.Y + e.From.H/2
-		ex := e.To.X // left edge
-		ey := e.To.Y + e.To.H/2
+		var pd string
+		var midX, midY float64
 
-		pd := pathD(sx, sy, ex, ey)
-		midX := (sx + ex) / 2
-		midY := (sy + ey) / 2
+		if len(e.Points) >= 2 {
+			// Use routed path from layout engine
+			pd = polylinePath(e.Points, e.ArrowHeadStart)
+			// Label at midpoint of the polyline
+			mid := e.Points[len(e.Points)/2]
+			midX, midY = mid[0], mid[1]
+		} else {
+			// Fallback: compute path from node positions
+			sx := e.From.X + e.From.W // right edge
+			sy := e.From.Y + e.From.H/2
+			ex := e.To.X // left edge
+			ey := e.To.Y + e.To.H/2
+			pd = pathD(sx, sy, ex, ey)
+			midX = (sx + ex) / 2
+			midY = (sy + ey) / 2
+		}
 
 		ed := edgeData{
 			PathD:     pd,
@@ -142,6 +153,28 @@ func pathD(sx, sy, ex, ey float64) string {
 	offset := math.Max(60, dx/2+30)
 	return fmt.Sprintf("M%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f",
 		sx, sy, sx+offset, sy-offset, ex-offset, ey-offset, ex, ey)
+}
+
+// polylinePath builds an SVG path from routed edge points.
+// If arrowHeadStart is true, the points are reversed so the arrow marker
+// (always at the path end in SVG) appears at the logical start.
+func polylinePath(pts [][2]float64, arrowHeadStart bool) string {
+	if len(pts) == 0 {
+		return ""
+	}
+	if arrowHeadStart {
+		// Reverse so marker-end lands at the logical arrow start
+		rev := make([][2]float64, len(pts))
+		for i, p := range pts {
+			rev[len(pts)-1-i] = p
+		}
+		pts = rev
+	}
+	s := fmt.Sprintf("M%.1f,%.1f", pts[0][0], pts[0][1])
+	for _, p := range pts[1:] {
+		s += fmt.Sprintf(" L%.1f,%.1f", p[0], p[1])
+	}
+	return s
 }
 
 func formatAmount(amount float64, commodity string) string {

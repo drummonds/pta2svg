@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strings"
 
+	"github.com/drummonds/pta2svg/internal/highlight"
 	"github.com/drummonds/pta2svg/internal/layout"
 	"github.com/drummonds/pta2svg/internal/parser"
 	"github.com/drummonds/pta2svg/internal/render"
@@ -16,7 +16,7 @@ import (
 
 type fileData struct {
 	Name   string
-	Source string
+	Source template.HTML
 	SVG    template.HTML
 }
 
@@ -70,6 +70,13 @@ const pageTmpl = `<!DOCTYPE html>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 <style>
   pre.source { background: #1e1e2e; color: #cdd6f4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+  .hl-keyword  { color: #cba6f7; }
+  .hl-string   { color: #a6e3a1; }
+  .hl-type     { color: #f9e2af; }
+  .hl-number   { color: #fab387; }
+  .hl-constant { color: #89dceb; }
+  .hl-operator { color: #94e2d5; }
+  .hl-comment  { color: #6c7086; }
   .svg-container { display: flex; align-items: center; justify-content: center; overflow-x: auto; }
   .svg-container svg { max-width: 100%; height: auto; }
 </style>
@@ -134,7 +141,7 @@ func main() {
 }
 
 func loadSection(s *section) error {
-	files, err := filepath.Glob(filepath.Join(s.Dir, "*.pta"))
+	files, err := filepath.Glob(filepath.Join(s.Dir, "*.goluca"))
 	if err != nil {
 		return err
 	}
@@ -168,12 +175,14 @@ func renderFile(path string) (fileData, error) {
 		return fileData{}, fmt.Errorf("render: %w", err)
 	}
 
-	// Replace ASCII arrow with unicode for display
-	display := strings.ReplaceAll(string(src), "->", "→")
+	highlighted, err := highlight.HighlightHTML(path, src)
+	if err != nil {
+		return fileData{}, fmt.Errorf("highlight: %w", err)
+	}
 
 	return fileData{
 		Name:   filepath.Base(path),
-		Source: display,
+		Source: highlighted,
 		SVG:    template.HTML(buf.String()),
 	}, nil
 }

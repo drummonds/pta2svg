@@ -15,9 +15,11 @@ type Node struct {
 
 // Edge represents a positioned flow arrow.
 type Edge struct {
-	From, To *Node
-	Movement model.Movement
-	Index    int // for staggered animation delay
+	From, To       *Node
+	Movement       model.Movement
+	Index          int          // for staggered animation delay
+	Points         [][2]float64 // optional routed path points from layout engine
+	ArrowHeadStart bool         // true if arrow goes at Points[0] (reversed edge)
 }
 
 // Graph holds the positioned nodes and edges for rendering.

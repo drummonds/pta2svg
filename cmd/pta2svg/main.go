@@ -46,8 +46,10 @@ func main() {
 	switch *layoutName {
 	case "lr":
 		l = layout.LR{}
+	case "sugiyama":
+		l = layout.Sugiyama{}
 	default:
-		fmt.Fprintf(os.Stderr, "unknown layout: %s\n", *layoutName)
+		fmt.Fprintf(os.Stderr, "unknown layout: %s (options: lr, sugiyama)\n", *layoutName)
 		os.Exit(1)
 	}
 
