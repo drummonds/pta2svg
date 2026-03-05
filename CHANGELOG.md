@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).## [0.1.1
 
  - Starting to work## [0.1.3] - 2026-03-03
 
- - Hope to update docs
+ - Hope to update docs## [0.1.5] - 2026-03-05
+
+ - Goluca syntax and mostly working
+
 ## [0.1.4] - 2026-03-04
 
  - Refactoring to use gotreesitter parser
