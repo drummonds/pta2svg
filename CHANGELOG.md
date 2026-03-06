@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).## [0.1.1
  - Hope to update docs## [0.1.5] - 2026-03-05
 
  - Goluca syntax and mostly working
+## [0.1.6] - 2026-03-06
+
+ - Creating install and getting ready for task-plus
 
 ## [0.1.4] - 2026-03-04
 
