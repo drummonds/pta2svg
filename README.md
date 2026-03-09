@@ -38,3 +38,12 @@ pta2svg -animate -title "Bank Deposit" testdata/simple.pta > animated.svg
 Lines: `[+]from -> to [description] amount [commodity]`
 
 The `+` prefix links movements for staggered animation. Arrow variants: `>`, `->`, `//`, `→`.
+
+## Links
+
+| | |
+|---|---|
+| Documentation | https://h3-pta2svg.statichost.page/ |
+| Source (Codeberg) | https://codeberg.org/hum3/pta2svg |
+| Mirror (GitHub) | https://github.com/drummonds/pta2svg |
+| Docs repo | https://codeberg.org/hum3/pta2svg-docs |
