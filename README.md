@@ -5,7 +5,7 @@ Generate styled SVG flowcharts from plain text accounting (go-luca) files showin
 ## Install
 
 ```bash
-go install github.com/drummonds/pta2svg/cmd/pta2svg@latest
+go install codeberg.org/hum3/pta2svg/cmd/pta2svg@latest
 ```
 
 ## Usage
@@ -46,4 +46,3 @@ The `+` prefix links movements for staggered animation. Arrow variants: `>`, `->
 | Documentation | https://h3-pta2svg.statichost.page/ |
 | Source (Codeberg) | https://codeberg.org/hum3/pta2svg |
 | Mirror (GitHub) | https://github.com/drummonds/pta2svg |
-| Docs repo | https://codeberg.org/hum3/pta2svg-docs |

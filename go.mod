@@ -1,4 +1,4 @@
-module github.com/drummonds/pta2svg
+module codeberg.org/hum3/pta2svg
 
 go 1.25
 

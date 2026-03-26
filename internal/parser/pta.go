@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/drummonds/gotreesitter"
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 // walkPTA walks a PTA parse tree and populates the diagram.

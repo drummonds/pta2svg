@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/drummonds/gotreesitter"
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 // walkGoluca walks a goluca parse tree and populates the diagram.

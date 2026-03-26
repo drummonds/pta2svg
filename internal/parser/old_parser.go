@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 type state int

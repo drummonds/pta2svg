@@ -3,7 +3,7 @@ package layout
 import (
 	"sort"
 
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 // LR lays out accounts in left-to-right columns grouped by type.

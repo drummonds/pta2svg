@@ -1,7 +1,7 @@
 package layout
 
 import (
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 	"github.com/nulab/autog"
 	"github.com/nulab/autog/graph"
 )

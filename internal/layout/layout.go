@@ -1,7 +1,7 @@
 package layout
 
 import (
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 // Node represents a positioned account box in the SVG.

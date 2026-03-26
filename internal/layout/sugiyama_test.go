@@ -3,8 +3,8 @@ package layout_test
 import (
 	"testing"
 
-	"github.com/drummonds/pta2svg/internal/layout"
-	"github.com/drummonds/pta2svg/internal/parser"
+	"codeberg.org/hum3/pta2svg/internal/layout"
+	"codeberg.org/hum3/pta2svg/internal/parser"
 )
 
 func TestSugiyamaBasic(t *testing.T) {

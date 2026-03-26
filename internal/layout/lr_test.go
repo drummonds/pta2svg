@@ -3,7 +3,7 @@ package layout
 import (
 	"testing"
 
-	"github.com/drummonds/pta2svg/internal/model"
+	"codeberg.org/hum3/pta2svg/internal/model"
 )
 
 func TestLRLayout(t *testing.T) {
