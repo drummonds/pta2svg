@@ -43,5 +43,5 @@ The `+` prefix links movements for staggered animation. Arrow variants: `>`, `->
 
 | | |
 |---|---|
-| Source (Codeberg) | https://codeberg.org/hum3/pta2svg |
+| Source | https://git.bytestone.uk/hum3/pta2svg |
 | Mirror (GitHub) | https://github.com/drummonds/pta2svg |
