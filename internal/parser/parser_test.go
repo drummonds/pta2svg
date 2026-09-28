@@ -3,7 +3,7 @@ package parser
 import (
 	"testing"
 
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
 func parsePTA(t *testing.T, input string) *model.Diagram {

@@ -7,8 +7,8 @@ import (
 	"math"
 	"text/template"
 
-	"codeberg.org/hum3/pta2svg/internal/layout"
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/layout"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
 //go:embed svg.tmpl

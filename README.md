@@ -5,7 +5,7 @@ Generate styled SVG flowcharts from plain text accounting (go-luca) files showin
 ## Install
 
 ```bash
-go install codeberg.org/hum3/pta2svg/cmd/pta2svg@latest
+go install git.bytestone.uk/hum3/pta2svg/cmd/pta2svg@latest
 ```
 
 ## Usage

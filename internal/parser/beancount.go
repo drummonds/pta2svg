@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/drummonds/gotreesitter"
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
 // walkBeancount walks a beancount parse tree and populates the diagram.

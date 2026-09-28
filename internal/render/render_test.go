@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"codeberg.org/hum3/pta2svg/internal/layout"
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/layout"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
 func TestRenderBasic(t *testing.T) {

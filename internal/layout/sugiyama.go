@@ -1,7 +1,7 @@
 package layout
 
 import (
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 	"github.com/nulab/autog"
 	"github.com/nulab/autog/graph"
 )

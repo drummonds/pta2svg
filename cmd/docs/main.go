@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"sort"
 
-	"codeberg.org/hum3/pta2svg/internal/highlight"
-	"codeberg.org/hum3/pta2svg/internal/layout"
-	"codeberg.org/hum3/pta2svg/internal/parser"
-	"codeberg.org/hum3/pta2svg/internal/render"
+	"git.bytestone.uk/hum3/pta2svg/internal/highlight"
+	"git.bytestone.uk/hum3/pta2svg/internal/layout"
+	"git.bytestone.uk/hum3/pta2svg/internal/parser"
+	"git.bytestone.uk/hum3/pta2svg/internal/render"
 )
 
 type fileData struct {

@@ -7,7 +7,7 @@ import (
 
 	"github.com/drummonds/gotreesitter"
 	"github.com/drummonds/gotreesitter/grammars"
-	"codeberg.org/hum3/pta2svg/internal/model"
+	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
 // Parse parses src in the given format and returns a Diagram.
