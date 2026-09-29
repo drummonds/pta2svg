@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"path/filepath"
 
-	"github.com/drummonds/gotreesitter"
-	"github.com/drummonds/gotreesitter/grammars"
+	"git.bytestone.uk/hum3/gotreesitter"
+	"git.bytestone.uk/hum3/gotreesitter/grammars"
 )
 
 // HighlightHTML returns syntax-highlighted HTML for the given source file.

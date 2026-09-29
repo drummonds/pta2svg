@@ -3,7 +3,7 @@ package parser
 import (
 	"fmt"
 
-	"github.com/drummonds/gotreesitter"
+	"git.bytestone.uk/hum3/gotreesitter"
 	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 

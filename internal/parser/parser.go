@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/drummonds/gotreesitter"
-	"github.com/drummonds/gotreesitter/grammars"
+	"git.bytestone.uk/hum3/gotreesitter"
+	"git.bytestone.uk/hum3/gotreesitter/grammars"
 	"git.bytestone.uk/hum3/pta2svg/internal/model"
 )
 
