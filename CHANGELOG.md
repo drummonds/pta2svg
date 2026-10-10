@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-10
+
+ - Library package, wasm build, opening balances, hyphens and quoted names in accounts, syntax errors reported
+
 ### Added
 - Public library package at the module root: `Render`, `Parse`, `RenderDiagram`, `Options`, the `Diagram` model (#5).
 - WebAssembly build (`cmd/pta2svg-wasm`, `task wasm:build`) installing `pta2svg.render` on the page, with a Try-it docs page (#6).
