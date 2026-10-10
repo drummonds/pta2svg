@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"math"
 	"testing"
 
 	"git.bytestone.uk/hum3/pta2svg/internal/model"
@@ -303,5 +304,96 @@ func TestFormatDetection(t *testing.T) {
 		if got != tt.want {
 			t.Errorf("DetectFormat(%q) = %d, want %d", tt.filename, got, tt.want)
 		}
+	}
+}
+
+// --- Account names (#2, #3) ---
+
+func TestAccountPathWithHyphen(t *testing.T) {
+	for _, tc := range []struct{ name, file, input string }{
+		{"pta", "m.pta", "2026-01-31 * Interest\n  Liability:Savings:alice:easy-access -> Expense:Interest interest 1.27 GBP\n"},
+		{"goluca", "m.goluca", "2026-01-31 * Interest\n  Liability:Savings:alice:easy-access -> Expense:Interest \"interest\" 1.27 GBP\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			d, err := Parse(tc.file, []byte(tc.input), FormatAuto)
+			if err != nil {
+				t.Fatalf("Parse: %v", err)
+			}
+			m := d.Transactions[0].Movements[0]
+			if m.From.Name != "Liability:Savings:alice:easy-access" {
+				t.Errorf("from = %q", m.From.Name)
+			}
+			if m.From.ShortName != "easy-access" {
+				t.Errorf("short name = %q", m.From.ShortName)
+			}
+			if m.From.Type != model.Liability {
+				t.Errorf("type = %v, want Liability", m.From.Type)
+			}
+		})
+	}
+}
+
+func TestQuotedAccountNameWithSpaces(t *testing.T) {
+	for _, tc := range []struct{ name, file, input string }{
+		{"pta", "m.pta", "2026-01-31 * Interest\n  \"Liability:Savings:Alice Lovelace:Easy Access\" -> Expense:Interest interest 1.27 GBP\n"},
+		{"goluca", "m.goluca", "2026-01-31 * Interest\n  \"Liability:Savings:Alice Lovelace:Easy Access\" -> Expense:Interest \"interest\" 1.27 GBP\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			d, err := Parse(tc.file, []byte(tc.input), FormatAuto)
+			if err != nil {
+				t.Fatalf("Parse: %v", err)
+			}
+			m := d.Transactions[0].Movements[0]
+			if m.From.Name != "Liability:Savings:Alice Lovelace:Easy Access" {
+				t.Errorf("from = %q (quotes must be stripped)", m.From.Name)
+			}
+			if m.From.ShortName != "Easy Access" {
+				t.Errorf("short name = %q", m.From.ShortName)
+			}
+			if m.From.Type != model.Liability {
+				t.Errorf("type = %v, want Liability", m.From.Type)
+			}
+			if _, ok := d.Accounts["Liability:Savings:Alice Lovelace:Easy Access"]; !ok {
+				t.Error("account should be keyed by its unquoted name")
+			}
+		})
+	}
+}
+
+// --- Opening balances (#4) ---
+
+func TestBalanceDirectiveSeedsBalances(t *testing.T) {
+	for _, tc := range []struct{ name, file, input string }{
+		{"pta", "m.pta", "2026-01-31 balance Liability:Savings:alice 1000.00 GBP\n2026-01-31 balance Expense:Interest 50.00 GBP\n\n2026-01-31 * Interest\n  Expense:Interest -> Liability:Savings:alice interest 1.27 GBP\n"},
+		{"goluca", "m.goluca", "2026-01-31 balance Liability:Savings:alice 1000.00 GBP\n2026-01-31 balance Expense:Interest 50.00 GBP\n\n2026-01-31 * Interest\n  Expense:Interest -> Liability:Savings:alice \"interest\" 1.27 GBP\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			d, err := Parse(tc.file, []byte(tc.input), FormatAuto)
+			if err != nil {
+				t.Fatalf("Parse: %v", err)
+			}
+			if len(d.Transactions) != 1 {
+				t.Fatalf("got %d transactions, want 1 (directives are not transactions)", len(d.Transactions))
+			}
+			if got := d.Balances["Liability:Savings:alice"]; math.Abs(got-1001.27) > 1e-9 {
+				t.Errorf("alice balance = %v, want 1001.27", got)
+			}
+			if got := d.Balances["Expense:Interest"]; math.Abs(got-48.73) > 1e-9 {
+				t.Errorf("interest balance = %v, want 48.73", got)
+			}
+		})
+	}
+}
+
+func TestBalanceDirectiveAloneCreatesAccount(t *testing.T) {
+	d, err := Parse("m.pta", []byte("2026-01-31 balance Asset:Cash 25.00\n"), FormatAuto)
+	if err != nil {
+		t.Fatalf("Parse: %v", err)
+	}
+	if d.Accounts["Asset:Cash"] == nil {
+		t.Fatal("balance directive should create the account")
+	}
+	if d.Balances["Asset:Cash"] != 25 {
+		t.Errorf("balance = %v, want 25", d.Balances["Asset:Cash"])
 	}
 }

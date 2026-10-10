@@ -83,13 +83,15 @@ type Transaction struct {
 type Diagram struct {
 	Accounts     map[string]*Account // keyed by full name
 	Transactions []Transaction
-	Balances     map[string]float64 // net balance per account
+	Opening      map[string]float64 // balance each account holds before the movements (balance directives)
+	Balances     map[string]float64 // balance per account after the movements
 }
 
 // NewDiagram creates an empty diagram.
 func NewDiagram() *Diagram {
 	return &Diagram{
 		Accounts: make(map[string]*Account),
+		Opening:  make(map[string]float64),
 		Balances: make(map[string]float64),
 	}
 }
@@ -124,9 +126,13 @@ func (d *Diagram) GetOrCreateHubAccount(date, payee string, seq int) *Account {
 	return a
 }
 
-// ComputeBalances calculates net balances from all movements.
+// ComputeBalances calculates each account's balance: its opening balance,
+// if one was stated, plus the net of all movements.
 func (d *Diagram) ComputeBalances() {
-	d.Balances = make(map[string]float64)
+	d.Balances = make(map[string]float64, len(d.Accounts))
+	for name, v := range d.Opening {
+		d.Balances[name] = v
+	}
 	for _, tx := range d.Transactions {
 		for _, m := range tx.Movements {
 			d.Balances[m.From.Name] -= m.Amount

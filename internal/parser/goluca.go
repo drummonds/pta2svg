@@ -11,14 +11,21 @@ import (
 func walkGoluca(root *gotreesitter.Node, lang *gotreesitter.Language, src []byte, d *model.Diagram) error {
 	for i := 0; i < root.ChildCount(); i++ {
 		child := root.Child(i)
-		if child == nil || child.Type(lang) != "transaction" {
+		if child == nil {
 			continue
 		}
-		tx, err := parseGolucaTransaction(child, lang, src, d)
-		if err != nil {
-			return err
+		switch child.Type(lang) {
+		case "transaction":
+			tx, err := parseGolucaTransaction(child, lang, src, d)
+			if err != nil {
+				return err
+			}
+			d.Transactions = append(d.Transactions, tx)
+		case "directive":
+			if err := parseDirective(child, lang, src, d); err != nil {
+				return err
+			}
 		}
-		d.Transactions = append(d.Transactions, tx)
 	}
 	return nil
 }

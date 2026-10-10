@@ -1,0 +1,9 @@
+# One movement drawn with the balances it leaves: the balance directives
+# state what each account held before it. Product IDs carry hyphens and a
+# name with spaces is quoted.
+
+2026-01-31 balance "Liability:Savings:Alice Lovelace:easy-access" 1000.00 GBP
+2026-01-31 balance Expense:Interest 50.00 GBP
+
+2026-01-31 * Interest applied
+  Expense:Interest -> "Liability:Savings:Alice Lovelace:easy-access" "interest" 1.27 GBP
