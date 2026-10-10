@@ -32,3 +32,8 @@ go.work.sum
 # .idea/
 # .vscode/
 task-plus.local.yaml
+
+# Built by task docs:build (task wasm:build)
+docs/pta2svg.wasm
+docs/wasm_exec.js
+.tp-release-comment

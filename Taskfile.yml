@@ -30,6 +30,7 @@ tasks:
       - task: fmt
       - task: vet
       - task: test
+      - task: wasm:test
 
   build:
     desc: Build binary
@@ -46,8 +47,20 @@ tasks:
     cmds:
       - go mod tidy
 
+  wasm:build:
+    desc: Build the browser (js/wasm) binary into docs/
+    cmds:
+      - GOOS=js GOARCH=wasm go build -o docs/pta2svg.wasm ./cmd/pta2svg-wasm
+      - cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" docs/wasm_exec.js
+
+  wasm:test:
+    desc: Run the js/wasm tests under node
+    cmds:
+      - PATH="$PATH:$(go env GOROOT)/lib/wasm" GOOS=js GOARCH=wasm go test ./cmd/pta2svg-wasm
+
   docs:build:
-    desc: Generate docs site
+    desc: Generate docs site, including the in-browser demo
     cmds:
       - go run ./cmd/docs
+      - task: wasm:build
 

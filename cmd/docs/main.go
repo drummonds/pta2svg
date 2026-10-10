@@ -43,6 +43,10 @@ const indexTmpl = `<!DOCTYPE html>
   <h1 class="title">pta2svg — Demo</h1>
   <p class="subtitle">Generate SVG flowcharts from plain text accounting files</p>
   <div class="content">
+  <div class="box">
+    <h2 class="title is-4"><a href="try.html">Try it</a></h2>
+    <p>Type a ledger and watch it drawn in the browser (WebAssembly build).</p>
+  </div>
   {{range .}}
   <div class="box">
     <h2 class="title is-4"><a href="{{.Slug}}.html">{{.Title}}</a></h2>
@@ -56,6 +60,87 @@ const indexTmpl = `<!DOCTYPE html>
   </div>
 </div>
 </section>
+</body>
+</html>
+`
+
+// tryTmpl is the in-browser demo: pta2svg.wasm renders what is typed.
+const tryTmpl = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>pta2svg — Try it</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+<style>
+  textarea.source { font-family: monospace; font-size: 0.85rem; min-height: 16rem; }
+  .svg-container { display: flex; align-items: center; justify-content: center; overflow-x: auto; min-height: 8rem; }
+  .svg-container svg { max-width: 100%; height: auto; }
+</style>
+<script src="wasm_exec.js"></script>
+</head>
+<body>
+<section class="section">
+<div class="container">
+  <nav class="breadcrumb">
+    <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>Try it</a></li></ul>
+  </nav>
+  <h1 class="title">Try it</h1>
+  <p class="subtitle">pta2svg compiled to WebAssembly: the diagram is drawn in your browser as you type.</p>
+  <div class="columns">
+    <div class="column is-5">
+      <div class="field is-grouped">
+        <div class="control">
+          <div class="select"><select id="format">
+            <option value="goluca">goluca</option>
+            <option value="pta">pta</option>
+            <option value="beancount">beancount</option>
+          </select></div>
+        </div>
+        <div class="control">
+          <div class="select"><select id="layout">
+            <option value="lr">lr</option>
+            <option value="sugiyama">sugiyama</option>
+          </select></div>
+        </div>
+        <div class="control"><label class="checkbox"><input type="checkbox" id="animate"> animate</label></div>
+      </div>
+      <textarea id="source" class="textarea source" spellcheck="false">{{.Example}}</textarea>
+      <p id="status" class="help">Loading pta2svg.wasm…</p>
+    </div>
+    <div class="column is-7">
+      <div id="output" class="svg-container box"></div>
+    </div>
+  </div>
+</div>
+</section>
+<script>
+(async () => {
+  const status = document.getElementById("status");
+  const output = document.getElementById("output");
+  const go = new Go();
+  const result = await WebAssembly.instantiateStreaming(fetch("pta2svg.wasm"), go.importObject);
+  go.run(result.instance); // installs window.pta2svg
+  const draw = () => {
+    const opts = {
+      format: document.getElementById("format").value,
+      layout: document.getElementById("layout").value,
+      animate: document.getElementById("animate").checked,
+    };
+    try {
+      output.innerHTML = pta2svg.render(document.getElementById("source").value, opts);
+      status.textContent = "";
+      status.className = "help";
+    } catch (e) {
+      status.textContent = String(e.message || e);
+      status.className = "help is-danger";
+    }
+  };
+  for (const id of ["source", "format", "layout", "animate"]) {
+    document.getElementById(id).addEventListener("input", draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
 `
@@ -126,6 +211,18 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println("wrote docs/index.html")
+
+	// Write the in-browser demo page
+	example, err := os.ReadFile("testdata/examples/movement.goluca")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "example: %v\n", err)
+		os.Exit(1)
+	}
+	if err := writePage("docs/try.html", tryTmpl, struct{ Example string }{string(example)}); err != nil {
+		fmt.Fprintf(os.Stderr, "try: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("wrote docs/try.html")
 
 	// Write section pages
 	for _, s := range sections {
