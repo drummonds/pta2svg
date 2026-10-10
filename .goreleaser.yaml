@@ -1,5 +1,10 @@
 version: 2
 
+# Releases go to the Forgejo at git.bytestone.uk, not GitHub. tp release
+# sets GITEA_TOKEN (and GITHUB_TOKEN for the mirror push); force the
+# Forgejo one so goreleaser never tries api.github.com.
+force_token: gitea
+
 builds:
   - main: ./cmd/pta2svg
     binary: pta2svg
@@ -19,5 +24,16 @@ archives:
       - goos: windows
         formats: ['zip']
 
+gitea_urls:
+  api: https://git.bytestone.uk/api/v1
+  download: https://git.bytestone.uk
+
+release:
+  gitea:
+    owner: hum3
+    name: pta2svg
+  # tp release writes the release notes; keep them.
+  mode: keep-existing
+
 changelog:
-  sort: asc
+  disable: true
