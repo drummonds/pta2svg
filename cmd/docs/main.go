@@ -236,9 +236,13 @@ func main() {
 }
 
 func loadSection(s *section) error {
-	files, err := filepath.Glob(filepath.Join(s.Dir, "*.goluca"))
-	if err != nil {
-		return err
+	var files []string
+	for _, pattern := range []string{"*.goluca", "*.pta"} {
+		matches, err := filepath.Glob(filepath.Join(s.Dir, pattern))
+		if err != nil {
+			return err
+		}
+		files = append(files, matches...)
 	}
 	sort.Strings(files)
 
