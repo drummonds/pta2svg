@@ -10,6 +10,16 @@
 - [x] Multi-commodity support
 - [x] Balance display on account nodes
 - [x] Syntax-highlighted PTA source in docs site
+- [x] Syntax errors reported with a line number, not an empty diagram (#1)
+- [x] Hyphens and quoted names with spaces in account paths (#2, #3)
+- [x] Opening balances via the `balance` directive (#4)
+- [x] Public library package at the module root (#5)
+- [x] WebAssembly build with a Try-it docs page (#6)
+
+## Next
+
+- [ ] Smaller wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 26 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut it to roughly 11 MB
+- [ ] Escape `<`, `&` and quotes in account names and descriptions in the SVG template
 
 ## Phase 1 — Better automatic layout
 

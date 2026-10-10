@@ -2,7 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/).## [0.1.1] - 2026-03-02
+The format is based on [Keep a Changelog](https://keepachangelog.com/).
+
+## [Unreleased]
+
+### Added
+- Public library package at the module root: `Render`, `Parse`, `RenderDiagram`, `Options`, the `Diagram` model (#5).
+- WebAssembly build (`cmd/pta2svg-wasm`, `task wasm:build`) installing `pta2svg.render` on the page, with a Try-it docs page (#6).
+- `balance` directive seeding an account's opening balance, so one movement is drawn with the balances it leaves (#4).
+- Hyphens in account path segments, and quoted account names for names with spaces (#2, #3).
+- Every testdata file is parsed in its declared format by a test.
+
+### Fixed
+- A file the grammar rejects is reported as an error with its line number instead of being drawn as an empty diagram (#1).
+- The goluca examples had unquoted descriptions, which is pta syntax; they are now valid goluca.
+
+### Changed
+- Requires gotreesitter with the regenerated pta and goluca grammars.
+
+## [0.1.1] - 2026-03-02
 
  - Starting to work## [0.1.3] - 2026-03-03
 

@@ -1,6 +1,6 @@
 # pta2svg
 
-Generate styled SVG flowcharts from plain text accounting (go-luca) files showing money flows between accounts.
+Draws plain text accounting as an SVG flow diagram: accounts as boxes carrying their balances, movements as arrows. Reads go-luca's `.goluca` format, the simpler `.pta` movement format and beancount. Runs as a CLI, a Go library or in the browser as WebAssembly.
 
 ## Install
 
@@ -11,33 +11,55 @@ go install git.bytestone.uk/hum3/pta2svg/cmd/pta2svg@latest
 ## Usage
 
 ```bash
-pta2svg [flags] <file.pta>
-  -o string     output file (default: stdout)
-  -animate      enable CSS flow animations
-  -title string SVG title
-  -layout string layout engine (default "lr")
+pta2svg [flags] <file>
+  -o string       output file (default: stdout)
+  -format string  input format: auto, pta, goluca, beancount (default "auto", by extension)
+  -layout string  layout engine: lr, sugiyama (default "lr")
+  -title string   SVG title
+  -animate        enable CSS flow animations
 ```
-
-## Example
 
 ```bash
-pta2svg testdata/simple.pta > output.svg
-pta2svg -animate -title "Bank Deposit" testdata/simple.pta > animated.svg
+pta2svg testdata/examples/simple.goluca > simple.svg
+pta2svg -animate -title "Interest" testdata/examples/movement.goluca > movement.svg
 ```
 
-## Input Format
+A file the grammar rejects is reported with its line number rather than drawn empty.
+
+## Input format
 
 ```
-2024-01-15 * Salary deposit
-  +Income:Salary -> Asset:Bank salary payment 5000.00 GBP
+2026-01-31 balance "Liability:Savings:Alice Lovelace:easy-access" 1000.00 GBP
 
-2024-01-20 * Pay rent
-  Asset:Bank -> Expense:Rent monthly rent 1200.00 GBP
+2026-01-31 * Interest applied
+  Expense:Interest -> "Liability:Savings:Alice Lovelace:easy-access" "interest" 1.27 GBP
 ```
 
-Lines: `[+]from -> to [description] amount [commodity]`
+Movements: `[+]from -> to ["description"] amount [commodity]`. In `.goluca` the description is quoted; in `.pta` it is bare words. Arrow variants: `>`, `->`, `//`, `→`. The `+` prefix links movements for staggered animation.
 
-The `+` prefix links movements for staggered animation. Arrow variants: `>`, `->`, `//`, `→`.
+Account paths are `Type:Segment[:Segment...]`; segments may carry hyphens and a name with spaces is quoted. The first segment (Asset, Liability, Equity, Income, Expense) sets the colour and column.
+
+A `balance` directive states what an account held before the movements, so a single movement can be drawn with the balances it leaves. Without one, balances are the net of the movements in the file.
+
+## Library
+
+```go
+import "git.bytestone.uk/hum3/pta2svg"
+
+err := pta2svg.Render(w, src, pta2svg.Options{Format: pta2svg.Goluca, Title: "January"})
+```
+
+`Parse` returns the `Diagram`; `RenderDiagram` draws one built without text (`NewDiagram`, `GetOrCreateAccount`, `Transactions`, `Opening`, then `ComputeBalances`).
+
+## Browser
+
+`task wasm:build` compiles `cmd/pta2svg-wasm` to `docs/pta2svg.wasm`. Loaded with Go's `wasm_exec.js`, it installs:
+
+```js
+pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"}) // -> SVG string, throws on error
+```
+
+The docs site's Try-it page is this build.
 
 ## Links
 
