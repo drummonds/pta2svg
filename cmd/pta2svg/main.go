@@ -1,3 +1,4 @@
+// Command pta2svg draws a plain text accounting file as an SVG flow diagram.
 package main
 
 import (
@@ -5,16 +6,14 @@ import (
 	"fmt"
 	"os"
 
-	"git.bytestone.uk/hum3/pta2svg/internal/layout"
-	"git.bytestone.uk/hum3/pta2svg/internal/parser"
-	"git.bytestone.uk/hum3/pta2svg/internal/render"
+	"git.bytestone.uk/hum3/pta2svg"
 )
 
 func main() {
 	output := flag.String("o", "", "output file (default: stdout)")
 	animate := flag.Bool("animate", false, "enable CSS flow animations")
 	title := flag.String("title", "", "SVG title")
-	layoutName := flag.String("layout", "lr", "layout engine")
+	layoutName := flag.String("layout", "lr", "layout engine: lr, sugiyama")
 	formatStr := flag.String("format", "auto", "input format: auto, pta, goluca, beancount")
 	flag.Parse()
 
@@ -23,54 +22,34 @@ func main() {
 		os.Exit(1)
 	}
 
-	filename := flag.Arg(0)
+	if err := run(flag.Arg(0), *output, *formatStr, pta2svg.Options{
+		Title:   *title,
+		Animate: *animate,
+		Layout:  pta2svg.Layout(*layoutName),
+	}); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run(filename, output, formatStr string, opts pta2svg.Options) error {
 	src, err := os.ReadFile(filename)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
+		return err
 	}
 
-	format, err := parser.FormatFromString(*formatStr)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
+	if formatStr == "auto" {
+		opts.Format = pta2svg.DetectFormat(filename)
+	} else if opts.Format, err = pta2svg.ParseFormat(formatStr); err != nil {
+		return err
 	}
-
-	d, err := parser.Parse(filename, src, format)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "parse error: %v\n", err)
-		os.Exit(1)
-	}
-
-	var l layout.Layouter
-	switch *layoutName {
-	case "lr":
-		l = layout.LR{}
-	case "sugiyama":
-		l = layout.Sugiyama{}
-	default:
-		fmt.Fprintf(os.Stderr, "unknown layout: %s (options: lr, sugiyama)\n", *layoutName)
-		os.Exit(1)
-	}
-
-	g := layout.GraphFromDiagram(d, l, layout.DefaultOptions())
 
 	w := os.Stdout
-	if *output != "" {
-		w, err = os.Create(*output)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			os.Exit(1)
+	if output != "" {
+		if w, err = os.Create(output); err != nil {
+			return err
 		}
 		defer w.Close()
 	}
-
-	err = render.Render(w, g, render.Options{
-		Title:   *title,
-		Animate: *animate,
-	})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "render error: %v\n", err)
-		os.Exit(1)
-	}
+	return pta2svg.Render(w, src, opts)
 }

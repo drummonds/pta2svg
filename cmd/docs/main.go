@@ -8,10 +8,8 @@ import (
 	"path/filepath"
 	"sort"
 
+	"git.bytestone.uk/hum3/pta2svg"
 	"git.bytestone.uk/hum3/pta2svg/internal/highlight"
-	"git.bytestone.uk/hum3/pta2svg/internal/layout"
-	"git.bytestone.uk/hum3/pta2svg/internal/parser"
-	"git.bytestone.uk/hum3/pta2svg/internal/render"
 )
 
 type fileData struct {
@@ -163,15 +161,8 @@ func renderFile(path string) (fileData, error) {
 		return fileData{}, err
 	}
 
-	d, err := parser.Parse(path, src, parser.FormatAuto)
-	if err != nil {
-		return fileData{}, fmt.Errorf("parse: %w", err)
-	}
-
-	g := layout.GraphFromDiagram(d, layout.LR{}, layout.DefaultOptions())
-
 	var buf bytes.Buffer
-	if err := render.Render(&buf, g, render.Options{}); err != nil {
+	if err := pta2svg.Render(&buf, src, pta2svg.Options{Format: pta2svg.DetectFormat(path)}); err != nil {
 		return fileData{}, fmt.Errorf("render: %w", err)
 	}
 
