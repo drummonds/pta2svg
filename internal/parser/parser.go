@@ -48,6 +48,9 @@ func Parse(filename string, src []byte, format Format) (*model.Diagram, error) {
 	if root == nil {
 		return nil, fmt.Errorf("empty parse tree")
 	}
+	if root.HasError() {
+		return nil, syntaxError(root, lang, src)
+	}
 
 	d := model.NewDiagram()
 	switch format {
@@ -70,4 +73,37 @@ func Parse(filename string, src []byte, format Format) (*model.Diagram, error) {
 func parseAmountStr(s string) (float64, error) {
 	s = strings.ReplaceAll(s, ",", "")
 	return strconv.ParseFloat(s, 64)
+}
+
+// syntaxError describes the first error or missing node in the tree.
+func syntaxError(root *gotreesitter.Node, lang *gotreesitter.Language, src []byte) error {
+	if n := firstErrorNode(root); n != nil {
+		text := n.Text(src)
+		if i := strings.IndexByte(text, '\n'); i >= 0 {
+			text = text[:i]
+		}
+		if n.IsMissing() {
+			return fmt.Errorf("line %d: missing %s", n.StartPoint().Row+1, n.Type(lang))
+		}
+		return fmt.Errorf("line %d: unexpected %q", n.StartPoint().Row+1, text)
+	}
+	return fmt.Errorf("syntax error")
+}
+
+func firstErrorNode(n *gotreesitter.Node) *gotreesitter.Node {
+	if n.IsError() || n.IsMissing() {
+		// Prefer the innermost error so the line points at the fault.
+		for i := 0; i < n.ChildCount(); i++ {
+			if c := firstErrorNode(n.Child(i)); c != nil {
+				return c
+			}
+		}
+		return n
+	}
+	for i := 0; i < n.ChildCount(); i++ {
+		if c := firstErrorNode(n.Child(i)); c != nil {
+			return c
+		}
+	}
+	return nil
 }
