@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-11
+
+ - Diagram model as JSON and a 6 MB lite wasm build without the text parsers; text parsing moved to the parse subpackage
+
 ### Added
 - `Model`, the `Diagram` as JSON: `ToModel` and `Model.Diagram`. Accounts are optional overrides of the type and short name inferred from the path; balances are computed on load (#8).
 - `cmd/pta2svg-wasm-lite`, a 6 MB browser build without the text parsers, installing `pta2svg.renderModel(model, opts)` for a page that holds the ledger as data. The full build installs `renderModel` beside `render` (#8).
