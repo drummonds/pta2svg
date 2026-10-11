@@ -1,6 +1,9 @@
 package layout
 
 import (
+	"cmp"
+	"slices"
+
 	"git.bytestone.uk/hum3/pta2svg/internal/model"
 	"github.com/nulab/autog"
 	"github.com/nulab/autog/graph"
@@ -67,6 +70,10 @@ func (Sugiyama) Layout(d *model.Diagram, opts LayoutOptions) *Graph {
 		g.Nodes = append(g.Nodes, node)
 		g.NodeMap[n.ID] = node
 	}
+	// autog's node order varies between runs; draw in reading order.
+	slices.SortFunc(g.Nodes, func(a, b *Node) int {
+		return cmp.Or(cmp.Compare(a.X, b.X), cmp.Compare(a.Y, b.Y), cmp.Compare(a.Account.Name, b.Account.Name))
+	})
 
 	// Convert autog edges → layout.Edge with routed points.
 	idx := 0

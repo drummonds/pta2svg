@@ -1,6 +1,8 @@
 package layout_test
 
 import (
+	"os"
+	"strings"
 	"testing"
 
 	"git.bytestone.uk/hum3/pta2svg/internal/layout"
@@ -50,5 +52,32 @@ func TestSugiyamaEmpty(t *testing.T) {
 	g := layout.GraphFromDiagram(d, layout.Sugiyama{}, layout.DefaultOptions())
 	if len(g.Nodes) != 0 {
 		t.Errorf("expected 0 nodes for empty diagram, got %d", len(g.Nodes))
+	}
+}
+
+// autog does not return its nodes in a stable order; the layout must, or
+// the SVG (node and legend order) changes from run to run.
+func TestSugiyamaNodeOrderIsStable(t *testing.T) {
+	src, err := os.ReadFile("../../testdata/oranges/04_buy_on_credit.goluca")
+	if err != nil {
+		t.Fatal(err)
+	}
+	order := func() string {
+		d, err := parser.Parse("x.goluca", src, parser.FormatGoluca)
+		if err != nil {
+			t.Fatal("parse:", err)
+		}
+		g := layout.GraphFromDiagram(d, layout.Sugiyama{}, layout.DefaultOptions())
+		var names []string
+		for _, n := range g.Nodes {
+			names = append(names, n.Account.Name)
+		}
+		return strings.Join(names, ",")
+	}
+	want := order()
+	for range 50 {
+		if got := order(); got != want {
+			t.Fatalf("node order changed:\n%s\n%s", want, got)
+		}
 	}
 }
