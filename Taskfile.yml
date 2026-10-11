@@ -30,6 +30,7 @@ tasks:
       - task: fmt
       - task: vet
       - task: test
+      - task: deps:guard
       - task: wasm:test
 
   build:
@@ -41,6 +42,11 @@ tasks:
     desc: Remove build artifacts
     cmds:
       - rm -f {{.BINARY}}
+
+  deps:guard:
+    desc: The root package must not link the tree-sitter parsers (keeps the lite wasm small)
+    cmds:
+      - test -z "$(go list -deps . | grep gotreesitter)"
 
   deps:tidy:
     desc: Tidy module dependencies

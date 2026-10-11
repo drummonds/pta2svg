@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+- Text parsing moved to the `parse` subpackage: `parse.Parse`, `parse.Render(w, src, format, opts)`, `parse.Format`, `DetectFormat`, `ParseFormat`. `Options` loses `Format`. The root package now links no tree-sitter grammars, which `task deps:guard` enforces, so a browser build that takes the ledger as data can stay small (#8).
+
 ## [0.2.0] - 2026-10-10
 
  - Library package, wasm build, opening balances, hyphens and quoted names in accounts, syntax errors reported

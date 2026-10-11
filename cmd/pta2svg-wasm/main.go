@@ -14,6 +14,7 @@ import (
 	"syscall/js"
 
 	"git.bytestone.uk/hum3/pta2svg"
+	"git.bytestone.uk/hum3/pta2svg/parse"
 )
 
 func main() {
@@ -41,13 +42,14 @@ func render(_ js.Value, args []js.Value) any {
 // renderText is the JS-free core, so a test can drive it with plain values.
 func renderText(text string, opts js.Value) (string, error) {
 	o := pta2svg.Options{}
+	format := parse.PTA
 	if opts.Type() == js.TypeObject {
 		if v := opts.Get("format"); v.Type() == js.TypeString {
-			f, err := pta2svg.ParseFormat(v.String())
+			f, err := parse.ParseFormat(v.String())
 			if err != nil {
 				return "", err
 			}
-			o.Format = f
+			format = f
 		}
 		if v := opts.Get("title"); v.Type() == js.TypeString {
 			o.Title = v.String()
@@ -60,7 +62,7 @@ func renderText(text string, opts js.Value) (string, error) {
 		}
 	}
 	var buf bytes.Buffer
-	if err := pta2svg.Render(&buf, []byte(text), o); err != nil {
+	if err := parse.Render(&buf, []byte(text), format, o); err != nil {
 		return "", err
 	}
 	return buf.String(), nil

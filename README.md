@@ -44,12 +44,15 @@ A `balance` directive states what an account held before the movements, so a sin
 ## Library
 
 ```go
-import "git.bytestone.uk/hum3/pta2svg"
+import (
+	"git.bytestone.uk/hum3/pta2svg"
+	"git.bytestone.uk/hum3/pta2svg/parse"
+)
 
-err := pta2svg.Render(w, src, pta2svg.Options{Format: pta2svg.Goluca, Title: "January"})
+err := parse.Render(w, src, parse.Goluca, pta2svg.Options{Title: "January"})
 ```
 
-`Parse` returns the `Diagram`; `RenderDiagram` draws one built without text (`NewDiagram`, `GetOrCreateAccount`, `Transactions`, `Opening`, then `ComputeBalances`).
+`parse.Parse` returns the `Diagram`; `pta2svg.RenderDiagram` draws one built without text (`NewDiagram`, `GetOrCreateAccount`, `Transactions`, `Opening`, then `ComputeBalances`). The text parsers live in `parse` because their tree-sitter grammars are most of the size of a browser build; a program that holds the ledger as data imports only the root package.
 
 ## Browser
 

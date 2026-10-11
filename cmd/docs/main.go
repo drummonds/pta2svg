@@ -10,6 +10,7 @@ import (
 
 	"git.bytestone.uk/hum3/pta2svg"
 	"git.bytestone.uk/hum3/pta2svg/internal/highlight"
+	"git.bytestone.uk/hum3/pta2svg/parse"
 )
 
 type fileData struct {
@@ -263,7 +264,7 @@ func renderFile(path string) (fileData, error) {
 	}
 
 	var buf bytes.Buffer
-	if err := pta2svg.Render(&buf, src, pta2svg.Options{Format: pta2svg.DetectFormat(path)}); err != nil {
+	if err := parse.Render(&buf, src, parse.DetectFormat(path), pta2svg.Options{}); err != nil {
 		return fileData{}, fmt.Errorf("render: %w", err)
 	}
 

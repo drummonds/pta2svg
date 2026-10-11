@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"git.bytestone.uk/hum3/pta2svg"
+	"git.bytestone.uk/hum3/pta2svg/parse"
 )
 
 func main() {
@@ -38,10 +39,11 @@ func run(filename, output, formatStr string, opts pta2svg.Options) error {
 		return err
 	}
 
-	if formatStr == "auto" {
-		opts.Format = pta2svg.DetectFormat(filename)
-	} else if opts.Format, err = pta2svg.ParseFormat(formatStr); err != nil {
-		return err
+	format := parse.DetectFormat(filename)
+	if formatStr != "auto" {
+		if format, err = parse.ParseFormat(formatStr); err != nil {
+			return err
+		}
 	}
 
 	w := os.Stdout
@@ -51,5 +53,5 @@ func run(filename, output, formatStr string, opts pta2svg.Options) error {
 		}
 		defer w.Close()
 	}
-	return pta2svg.Render(w, src, opts)
+	return parse.Render(w, src, format, opts)
 }
