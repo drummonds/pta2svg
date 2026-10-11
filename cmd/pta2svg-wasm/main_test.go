@@ -15,7 +15,7 @@ func TestRenderTextUnderWasm(t *testing.T) {
 	opts := js.Global().Get("Object").New()
 	opts.Set("format", "goluca")
 	opts.Set("title", "Interest")
-	svg, err := renderText(src, opts)
+	svg, err := renderText(js.ValueOf(src), opts)
 	if err != nil {
 		t.Fatalf("renderText: %v", err)
 	}
@@ -27,7 +27,7 @@ func TestRenderTextUnderWasm(t *testing.T) {
 }
 
 func TestRenderTextDefaultsToPTA(t *testing.T) {
-	svg, err := renderText("2026-01-01 * T\n  Asset:Cash -> Expense:Food lunch 10.00 GBP\n", js.Undefined())
+	svg, err := renderText(js.ValueOf("2026-01-01 * T\n  Asset:Cash -> Expense:Food lunch 10.00 GBP\n"), js.Undefined())
 	if err != nil {
 		t.Fatalf("renderText: %v", err)
 	}
@@ -39,7 +39,7 @@ func TestRenderTextDefaultsToPTA(t *testing.T) {
 func TestRenderTextReportsErrors(t *testing.T) {
 	opts := js.Global().Get("Object").New()
 	opts.Set("format", "goluca")
-	_, err := renderText("2026-01-01 * T\n  Asset:Cash -> Expense:Food lunch 10.00 GBP\n", opts)
+	_, err := renderText(js.ValueOf("2026-01-01 * T\n  Asset:Cash -> Expense:Food lunch 10.00 GBP\n"), opts)
 	if err == nil || !strings.Contains(err.Error(), "line") {
 		t.Fatalf("pta text as goluca should fail naming a line, got %v", err)
 	}

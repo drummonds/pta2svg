@@ -47,6 +47,7 @@ tasks:
     desc: The root package must not link the tree-sitter parsers (keeps the lite wasm small)
     cmds:
       - test -z "$(go list -deps . | grep gotreesitter)"
+      - test -z "$(GOOS=js GOARCH=wasm go list -deps ./cmd/pta2svg-wasm-lite | grep gotreesitter)"
 
   deps:tidy:
     desc: Tidy module dependencies
@@ -54,15 +55,16 @@ tasks:
       - go mod tidy
 
   wasm:build:
-    desc: Build the browser (js/wasm) binary into docs/
+    desc: Build the browser (js/wasm) binaries into docs/, full and lite
     cmds:
       - GOOS=js GOARCH=wasm go build -o docs/pta2svg.wasm ./cmd/pta2svg-wasm
+      - GOOS=js GOARCH=wasm go build -o docs/pta2svg-lite.wasm ./cmd/pta2svg-wasm-lite
       - cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" docs/wasm_exec.js
 
   wasm:test:
     desc: Run the js/wasm tests under node
     cmds:
-      - PATH="$PATH:$(go env GOROOT)/lib/wasm" GOOS=js GOARCH=wasm go test ./cmd/pta2svg-wasm
+      - PATH="$PATH:$(go env GOROOT)/lib/wasm" GOOS=js GOARCH=wasm go test ./cmd/pta2svg-wasm ./internal/wasm
 
   docs:build:
     desc: Generate docs site, including the in-browser demo

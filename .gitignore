@@ -35,5 +35,6 @@ task-plus.local.yaml
 
 # Built by task docs:build (task wasm:build)
 docs/pta2svg.wasm
+docs/pta2svg-lite.wasm
 docs/wasm_exec.js
 .tp-release-comment
