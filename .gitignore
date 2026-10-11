@@ -37,4 +37,6 @@ task-plus.local.yaml
 docs/pta2svg.wasm
 docs/pta2svg-lite.wasm
 docs/wasm_exec.js
+docs/pta2svg-tiny.wasm
+docs/wasm_exec_tinygo.js
 .tp-release-comment

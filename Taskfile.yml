@@ -32,6 +32,7 @@ tasks:
       - task: test
       - task: deps:guard
       - task: wasm:test
+      - task: wasm:tiny:test
 
   build:
     desc: Build binary
@@ -60,11 +61,23 @@ tasks:
       - GOOS=js GOARCH=wasm go build -o docs/pta2svg.wasm ./cmd/pta2svg-wasm
       - GOOS=js GOARCH=wasm go build -o docs/pta2svg-lite.wasm ./cmd/pta2svg-wasm-lite
       - cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" docs/wasm_exec.js
+      - task: wasm:tiny:build
+
+  wasm:tiny:build:
+    desc: Build the lite browser binary with TinyGo, beside its own wasm_exec.js
+    cmds:
+      - tinygo build -target wasm -no-debug -o docs/pta2svg-tiny.wasm ./cmd/pta2svg-wasm-lite
+      - cp "$(tinygo env TINYGOROOT)/targets/wasm_exec.js" docs/wasm_exec_tinygo.js
 
   wasm:test:
     desc: Run the js/wasm tests under node
     cmds:
       - PATH="$PATH:$(go env GOROOT)/lib/wasm" GOOS=js GOARCH=wasm go test ./cmd/pta2svg-wasm ./internal/wasm
+
+  wasm:tiny:test:
+    desc: Run what the lite build links under TinyGo (wasm, in node)
+    cmds:
+      - tinygo test -target wasm . ./internal/wasm ./internal/render
 
   docs:build:
     desc: Generate docs site, including the in-browser demo

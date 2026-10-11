@@ -19,7 +19,7 @@
 
 ## Next
 
-- [ ] Smaller full wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 26 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut the Try-it page's build to roughly 11 MB; a page that holds the ledger as data already uses the 6 MB lite build
+- [ ] Smaller full wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 24 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut the Try-it page's build to roughly 9 MB; a page that holds the ledger as data already uses the 4 MB lite build or the 0.7 MB TinyGo build
 - [ ] Escape `<`, `&` and quotes in account names and descriptions in the SVG template
 
 ## Phase 1 — Better automatic layout

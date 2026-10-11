@@ -76,25 +76,26 @@ func TestFuncThrowsOnError(t *testing.T) {
 	if got := f.Invoke(true); got.String() != "ok" {
 		t.Errorf("Invoke(true) = %v, want ok", got)
 	}
-	if msg := thrown(t, func() { f.Invoke(false) }); !strings.Contains(msg, "boom") {
+	if msg := thrown(t, f, false); !strings.Contains(msg, "boom") {
 		t.Errorf("thrown message %q should carry the error", msg)
 	}
-	if msg := thrown(t, func() { f.Invoke() }); !strings.Contains(msg, "argument required") {
+	if msg := thrown(t, f); !strings.Contains(msg, "argument required") {
 		t.Errorf("thrown message %q should say the argument is required", msg)
 	}
 }
 
-// thrown runs call, which must throw a JS Error, and returns its message.
-func thrown(t *testing.T, call func()) (msg string) {
+// thrown calls f with args, which must throw a JS Error, and returns its
+// message. The throw is caught in JS, as a page would: TinyGo's wasm target
+// cannot recover the Go panic that Invoke turns a throw into.
+func thrown(t *testing.T, f js.Value, args ...any) string {
 	t.Helper()
-	defer func() {
-		e, ok := recover().(js.Error)
-		if !ok {
-			t.Fatal("call should have thrown a JS Error")
-		}
-		msg = e.Value.Get("message").String()
-	}()
-	call()
-	t.Fatal("call returned without throwing")
-	return ""
+	e := catcher.Invoke(append([]any{f}, args...)...)
+	if !e.InstanceOf(js.Global().Get("Error")) {
+		t.Fatal("call should have thrown a JS Error")
+	}
+	return e.Get("message").String()
 }
+
+// catcher(f, ...args) is what f(...args) throws, or undefined.
+var catcher = js.Global().Get("Function").New("f", "...args",
+	"try { f(...args); } catch (e) { return e; }")

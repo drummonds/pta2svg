@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- `pta2svg-tiny.wasm`, the lite build compiled with TinyGo: 0.7 MB against 4 MB, the same SVG, loaded with TinyGo's `wasm_exec_tinygo.js`. `task wasm:tiny:test`, run by `task check`, runs the root, render and wasm packages under TinyGo.
+
+### Changed
+- The SVG is written directly rather than through text/template, which TinyGo cannot run. The output is unchanged and pinned by golden files for every testdata ledger. The Go builds shrink too: lite from 6 MB to 4 MB, full from 26 MB to 24 MB.
+
+### Fixed
+- The Sugiyama layout drew nodes, and so the legend, in an order that changed from run to run.
+
 ## [0.3.0] - 2026-10-11
 
  - Diagram model as JSON and a 6 MB lite wasm build without the text parsers; text parsing moved to the parse subpackage
