@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"errors"
 	"strings"
 	"syscall/js"
 	"testing"
@@ -62,4 +63,38 @@ func TestOptions(t *testing.T) {
 	if Options(js.Undefined()) != (pta2svg.Options{}) {
 		t.Error("undefined options should be the zero Options")
 	}
+}
+
+// The page function throws a JS Error instead of crashing the Go runtime.
+func TestFuncThrowsOnError(t *testing.T) {
+	f := Func("test", func(arg, _ js.Value) (string, error) {
+		if arg.Truthy() {
+			return "ok", nil
+		}
+		return "", errors.New("boom")
+	})
+	if got := f.Invoke(true); got.String() != "ok" {
+		t.Errorf("Invoke(true) = %v, want ok", got)
+	}
+	if msg := thrown(t, func() { f.Invoke(false) }); !strings.Contains(msg, "boom") {
+		t.Errorf("thrown message %q should carry the error", msg)
+	}
+	if msg := thrown(t, func() { f.Invoke() }); !strings.Contains(msg, "argument required") {
+		t.Errorf("thrown message %q should say the argument is required", msg)
+	}
+}
+
+// thrown runs call, which must throw a JS Error, and returns its message.
+func thrown(t *testing.T, call func()) (msg string) {
+	t.Helper()
+	defer func() {
+		e, ok := recover().(js.Error)
+		if !ok {
+			t.Fatal("call should have thrown a JS Error")
+		}
+		msg = e.Value.Get("message").String()
+	}()
+	call()
+	t.Fatal("call returned without throwing")
+	return ""
 }

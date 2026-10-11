@@ -64,10 +64,13 @@ func RenderModel(arg js.Value, opts js.Value) (string, error) {
 
 // Func wraps r as a page function taking (arg, opts) and returning the SVG
 // string; a missing argument or a render error is thrown as a JS Error.
-func Func(name string, r Renderer) js.Func {
-	return js.FuncOf(func(_ js.Value, args []js.Value) any {
+//
+// A Go panic inside a js.FuncOf callback kills the Go runtime rather than
+// throwing, so the Go side returns the Error and a JS wrapper throws it.
+func Func(name string, r Renderer) js.Value {
+	inner := js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) < 1 {
-			throw(name + ": argument required")
+			return jsError(name + ": argument required")
 		}
 		opts := js.Undefined()
 		if len(args) > 1 {
@@ -75,13 +78,17 @@ func Func(name string, r Renderer) js.Func {
 		}
 		svg, err := r(args[0], opts)
 		if err != nil {
-			throw(err.Error())
+			return jsError(err.Error())
 		}
 		return svg
 	})
+	return thrower.Invoke(inner)
 }
 
-// throw raises a JS Error; the caller's return value is discarded.
-func throw(msg string) {
-	panic(js.Error{Value: js.Global().Get("Error").New(msg)})
+// thrower(f) is f with an Error result thrown instead of returned.
+var thrower = js.Global().Get("Function").New("f",
+	"return function (...args) { const r = f(...args); if (r instanceof Error) throw r; return r; };")
+
+func jsError(msg string) js.Value {
+	return js.Global().Get("Error").New(msg)
 }
