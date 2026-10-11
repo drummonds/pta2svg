@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 490" width="660" height="490">
+<title>Golden</title>
+<defs>
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+  </marker>
+</defs>
+<style>
+  .node rect { stroke: #999; stroke-width: 1.5; rx: 6; ry: 6; }
+  .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
+  .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
+  .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
+  .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
+  @keyframes flow {
+    from { stroke-dashoffset: 100; }
+    to   { stroke-dashoffset: 0; }
+  }
+  .edge path { stroke-dasharray: 6 3; animation: flow 1.5s linear infinite; }
+</style>
+
+<g class="node" transform="translate(40,280)">
+  <rect width="140" height="50" fill="#BCE"/>
+  <text x="70" y="25">Salary</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">-4000.00 GBP</text>
+</g>
+<g class="node" transform="translate(260,200)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Bank</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">1180.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,40)">
+  <rect width="140" height="50" fill="#DDD"/>
+  <text x="70" y="25">Mortgage</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">1100.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,120)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Food</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">95.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,200)">
+  <rect width="140" height="50" fill="#CDA"/>
+  <text x="70" y="25">Savings</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">500.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,280)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Utilities</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">145.00 GBP</text>
+</g>
+<g class="node" transform="translate(480,360)">
+  <rect width="140" height="50" fill="#FCC"/>
+  <text x="70" y="25">Tax</text>
+  <text class="balance" x="140" y="50" dx="-4" dy="-4">980.00 GBP</text>
+</g>
+
+<g class="edge">
+  <path d="M180.0,305.0 L260.0,225.0" style="animation-delay: 0s"/>
+  <text x="260" y="217">net pay</text>
+  <text x="260" y="239">3200.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M180.0,305.0 L330.0,360.0 L480.0,385.0" style="animation-delay: 0.3s"/>
+  <text x="330" y="352">PAYE</text>
+  <text x="330" y="374">800.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,225.0 L480.0,65.0" style="animation-delay: 0.6s"/>
+  <text x="480" y="57">monthly</text>
+  <text x="480" y="79">1100.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,225.0 L480.0,145.0" style="animation-delay: 0.8999999999999999s"/>
+  <text x="480" y="137">weekly shop</text>
+  <text x="480" y="159">95.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,225.0 L480.0,225.0" style="animation-delay: 1.2s"/>
+  <text x="480" y="217">rainy day</text>
+  <text x="480" y="239">500.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,225.0 L480.0,305.0" style="animation-delay: 1.5s"/>
+  <text x="480" y="297">gas and electric</text>
+  <text x="480" y="319">145.00 GBP</text>
+</g>
+<g class="edge">
+  <path d="M400.0,225.0 L480.0,385.0" style="animation-delay: 1.7999999999999998s"/>
+  <text x="480" y="377">council tax</text>
+  <text x="480" y="399">180.00 GBP</text>
+</g>
+<g class="legend" transform="translate(20,490)" dy="-30">
+  <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
+  <text x="18" y="-23">Income</text>
+  <rect x="100" y="-30" width="14" height="14" fill="#CDA"/>
+  <text x="118" y="-23">Asset</text>
+  <rect x="200" y="-30" width="14" height="14" fill="#DDD"/>
+  <text x="218" y="-23">Liability</text>
+  <rect x="300" y="-30" width="14" height="14" fill="#FCC"/>
+  <text x="318" y="-23">Expense</text>
+</g>
+</svg>
