@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- `Model`, the `Diagram` as JSON: `ToModel` and `Model.Diagram`. Accounts are optional overrides of the type and short name inferred from the path; balances are computed on load (#8).
+- `cmd/pta2svg-wasm-lite`, a 6 MB browser build without the text parsers, installing `pta2svg.renderModel(model, opts)` for a page that holds the ledger as data. The full build installs `renderModel` beside `render` (#8).
+- `task deps:guard`, run by `task check`, fails if the root package or the lite build links gotreesitter.
+
+### Fixed
+- The browser build's `render` crashed the Go runtime on a parse error instead of throwing a JS `Error`, leaving the page dead.
+
 ### Changed
 - Text parsing moved to the `parse` subpackage: `parse.Parse`, `parse.Render(w, src, format, opts)`, `parse.Format`, `DetectFormat`, `ParseFormat`. `Options` loses `Format`. The root package now links no tree-sitter grammars, which `task deps:guard` enforces, so a browser build that takes the ledger as data can stay small (#8).
 

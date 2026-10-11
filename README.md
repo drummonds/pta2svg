@@ -56,13 +56,35 @@ err := parse.Render(w, src, parse.Goluca, pta2svg.Options{Title: "January"})
 
 ## Browser
 
-`task wasm:build` compiles `cmd/pta2svg-wasm` to `docs/pta2svg.wasm`. Loaded with Go's `wasm_exec.js`, it installs:
+`task wasm:build` compiles two binaries into `docs/`. Loaded with Go's `wasm_exec.js`, each installs functions on the page that return an SVG string and throw a JS `Error` on failure:
+
+| binary | installs | size |
+|---|---|---|
+| `pta2svg.wasm` (`cmd/pta2svg-wasm`) | `render`, `renderModel` | 26 MB |
+| `pta2svg-lite.wasm` (`cmd/pta2svg-wasm-lite`) | `renderModel` | 6 MB |
 
 ```js
-pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"}) // -> SVG string, throws on error
+pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"})
+pta2svg.renderModel(model, {title: "", animate: false, layout: "lr"})
 ```
 
-The docs site's Try-it page is this build.
+The tree-sitter grammars behind `render` are the difference in size. A page that already holds the ledger as data uses the lite build and passes the model, as JSON text or as an object:
+
+```json
+{
+  "accounts": [{"name": "Asset:Cash", "short": "Cash", "type": "Asset"}],
+  "opening": {"Liability:Savings:alice": 1000.00},
+  "transactions": [
+    {"date": "2026-01-31", "flag": "*", "payee": "Interest",
+     "movements": [{"from": "Expense:Interest", "to": "Liability:Savings:alice",
+                    "amount": 1.27, "commodity": "GBP", "description": "interest"}]}
+  ]
+}
+```
+
+`accounts` is optional: accounts are created from the movements that name them, with type and short name inferred from the path, so an entry only overrides that. Balances are computed on load. In Go the same shape is `pta2svg.Model`; `ToModel` and `Model.Diagram` convert to and from a `Diagram`. `task deps:guard` keeps the parsers out of the root package and the lite build.
+
+The docs site's Try-it page is the full build.
 
 ## Links
 

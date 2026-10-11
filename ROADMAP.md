@@ -15,10 +15,11 @@
 - [x] Opening balances via the `balance` directive (#4)
 - [x] Public library package at the module root (#5)
 - [x] WebAssembly build with a Try-it docs page (#6)
+- [x] A small browser build taking the ledger as a JSON model instead of text (#8)
 
 ## Next
 
-- [ ] Smaller wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 26 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut it to roughly 11 MB
+- [ ] Smaller full wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 26 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut the Try-it page's build to roughly 11 MB; a page that holds the ledger as data already uses the 6 MB lite build
 - [ ] Escape `<`, `&` and quotes in account names and descriptions in the SVG template
 
 ## Phase 1 — Better automatic layout
