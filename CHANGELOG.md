@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-12
+
+ - Label-aware column gap, the TinyGo lite build, direct SVG writing
+
 ### Added
 - `pta2svg-tiny.wasm`, the lite build compiled with TinyGo: 0.7 MB against 4 MB, the same SVG, loaded with TinyGo's `wasm_exec_tinygo.js`. `task wasm:tiny:test`, run by `task check`, runs the root, render and wasm packages under TinyGo.
 
