@@ -38,6 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   from its JSON model with the TinyGo build.
 
 ### Changed
+- The default layout is Sugiyama, the layered graph layout; LR is asked
+  for by name (`Layout: pta2svg.LR`, `-layout lr`, `layout: "lr"`).
 - The default drawing is the afp style; `Style: "plain"` is the old
   look.
 - Money is written for people by default: GBP, USD, EUR and JPY with

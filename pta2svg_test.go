@@ -122,3 +122,28 @@ func TestStyleAFP(t *testing.T) {
 		t.Errorf("unknown style: err = %v, want one naming it", err)
 	}
 }
+
+// The layered (Sugiyama) layout is the default; LR is asked for by name.
+// A salary fanning out to a bank and to tax lays out differently in each.
+func TestDefaultLayoutIsSugiyama(t *testing.T) {
+	d := NewDiagram()
+	salary, bank, tax := d.GetOrCreateAccount("Income:Salary"), d.GetOrCreateAccount("Asset:Bank"), d.GetOrCreateAccount("Expense:Tax")
+	d.Transactions = []Transaction{{Movements: []Movement{
+		{From: salary, To: bank, Amount: 3200, Commodity: "GBP"},
+		{From: salary, To: tax, Amount: 800, Commodity: "GBP"},
+	}}}
+	d.ComputeBalances()
+	render := func(o Options) string {
+		var buf bytes.Buffer
+		if err := RenderDiagram(&buf, d, o); err != nil {
+			t.Fatal(err)
+		}
+		return buf.String()
+	}
+	if render(Options{}) != render(Options{Layout: Sugiyama}) {
+		t.Error("the default layout is not Sugiyama")
+	}
+	if render(Options{}) == render(Options{Layout: LR}) {
+		t.Error("the default layout draws the same as LR; the test cannot tell them apart")
+	}
+}

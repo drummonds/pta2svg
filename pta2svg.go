@@ -22,8 +22,8 @@ import (
 type Layout string
 
 const (
-	LR       Layout = "lr"       // left-to-right columns by account type (default)
-	Sugiyama Layout = "sugiyama" // layered graph layout
+	Sugiyama Layout = "sugiyama" // layered graph layout (default)
+	LR       Layout = "lr"       // left-to-right columns by account type
 )
 
 // Options controls layout and rendering. The zero value renders with the
@@ -31,7 +31,7 @@ const (
 type Options struct {
 	Title   string // SVG <title>
 	Animate bool   // CSS flow animation along the arrows
-	Layout  Layout // layout engine; empty means LR
+	Layout  Layout // layout engine; empty means Sugiyama
 
 	// Commodities is how each commodity's amounts are written, by code,
 	// over the defaults: GBP, USD, EUR and JPY with their symbols and
@@ -141,10 +141,10 @@ func RenderDiagram(w io.Writer, d *Diagram, opts Options) error {
 
 func layouter(l Layout) (layout.Layouter, error) {
 	switch l {
-	case "", LR:
-		return layout.LR{}, nil
-	case Sugiyama:
+	case "", Sugiyama:
 		return layout.Sugiyama{}, nil
+	case LR:
+		return layout.LR{}, nil
 	}
-	return nil, fmt.Errorf("unknown layout %q (use lr or sugiyama)", string(l))
+	return nil, fmt.Errorf("unknown layout %q (use sugiyama or lr)", string(l))
 }

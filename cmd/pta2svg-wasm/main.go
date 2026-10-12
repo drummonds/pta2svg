@@ -6,8 +6,8 @@
 //	pta2svg.render(text, {format, title, animate, layout}) -> svg string
 //	pta2svg.renderModel(model, {title, animate, layout})   -> svg string
 //
-// format is "pta" (default), "goluca" or "beancount"; layout is "lr"
-// (default) or "sugiyama"; model is a pta2svg.Model as JSON text or as an
+// format is "pta" (default), "goluca" or "beancount"; layout is
+// "sugiyama" (default) or "lr"; model is a pta2svg.Model as JSON text or as an
 // object. A parse, model or layout error is thrown as a JS Error.
 //
 // The text parsers are most of this binary's size; pta2svg-wasm-lite

@@ -21,7 +21,7 @@ func TestRenderMatchesGolden(t *testing.T) {
 		name string
 		opts pta2svg.Options
 	}{
-		{"lr", pta2svg.Options{}},
+		{"lr", pta2svg.Options{Layout: pta2svg.LR}},
 		{"sugiyama-animated", pta2svg.Options{Title: "Golden", Animate: true, Layout: pta2svg.Sugiyama}},
 	}
 	var files []string

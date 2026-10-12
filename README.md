@@ -14,7 +14,7 @@ go install git.bytestone.uk/hum3/pta2svg/cmd/pta2svg@latest
 pta2svg [flags] <file>
   -o string       output file (default: stdout)
   -format string  input format: auto, pta, goluca, beancount (default "auto", by extension)
-  -layout string  layout engine: lr, sugiyama (default "lr")
+  -layout string  layout engine: sugiyama, lr (default "sugiyama")
   -title string   SVG title
   -animate        enable CSS flow animations
 ```
@@ -87,8 +87,8 @@ pta2svg.Options{
 The tiny build is the lite build compiled with [TinyGo](https://tinygo.org) and draws the same SVG. It must be loaded with TinyGo's shim, not Go's. `task wasm:tiny:test`, run by `task check`, runs what it links under TinyGo, so that code stays clear of the reflection TinyGo lacks (text/template, for one).
 
 ```js
-pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"})
-pta2svg.renderModel(model, {title: "", animate: false, layout: "lr"})
+pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "sugiyama"})
+pta2svg.renderModel(model, {title: "", animate: false, layout: "sugiyama"})
 ```
 
 Both take the library's `Options` as an object: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}, shape: "stadium", strokes: {Income: 3}, balanceBelowName: true, style: "plain"}`.

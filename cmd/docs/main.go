@@ -131,8 +131,8 @@ const tryTmpl = `<!DOCTYPE html>
         </div>
         <div class="control">
           <div class="select"><select id="layout">
-            <option value="lr">lr</option>
             <option value="sugiyama">sugiyama</option>
+            <option value="lr">lr</option>
           </select></div>
         </div>
         <div class="control">
@@ -227,8 +227,8 @@ const pageTmpl = `<!DOCTYPE html>
   <div class="field is-grouped mb-5">
     <div class="control">
       <div class="select"><select id="layout">
-        <option value="lr">lr</option>
         <option value="sugiyama">sugiyama</option>
+        <option value="lr">lr</option>
       </select></div>
     </div>
     <div class="control">

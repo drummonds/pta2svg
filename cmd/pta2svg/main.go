@@ -14,7 +14,7 @@ func main() {
 	output := flag.String("o", "", "output file (default: stdout)")
 	animate := flag.Bool("animate", false, "enable CSS flow animations")
 	title := flag.String("title", "", "SVG title")
-	layoutName := flag.String("layout", "lr", "layout engine: lr, sugiyama")
+	layoutName := flag.String("layout", "sugiyama", "layout engine: sugiyama, lr")
 	formatStr := flag.String("format", "auto", "input format: auto, pta, goluca, beancount")
 	flag.Parse()
 
