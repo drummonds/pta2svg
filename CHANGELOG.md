@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-12
+
+ - Sugiyama layout, afp look and human-readable money by default; box formatting options (#9); LR routing that keeps arrows off boxes; layout and style controls in the docs
+
 ### Added
 - `Options.Commodities`: how each commodity's amounts are written, by
   code: a symbol before the number and after its sign, the decimals
