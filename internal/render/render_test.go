@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
 	"strings"
 	"testing"
@@ -175,7 +176,46 @@ func TestRoutedEdgeLabelSitsMidPath(t *testing.T) {
 	if err := Render(&buf, g, Options{}); err != nil {
 		t.Fatal(err)
 	}
-	if want := `<text x="` + strconv.FormatFloat(wantX, 'f', -1, 64) + `"`; !strings.Contains(buf.String(), want) {
+	if want := ` x="` + strconv.FormatFloat(wantX, 'f', -1, 64) + `"`; !strings.Contains(buf.String(), want) {
 		t.Errorf("label not at the path's middle %v:\n%s", wantX, buf.String())
+	}
+}
+
+// A routed edge's label is centred on the point halfway along its path by
+// length, not on a bend, and is drawn with a halo so the arrow passes
+// behind the text rather than through it.
+func TestRoutedEdgeLabelCentredHalfwayAlongPath(t *testing.T) {
+	d := model.NewDiagram()
+	a, b := d.GetOrCreateAccount("Income:Salary"), d.GetOrCreateAccount("Expense:Tax")
+	m := model.Movement{From: a, To: b, Amount: 800, Commodity: "GBP", Description: "PAYE"}
+	from, to := &layout.Node{Account: a, W: 140, H: 50}, &layout.Node{Account: b, X: 60, Y: 300, W: 140, H: 50}
+	// 100 across then 300 down: halfway along the 400 is (100,100), not the bend at (100,0).
+	g := &layout.Graph{Nodes: []*layout.Node{from, to}, Width: 400, Height: 400, Edges: []layout.Edge{
+		{From: from, To: to, Movement: m, Points: [][2]float64{{0, 0}, {100, 0}, {100, 300}}},
+	}}
+	var buf bytes.Buffer
+	if err := Render(&buf, g, Options{}); err != nil {
+		t.Fatal(err)
+	}
+	svg := buf.String()
+	var ys []float64
+	for _, line := range strings.Split(svg, "\n") {
+		if !strings.Contains(line, ">PAYE<") && !strings.Contains(line, ">800.00 GBP<") {
+			continue
+		}
+		var x, y float64
+		if _, err := fmt.Sscanf(line[strings.Index(line, "x="):], `x="%g" y="%g"`, &x, &y); err != nil {
+			t.Fatalf("label %q: %v", line, err)
+		}
+		if x != 100 {
+			t.Errorf("label %q at x=%v, want 100", line, x)
+		}
+		ys = append(ys, y)
+	}
+	if len(ys) != 2 || (ys[0]+ys[1])/2 != 100 || ys[0] >= ys[1] {
+		t.Errorf("label lines at y=%v, want description above amount, centred on 100", ys)
+	}
+	if !strings.Contains(svg, "paint-order: stroke") {
+		t.Errorf("routed edge labels have no halo:\n%s", svg)
 	}
 }

@@ -11,6 +11,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
   @keyframes flow {
@@ -48,28 +49,28 @@
 
 <g class="edge">
   <path d="M180.0,145.0 L291.0,105.0" style="animation-delay: 0s"/>
-  <text x="235.5" y="117">salary payment</text>
-  <text x="235.5" y="139">5000.00 GBP</text>
+  <text class="on-path" x="235.5" y="118">salary payment</text>
+  <text class="on-path" x="235.5" y="132">5000.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M431.0,105.0 L542.0,65.0" style="animation-delay: 0.3s"/>
-  <text x="486.5" y="77">monthly rent</text>
-  <text x="486.5" y="99">1200.00 GBP</text>
+  <text class="on-path" x="486.5" y="78">monthly rent</text>
+  <text class="on-path" x="486.5" y="92">1200.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M431.0,105.0 L542.0,145.0" style="animation-delay: 0.6s"/>
-  <text x="486.5" y="117">repayment</text>
-  <text x="486.5" y="139">800.00 GBP</text>
+  <text class="on-path" x="486.5" y="118">repayment</text>
+  <text class="on-path" x="486.5" y="132">800.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M180.0,145.0 L291.0,105.0" style="animation-delay: 0.8999999999999999s"/>
-  <text x="235.5" y="117">net salary</text>
-  <text x="235.5" y="139">4000.00 GBP</text>
+  <text class="on-path" x="235.5" y="118">net salary</text>
+  <text class="on-path" x="235.5" y="132">4000.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M180.0,145.0 L291.0,185.0" style="animation-delay: 1.2s"/>
-  <text x="235.5" y="157">income tax</text>
-  <text x="235.5" y="179">1000.00 GBP</text>
+  <text class="on-path" x="235.5" y="158">income tax</text>
+  <text class="on-path" x="235.5" y="172">1000.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,290)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>

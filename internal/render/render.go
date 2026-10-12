@@ -79,6 +79,7 @@ const defs = `
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }`
 
@@ -131,35 +132,29 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 	b.WriteString("\n")
 
 	for _, e := range g.Edges {
-		var pd string
-		var midX, midY float64
-
 		if len(e.Points) >= 2 {
-			// Use routed path from layout engine
-			pd = polylinePath(e.Points, e.ArrowHeadStart)
-			// Label at the middle of the polyline: halfway along its
-			// middle segment, so a straight edge carries it mid-gap.
-			a, b := e.Points[(len(e.Points)-1)/2], e.Points[len(e.Points)/2]
-			if len(e.Points)%2 == 0 {
-				a, b = e.Points[len(e.Points)/2-1], e.Points[len(e.Points)/2]
+			// A routed edge's label is centred on the point halfway along
+			// it, haloed so the arrow passes behind the text.
+			midX, midY := halfway(e.Points)
+			writeEdgePath(&b, e, polylinePath(e.Points, e.ArrowHeadStart), opts)
+			amountY := midY
+			if d := e.Movement.Description; d != "" {
+				fmt.Fprintf(&b, "\n  <text class=\"on-path\" x=\"%v\" y=\"%v\">%s</text>", midX, midY-7, d)
+				amountY = midY + 7
 			}
-			midX, midY = (a[0]+b[0])/2, (a[1]+b[1])/2
-		} else {
-			// Fallback: compute path from node positions
-			sx := e.From.X + e.From.W // right edge
-			sy := e.From.Y + e.From.H/2
-			ex := e.To.X // left edge
-			ey := e.To.Y + e.To.H/2
-			pd = pathD(sx, sy, ex, ey)
-			midX = (sx + ex) / 2
-			midY = (sy + ey) / 2
+			fmt.Fprintf(&b, "\n  <text class=\"on-path\" x=\"%v\" y=\"%v\">%s</text>\n</g>",
+				midX, amountY, opts.formatAmount(e.Movement.Amount, e.Movement.Commodity))
+			continue
 		}
 
-		fmt.Fprintf(&b, "\n<g class=\"edge\">\n  <path d=\"%s\"", pd)
-		if opts.Animate {
-			fmt.Fprintf(&b, " style=\"animation-delay: %vs\"", float64(e.Index)*0.3)
-		}
-		b.WriteString("/>")
+		// Unrouted: a curve between the boxes' facing sides, the label
+		// above and below its middle.
+		sx := e.From.X + e.From.W // right edge
+		sy := e.From.Y + e.From.H/2
+		ex := e.To.X // left edge
+		ey := e.To.Y + e.To.H/2
+		midX, midY := (sx+ex)/2, (sy+ey)/2
+		writeEdgePath(&b, e, pathD(sx, sy, ex, ey), opts)
 		if d := e.Movement.Description; d != "" {
 			fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>", midX, midY-8, d)
 		}
@@ -179,6 +174,34 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 
 	_, err := io.WriteString(w, b.String())
 	return err
+}
+
+// writeEdgePath opens an edge's group and draws its arrow along path d.
+func writeEdgePath(b *strings.Builder, e layout.Edge, d string, opts Options) {
+	fmt.Fprintf(b, "\n<g class=\"edge\">\n  <path d=\"%s\"", d)
+	if opts.Animate {
+		fmt.Fprintf(b, " style=\"animation-delay: %vs\"", float64(e.Index)*0.3)
+	}
+	b.WriteString("/>")
+}
+
+// halfway is the point half the length of the polyline pts along it.
+func halfway(pts [][2]float64) (x, y float64) {
+	total := 0.0
+	for i := 1; i < len(pts); i++ {
+		total += math.Hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1])
+	}
+	rest := total / 2
+	for i := 1; i < len(pts); i++ {
+		a, b := pts[i-1], pts[i]
+		seg := math.Hypot(b[0]-a[0], b[1]-a[1])
+		if seg > 0 && rest <= seg {
+			f := rest / seg
+			return a[0] + f*(b[0]-a[0]), a[1] + f*(b[1]-a[1])
+		}
+		rest -= seg
+	}
+	return pts[0][0], pts[0][1]
 }
 
 // pathD generates an SVG path from (sx,sy) to (ex,ey).

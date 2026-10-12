@@ -19,6 +19,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   `renderModel(model, {commodities: {GBP: {symbol: "£", decimals: 2,
   thousands: ","}}, palette: {Asset: "#d1f0e2"}})`.
 
+### Fixed
+- A Sugiyama arrow's label is centred on the point halfway along the
+  arrow by length, the amount under the description, with a white halo
+  so the arrow passes behind the text instead of striking it out. It
+  was split above and below the midpoint of the middle segment, which
+  for a bent arrow is the bend.
+
 ## [0.4.0] - 2026-10-12
 
  - Label-aware column gap, the TinyGo lite build, direct SVG writing

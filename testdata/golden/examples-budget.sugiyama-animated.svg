@@ -11,6 +11,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
   @keyframes flow {
@@ -58,38 +59,38 @@
 
 <g class="edge">
   <path d="M180.0,305.0 L304.0,225.0" style="animation-delay: 0s"/>
-  <text x="242" y="257">net pay</text>
-  <text x="242" y="279">3200.00 GBP</text>
+  <text class="on-path" x="242" y="258">net pay</text>
+  <text class="on-path" x="242" y="272">3200.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M180.0,305.0 L374.0,360.0 L568.0,385.0" style="animation-delay: 0.3s"/>
-  <text x="374" y="352">PAYE</text>
-  <text x="374" y="374">800.00 GBP</text>
+  <text class="on-path" x="371.09376901528617" y="352.17606853526155">PAYE</text>
+  <text class="on-path" x="371.09376901528617" y="366.17606853526155">800.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M444.0,225.0 L568.0,65.0" style="animation-delay: 0.6s"/>
-  <text x="506" y="137">monthly</text>
-  <text x="506" y="159">1100.00 GBP</text>
+  <text class="on-path" x="506" y="138">monthly</text>
+  <text class="on-path" x="506" y="152">1100.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M444.0,225.0 L568.0,145.0" style="animation-delay: 0.8999999999999999s"/>
-  <text x="506" y="177">weekly shop</text>
-  <text x="506" y="199">95.00 GBP</text>
+  <text class="on-path" x="506" y="178">weekly shop</text>
+  <text class="on-path" x="506" y="192">95.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M444.0,225.0 L568.0,225.0" style="animation-delay: 1.2s"/>
-  <text x="506" y="217">rainy day</text>
-  <text x="506" y="239">500.00 GBP</text>
+  <text class="on-path" x="506" y="218">rainy day</text>
+  <text class="on-path" x="506" y="232">500.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M444.0,225.0 L568.0,305.0" style="animation-delay: 1.5s"/>
-  <text x="506" y="257">gas and electric</text>
-  <text x="506" y="279">145.00 GBP</text>
+  <text class="on-path" x="506" y="258">gas and electric</text>
+  <text class="on-path" x="506" y="272">145.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M444.0,225.0 L568.0,385.0" style="animation-delay: 1.7999999999999998s"/>
-  <text x="506" y="297">council tax</text>
-  <text x="506" y="319">180.00 GBP</text>
+  <text class="on-path" x="506" y="298">council tax</text>
+  <text class="on-path" x="506" y="312">180.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,490)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
