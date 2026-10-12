@@ -54,3 +54,54 @@ func TestLRCanvasSize(t *testing.T) {
 		t.Errorf("canvas size should be positive: %fx%f", g.Width, g.Height)
 	}
 }
+
+// An arrow that jumps a column is routed around the boxes in between
+// rather than through them, and its route stays on the canvas. Here
+// Equity:Input -> Asset:Cash would cross Income:Sales on the same row.
+func TestLRRoutesAroundIntermediateBoxes(t *testing.T) {
+	d := model.NewDiagram()
+	input, sales := d.GetOrCreateAccount("Equity:Input"), d.GetOrCreateAccount("Income:Sales")
+	cash, purchases := d.GetOrCreateAccount("Asset:Cash"), d.GetOrCreateAccount("Expense:Purchases")
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{
+		{From: input, To: cash, Amount: 25},
+		{From: cash, To: purchases, Amount: 25},
+		{From: sales, To: cash, Amount: 37.5},
+	}}}
+	g := LR{}.Layout(d, DefaultOptions())
+
+	for _, e := range g.Edges {
+		pts := e.Points
+		if len(pts) == 0 {
+			// Unrouted: a curve within the box between its ends' facing sides.
+			pts = [][2]float64{{e.From.X + e.From.W, e.From.Y + e.From.H/2}, {e.To.X, e.To.Y + e.To.H/2}}
+		}
+		for i := 1; i < len(pts); i++ {
+			for _, n := range g.Nodes {
+				if n == e.From || n == e.To {
+					continue
+				}
+				if crossesBox(pts[i-1], pts[i], n) {
+					t.Errorf("%s -> %s crosses %s on segment %v-%v", e.From.Account.Name, e.To.Account.Name, n.Account.Name, pts[i-1], pts[i])
+				}
+			}
+		}
+		for _, p := range pts {
+			if p[0] < 0 || p[0] > g.Width || p[1] < 0 || p[1] > g.Height {
+				t.Errorf("%s -> %s point %v off the %vx%v canvas", e.From.Account.Name, e.To.Account.Name, p, g.Width, g.Height)
+			}
+		}
+	}
+}
+
+// crossesBox reports whether the segment a-b passes through n's box,
+// tested by sampling along it.
+func crossesBox(a, b [2]float64, n *Node) bool {
+	for i := 0; i <= 100; i++ {
+		f := float64(i) / 100
+		x, y := a[0]+f*(b[0]-a[0]), a[1]+f*(b[1]-a[1])
+		if x > n.X && x < n.X+n.W && y > n.Y && y < n.Y+n.H {
+			return true
+		}
+	}
+	return false
+}

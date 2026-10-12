@@ -52,14 +52,14 @@
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C374.0,65.0 374.0,65.0 568.0,65.0"/>
-  <text x="374" y="57">net pay</text>
-  <text x="374" y="79">3200.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,105.0 L506.0,105.0 L506.0,65.0 L568.0,65.0"/>
+  <text class="on-path" x="351.5" y="98">net pay</text>
+  <text class="on-path" x="351.5" y="112">3200.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C506.0,65.0 506.0,145.0 832.0,145.0"/>
-  <text x="506" y="97">PAYE</text>
-  <text x="506" y="119">800.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,221.0 L770.0,221.0 L770.0,145.0 L832.0,145.0"/>
+  <text class="on-path" x="443.49999999999994" y="214">PAYE</text>
+  <text class="on-path" x="443.49999999999994" y="228">800.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M708.0,65.0 C940.0,-167.0 72.0,-167.0 304.0,65.0"/>

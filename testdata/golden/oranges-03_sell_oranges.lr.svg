@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934 170" width="934" height="170">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934 183" width="934" height="183">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -37,9 +37,9 @@
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C348.0,65.0 348.0,65.0 516.0,65.0"/>
-  <text x="348" y="57">investment</text>
-  <text x="348" y="79">25.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,105.0 L586.0,105.0 L586.0,90.0"/>
+  <text class="on-path" x="348" y="98">investment</text>
+  <text class="on-path" x="348" y="112">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M656.0,65.0 C705.0,65.0 705.0,65.0 754.0,65.0"/>
@@ -51,7 +51,7 @@
   <text x="467" y="57">market sales</text>
   <text x="467" y="79">37.50 GBP</text>
 </g>
-<g class="legend" transform="translate(20,170)" dy="-30">
+<g class="legend" transform="translate(20,183)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
   <text x="18" y="-23">Equity</text>
   <rect x="100" y="-30" width="14" height="14" fill="#BCE"/>

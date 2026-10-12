@@ -25,6 +25,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   so the arrow passes behind the text instead of striking it out. It
   was split above and below the midpoint of the middle segment, which
   for a bent arrow is the bend.
+- In the LR layout an arrow that jumps a column no longer runs through
+  the boxes in between: it is routed along a lane of its own below them,
+  leaving and entering through a box's bottom edge when nothing sits
+  beneath it and through the column gap otherwise. The canvas grows to
+  hold the lanes.
 
 ## [0.4.0] - 2026-10-12
 
