@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"os"
@@ -16,6 +18,7 @@ import (
 type fileData struct {
 	Name   string
 	Source template.HTML
+	Model  string // the ledger as the JSON model renderModel takes
 	SVG    template.HTML
 }
 
@@ -48,7 +51,21 @@ const indexTmpl = `<!DOCTYPE html>
     <h2 class="title is-4"><a href="try.html">Try it</a></h2>
     <p>Type a ledger and watch it drawn in the browser (WebAssembly build).</p>
   </div>
-  {{range .}}
+  {{with .Builds}}
+  <div class="box">
+    <h2 class="title is-4">Browser builds</h2>
+    <p>The tree-sitter grammars behind <code>render</code> are most of the full build. A page that holds the ledger as data loads a build without them and calls <code>renderModel</code> with the JSON model; TinyGo shrinks that further.</p>
+    <table class="table is-narrow">
+      <thead><tr><th>file</th><th>compiler</th><th>parser</th><th>functions</th><th class="has-text-right">size</th><th class="has-text-right">gzipped</th><th class="has-text-right">of full</th></tr></thead>
+      <tbody>
+      {{range .}}
+        <tr><td><code>{{.File}}</code></td><td>{{.Compiler}}</td><td>{{if .Parser}}yes{{else}}no{{end}}</td><td><code>{{.Functions}}</code></td><td class="has-text-right">{{.Size}}</td><td class="has-text-right">{{.Gzipped}}</td><td class="has-text-right">{{.OfFull}}</td></tr>
+      {{end}}
+      </tbody>
+    </table>
+  </div>
+  {{end}}
+  {{range .Sections}}
   <div class="box">
     <h2 class="title is-4"><a href="{{.Slug}}.html">{{.Title}}</a></h2>
     <ul>
@@ -95,6 +112,7 @@ const tryTmpl = `<!DOCTYPE html>
             <option value="goluca">goluca</option>
             <option value="pta">pta</option>
             <option value="beancount">beancount</option>
+            <option value="json">json model</option>
           </select></div>
         </div>
         <div class="control">
@@ -127,8 +145,9 @@ const tryTmpl = `<!DOCTYPE html>
       layout: document.getElementById("layout").value,
       animate: document.getElementById("animate").checked,
     };
+    const src = document.getElementById("source").value;
     try {
-      output.innerHTML = pta2svg.render(document.getElementById("source").value, opts);
+      output.innerHTML = opts.format === "json" ? pta2svg.renderModel(src, opts) : pta2svg.render(src, opts);
       status.textContent = "";
       status.className = "help";
     } catch (e) {
@@ -136,6 +155,17 @@ const tryTmpl = `<!DOCTYPE html>
       status.className = "help is-danger";
     }
   };
+  // Switching between text and the JSON model swaps in the example in that form.
+  const examples = {text: {{.Example}}, json: {{.Model}}};
+  let shown = document.getElementById("format").value === "json" ? "json" : "text";
+  document.getElementById("format").addEventListener("input", (e) => {
+    const want = e.target.value === "json" ? "json" : "text";
+    if (want !== shown) {
+      examples[shown] = document.getElementById("source").value;
+      document.getElementById("source").value = examples[want];
+      shown = want;
+    }
+  });
   for (const id of ["source", "format", "layout", "animate"]) {
     document.getElementById(id).addEventListener("input", draw);
   }
@@ -179,6 +209,10 @@ const pageTmpl = `<!DOCTYPE html>
       <div class="column is-5">
         <h3 class="heading">PTA Source</h3>
         <pre class="source">{{.Source}}</pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{{.Model}}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
@@ -207,7 +241,15 @@ func main() {
 	}
 
 	// Write index page
-	if err := writePage("docs/index.html", indexTmpl, sections); err != nil {
+	builds, err := measureBuilds()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "builds: %v\n", err)
+		os.Exit(1)
+	}
+	if err := writePage("docs/index.html", indexTmpl, struct {
+		Builds   []build
+		Sections []section
+	}{builds, sections}); err != nil {
 		fmt.Fprintf(os.Stderr, "index: %v\n", err)
 		os.Exit(1)
 	}
@@ -219,7 +261,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "example: %v\n", err)
 		os.Exit(1)
 	}
-	if err := writePage("docs/try.html", tryTmpl, struct{ Example string }{string(example)}); err != nil {
+	model, err := jsonModel(example, parse.Goluca)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "example: %v\n", err)
+		os.Exit(1)
+	}
+	if err := writePage("docs/try.html", tryTmpl, struct{ Example, Model string }{string(example), model}); err != nil {
 		fmt.Fprintf(os.Stderr, "try: %v\n", err)
 		os.Exit(1)
 	}
@@ -268,6 +315,11 @@ func renderFile(path string) (fileData, error) {
 		return fileData{}, fmt.Errorf("render: %w", err)
 	}
 
+	model, err := jsonModel(src, parse.DetectFormat(path))
+	if err != nil {
+		return fileData{}, err
+	}
+
 	highlighted, err := highlight.HighlightHTML(path, src)
 	if err != nil {
 		return fileData{}, fmt.Errorf("highlight: %w", err)
@@ -276,8 +328,61 @@ func renderFile(path string) (fileData, error) {
 	return fileData{
 		Name:   filepath.Base(path),
 		Source: highlighted,
+		Model:  model,
 		SVG:    template.HTML(buf.String()),
 	}, nil
+}
+
+// build is a browser build as the index page lists it.
+type build struct {
+	File, Compiler, Functions string
+	Parser                    bool
+	Size, Gzipped, OfFull     string
+}
+
+// measureBuilds sizes the wasm files task wasm:build left in docs/, raw
+// and gzipped, against the full build. None when they have not been built.
+func measureBuilds() ([]build, error) {
+	builds := []build{
+		{File: "pta2svg.wasm", Compiler: "Go", Parser: true, Functions: "render, renderModel"},
+		{File: "pta2svg-lite.wasm", Compiler: "Go", Functions: "renderModel"},
+		{File: "pta2svg-tiny.wasm", Compiler: "TinyGo", Functions: "renderModel"},
+	}
+	var full float64
+	for i := range builds {
+		b, err := os.ReadFile(filepath.Join("docs", builds[i].File))
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		if err != nil {
+			return nil, err
+		}
+		var z bytes.Buffer
+		w, _ := gzip.NewWriterLevel(&z, gzip.BestCompression)
+		w.Write(b)
+		w.Close()
+		if i == 0 {
+			full = float64(len(b))
+		}
+		builds[i].Size, builds[i].Gzipped = megabytes(len(b)), megabytes(z.Len())
+		builds[i].OfFull = fmt.Sprintf("%.0f%%", 100*float64(len(b))/full)
+	}
+	return builds, nil
+}
+
+func megabytes(n int) string { return fmt.Sprintf("%.1f MB", float64(n)/1e6) }
+
+// jsonModel is the ledger src as the indented JSON model.
+func jsonModel(src []byte, format parse.Format) (string, error) {
+	d, err := parse.Parse(src, format)
+	if err != nil {
+		return "", fmt.Errorf("parse: %w", err)
+	}
+	b, err := json.MarshalIndent(pta2svg.ToModel(d), "", "  ")
+	if err != nil {
+		return "", fmt.Errorf("model: %w", err)
+	}
+	return string(b), nil
 }
 
 func writePage(path, tmplStr string, data any) error {

@@ -82,6 +82,6 @@ tasks:
   docs:build:
     desc: Generate docs site, including the in-browser demo
     cmds:
-      - go run ./cmd/docs
       - task: wasm:build
+      - go run ./cmd/docs
 

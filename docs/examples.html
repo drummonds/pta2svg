@@ -44,10 +44,100 @@
 <span class="hl-constant">2024-03-04</span> <span class="hl-keyword">*</span> <span class="hl-string">Bare greater-than</span>
   <span class="hl-type">Asset:Bank</span> <span class="hl-operator">&gt;</span> <span class="hl-type">Expense:Transport</span> <span class="hl-string">&#34;commute&#34;</span> <span class="hl-number">45.00</span> <span class="hl-constant">GBP</span>
 </pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Groceries&#34;,
+      &#34;short&#34;: &#34;Groceries&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Transport&#34;,
+      &#34;short&#34;: &#34;Transport&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Utilities&#34;,
+      &#34;short&#34;: &#34;Utilities&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Standard arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 3000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;pay&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Slash arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Groceries&#34;,
+          &#34;amount&#34;: 85.5,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;weekly shop&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Unicode arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Utilities&#34;,
+          &#34;amount&#34;: 120,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;electric bill&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Bare greater-than&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Transport&#34;,
+          &#34;amount&#34;: 45,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;commute&#34;
+        }
+      ]
+    }
+  ]
+}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 330" width="660" height="330">
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 709 330" width="709" height="330">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -59,6 +149,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
 </style>
@@ -68,46 +159,46 @@
   <text x="70" y="25">Salary</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">-3000.00 GBP</text>
 </g>
-<g class="node" transform="translate(260,40)">
+<g class="node" transform="translate(284.5,40)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Bank</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">2749.50 GBP</text>
 </g>
-<g class="node" transform="translate(480,40)">
+<g class="node" transform="translate(529,40)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Groceries</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">85.50 GBP</text>
 </g>
-<g class="node" transform="translate(480,120)">
+<g class="node" transform="translate(529,120)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Transport</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">45.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,200)">
+<g class="node" transform="translate(529,200)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Utilities</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">120.00 GBP</text>
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C220.0,65.0 220.0,65.0 260.0,65.0"/>
-  <text x="220" y="57">pay</text>
-  <text x="220" y="79">3000.00 GBP</text>
+  <path d="M180.0,65.0 C232.2,65.0 232.2,65.0 284.5,65.0"/>
+  <text x="232.25" y="57">pay</text>
+  <text x="232.25" y="79">3000.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M400.0,65.0 C440.0,65.0 440.0,65.0 480.0,65.0"/>
-  <text x="440" y="57">weekly shop</text>
-  <text x="440" y="79">85.50 GBP</text>
+  <path d="M424.5,65.0 C476.8,65.0 476.8,65.0 529.0,65.0"/>
+  <text x="476.75" y="57">weekly shop</text>
+  <text x="476.75" y="79">85.50 GBP</text>
 </g>
 <g class="edge">
-  <path d="M400.0,65.0 C440.0,65.0 440.0,225.0 480.0,225.0"/>
-  <text x="440" y="137">electric bill</text>
-  <text x="440" y="159">120.00 GBP</text>
+  <path d="M424.5,65.0 C476.8,65.0 476.8,225.0 529.0,225.0"/>
+  <text x="476.75" y="137">electric bill</text>
+  <text x="476.75" y="159">120.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M400.0,65.0 C440.0,65.0 440.0,145.0 480.0,145.0"/>
-  <text x="440" y="97">commute</text>
-  <text x="440" y="119">45.00 GBP</text>
+  <path d="M424.5,65.0 C476.8,65.0 476.8,145.0 529.0,145.0"/>
+  <text x="476.75" y="97">commute</text>
+  <text x="476.75" y="119">45.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,330)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
@@ -151,10 +242,152 @@
 <span class="hl-constant">2024-04-15</span> <span class="hl-keyword">*</span> <span class="hl-string">Council tax</span>
   <span class="hl-type">Asset:Bank</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Tax</span> <span class="hl-string">&#34;council tax&#34;</span> <span class="hl-number">180.00</span> <span class="hl-constant">GBP</span>
 </pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Asset:Savings&#34;,
+      &#34;short&#34;: &#34;Savings&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Food&#34;,
+      &#34;short&#34;: &#34;Food&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Utilities&#34;,
+      &#34;short&#34;: &#34;Utilities&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;April salary&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 3200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net pay&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Tax withholding&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;PAYE&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Mortgage payment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 1100,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Groceries&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Food&#34;,
+          &#34;amount&#34;: 95,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;weekly shop&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Savings transfer&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Asset:Savings&#34;,
+          &#34;amount&#34;: 500,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;rainy day&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Utilities&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Utilities&#34;,
+          &#34;amount&#34;: 145,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;gas and electric&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Council tax&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 180,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;council tax&#34;
+        }
+      ]
+    }
+  ]
+}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" width="880" height="330">
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1012 330" width="1012" height="330">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -166,6 +399,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
 </style>
@@ -175,71 +409,71 @@
   <text x="70" y="25">Salary</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">-4000.00 GBP</text>
 </g>
-<g class="node" transform="translate(260,40)">
+<g class="node" transform="translate(304,40)">
   <rect width="140" height="50" fill="#DDD"/>
   <text x="70" y="25">Mortgage</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1100.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,40)">
+<g class="node" transform="translate(568,40)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Bank</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1180.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,120)">
+<g class="node" transform="translate(568,120)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Savings</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">500.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,40)">
+<g class="node" transform="translate(832,40)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Food</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">95.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,120)">
+<g class="node" transform="translate(832,120)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Tax</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">980.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,200)">
+<g class="node" transform="translate(832,200)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Utilities</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">145.00 GBP</text>
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">net pay</text>
-  <text x="330" y="79">3200.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,105.0 L506.0,105.0 L506.0,65.0 L568.0,65.0"/>
+  <text class="on-path" x="351.5" y="98">net pay</text>
+  <text class="on-path" x="351.5" y="112">3200.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,145.0 700.0,145.0"/>
-  <text x="440" y="97">PAYE</text>
-  <text x="440" y="119">800.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,221.0 L770.0,221.0 L770.0,145.0 L832.0,145.0"/>
+  <text class="on-path" x="443.49999999999994" y="214">PAYE</text>
+  <text class="on-path" x="443.49999999999994" y="228">800.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-145.0 260.0,65.0"/>
-  <text x="440" y="57">monthly</text>
-  <text x="440" y="79">1100.00 GBP</text>
+  <path d="M708.0,65.0 C940.0,-167.0 72.0,-167.0 304.0,65.0"/>
+  <text x="506" y="57">monthly</text>
+  <text x="506" y="79">1100.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
-  <text x="660" y="57">weekly shop</text>
-  <text x="660" y="79">95.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,65.0 832.0,65.0"/>
+  <text x="770" y="57">weekly shop</text>
+  <text x="770" y="79">95.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C720.0,-35.0 380.0,45.0 480.0,145.0"/>
-  <text x="550" y="97">rainy day</text>
-  <text x="550" y="119">500.00 GBP</text>
+  <path d="M708.0,65.0 C808.0,-35.0 468.0,45.0 568.0,145.0"/>
+  <text x="638" y="97">rainy day</text>
+  <text x="638" y="119">500.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,225.0 700.0,225.0"/>
-  <text x="660" y="137">gas and electric</text>
-  <text x="660" y="159">145.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,225.0 832.0,225.0"/>
+  <text x="770" y="137">gas and electric</text>
+  <text x="770" y="159">145.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,145.0 700.0,145.0"/>
-  <text x="660" y="97">council tax</text>
-  <text x="660" y="119">180.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,145.0 832.0,145.0"/>
+  <text x="770" y="97">council tax</text>
+  <text x="770" y="119">180.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,330)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
@@ -272,6 +506,43 @@
 <span class="hl-constant">2026-01-31</span> <span class="hl-keyword">*</span> <span class="hl-string">Interest applied</span>
   <span class="hl-type">Expense:Interest</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">&#34;Liability:Savings:Alice Lovelace:easy-access&#34;</span> <span class="hl-string">&#34;interest&#34;</span> <span class="hl-number">1.27</span> <span class="hl-constant">GBP</span>
 </pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Expense:Interest&#34;,
+      &#34;short&#34;: &#34;Interest&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Savings:Alice Lovelace:easy-access&#34;,
+      &#34;short&#34;: &#34;easy-access&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;opening&#34;: {
+    &#34;Expense:Interest&#34;: 50,
+    &#34;Liability:Savings:Alice Lovelace:easy-access&#34;: 1000
+  },
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Interest applied&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Expense:Interest&#34;,
+          &#34;to&#34;: &#34;Liability:Savings:Alice Lovelace:easy-access&#34;,
+          &#34;amount&#34;: 1.27,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;interest&#34;
+        }
+      ]
+    }
+  ]
+}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
@@ -287,6 +558,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
 </style>
@@ -337,10 +609,109 @@
   <span class="hl-operator">+</span><span class="hl-type">Income:Salary</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Bank</span> <span class="hl-string">&#34;net salary&#34;</span> <span class="hl-number">4000.00</span> <span class="hl-constant">GBP</span>
   <span class="hl-operator">+</span><span class="hl-type">Income:Salary</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Tax</span> <span class="hl-string">&#34;income tax&#34;</span> <span class="hl-number">1000.00</span> <span class="hl-constant">GBP</span>
 </pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Rent&#34;,
+      &#34;short&#34;: &#34;Rent&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Salary deposit&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 5000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;salary payment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Pay rent&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Rent&#34;,
+          &#34;amount&#34;: 1200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly rent&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Loan repayment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;repayment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Multi-leg payroll&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 4000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net salary&#34;,
+          &#34;linked&#34;: true
+        },
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 1000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;income tax&#34;,
+          &#34;linked&#34;: true
+        }
+      ]
+    }
+  ]
+}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 250" width="880" height="250">
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 335" width="973" height="335">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -352,6 +723,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
 </style>
@@ -361,53 +733,53 @@
   <text x="70" y="25">Salary</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">-10000.00 GBP</text>
 </g>
-<g class="node" transform="translate(260,40)">
+<g class="node" transform="translate(291,40)">
   <rect width="140" height="50" fill="#DDD"/>
   <text x="70" y="25">Mortgage</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">800.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,40)">
+<g class="node" transform="translate(542,40)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Bank</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">7000.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,40)">
+<g class="node" transform="translate(793,40)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Rent</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1200.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,120)">
+<g class="node" transform="translate(793,120)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Tax</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1000.00 GBP</text>
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">salary payment</text>
-  <text x="330" y="79">5000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,105.0 L612.0,105.0 L612.0,90.0"/>
+  <text class="on-path" x="361" y="98">salary payment</text>
+  <text class="on-path" x="361" y="112">5000.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
-  <text x="660" y="57">monthly rent</text>
-  <text x="660" y="79">1200.00 GBP</text>
+  <path d="M682.0,65.0 C737.5,65.0 737.5,65.0 793.0,65.0"/>
+  <text x="737.5" y="57">monthly rent</text>
+  <text x="737.5" y="79">1200.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-145.0 260.0,65.0"/>
-  <text x="440" y="57">repayment</text>
-  <text x="440" y="79">800.00 GBP</text>
+  <path d="M682.0,65.0 C907.5,-160.5 65.5,-160.5 291.0,65.0"/>
+  <text x="486.5" y="57">repayment</text>
+  <text x="486.5" y="79">800.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">net salary</text>
-  <text x="330" y="79">4000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,141.0 L612.0,141.0 L612.0,90.0"/>
+  <text class="on-path" x="361" y="134">net salary</text>
+  <text class="on-path" x="361" y="148">4000.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,145.0 700.0,145.0"/>
-  <text x="440" y="97">income tax</text>
-  <text x="440" y="119">1000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,257.0 L863.0,257.0 L863.0,170.0"/>
+  <text class="on-path" x="446.5" y="250">income tax</text>
+  <text class="on-path" x="446.5" y="264">1000.00 GBP</text>
 </g>
-<g class="legend" transform="translate(20,250)" dy="-30">
+<g class="legend" transform="translate(20,335)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
   <text x="18" y="-23">Income</text>
   <rect x="100" y="-30" width="14" height="14" fill="#DDD"/>
@@ -443,10 +815,109 @@
   <span class="hl-operator">+</span><span class="hl-type">Income:Salary</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Asset:Bank</span> <span class="hl-comment">net</span> <span class="hl-comment">salary</span> <span class="hl-number">4000.00</span> <span class="hl-constant">GBP</span>
   <span class="hl-operator">+</span><span class="hl-type">Income:Salary</span> <span class="hl-operator">-&gt;</span> <span class="hl-type">Expense:Tax</span> <span class="hl-comment">income</span> <span class="hl-comment">tax</span> <span class="hl-number">1000.00</span> <span class="hl-constant">GBP</span>
 </pre>
+        <details class="mt-3">
+          <summary class="heading">JSON model</summary>
+          <pre class="source">{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Rent&#34;,
+      &#34;short&#34;: &#34;Rent&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;2024-01-15&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Salary deposit&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 5000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;salary payment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-01-20&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Pay rent&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Rent&#34;,
+          &#34;amount&#34;: 1200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly rent&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-01-25&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Loan repayment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;repayment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-02-01&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Multi-leg payroll&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 4000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net salary&#34;,
+          &#34;linked&#34;: true
+        },
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 1000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;income tax&#34;,
+          &#34;linked&#34;: true
+        }
+      ]
+    }
+  ]
+}</pre>
+        </details>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 250" width="880" height="250">
+        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 335" width="973" height="335">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -458,6 +929,7 @@
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
   .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
+  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
 </style>
@@ -467,53 +939,53 @@
   <text x="70" y="25">Salary</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">-10000.00 GBP</text>
 </g>
-<g class="node" transform="translate(260,40)">
+<g class="node" transform="translate(291,40)">
   <rect width="140" height="50" fill="#DDD"/>
   <text x="70" y="25">Mortgage</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">800.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,40)">
+<g class="node" transform="translate(542,40)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Bank</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">7000.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,40)">
+<g class="node" transform="translate(793,40)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Rent</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1200.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,120)">
+<g class="node" transform="translate(793,120)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Tax</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1000.00 GBP</text>
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">salary payment</text>
-  <text x="330" y="79">5000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,105.0 L612.0,105.0 L612.0,90.0"/>
+  <text class="on-path" x="361" y="98">salary payment</text>
+  <text class="on-path" x="361" y="112">5000.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
-  <text x="660" y="57">monthly rent</text>
-  <text x="660" y="79">1200.00 GBP</text>
+  <path d="M682.0,65.0 C737.5,65.0 737.5,65.0 793.0,65.0"/>
+  <text x="737.5" y="57">monthly rent</text>
+  <text x="737.5" y="79">1200.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-145.0 260.0,65.0"/>
-  <text x="440" y="57">repayment</text>
-  <text x="440" y="79">800.00 GBP</text>
+  <path d="M682.0,65.0 C907.5,-160.5 65.5,-160.5 291.0,65.0"/>
+  <text x="486.5" y="57">repayment</text>
+  <text x="486.5" y="79">800.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">net salary</text>
-  <text x="330" y="79">4000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,141.0 L612.0,141.0 L612.0,90.0"/>
+  <text class="on-path" x="361" y="134">net salary</text>
+  <text class="on-path" x="361" y="148">4000.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,145.0 700.0,145.0"/>
-  <text x="440" y="97">income tax</text>
-  <text x="440" y="119">1000.00 GBP</text>
+  <path d="M110.0,90.0 L110.0,257.0 L863.0,257.0 L863.0,170.0"/>
+  <text class="on-path" x="446.5" y="250">income tax</text>
+  <text class="on-path" x="446.5" y="264">1000.00 GBP</text>
 </g>
-<g class="legend" transform="translate(20,250)" dy="-30">
+<g class="legend" transform="translate(20,335)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>
   <text x="18" y="-23">Income</text>
   <rect x="100" y="-30" width="14" height="14" fill="#DDD"/>

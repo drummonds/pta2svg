@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - The browser builds read both from the options object:
   `renderModel(model, {commodities: {GBP: {symbol: "£", decimals: 2,
   thousands: ","}}, palette: {Asset: "#d1f0e2"}})`.
+- Docs: each example shows its JSON model beside the source; the Try-it
+  page takes the JSON model as a format, drawn through `renderModel`;
+  the index lists the browser builds with their sizes, raw and gzipped,
+  against the full build.
 
 ### Fixed
 - A Sugiyama arrow's label is centred on the point halfway along the

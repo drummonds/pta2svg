@@ -27,6 +27,7 @@
             <option value="goluca">goluca</option>
             <option value="pta">pta</option>
             <option value="beancount">beancount</option>
+            <option value="json">json model</option>
           </select></div>
         </div>
         <div class="control">
@@ -68,8 +69,9 @@
       layout: document.getElementById("layout").value,
       animate: document.getElementById("animate").checked,
     };
+    const src = document.getElementById("source").value;
     try {
-      output.innerHTML = pta2svg.render(document.getElementById("source").value, opts);
+      output.innerHTML = opts.format === "json" ? pta2svg.renderModel(src, opts) : pta2svg.render(src, opts);
       status.textContent = "";
       status.className = "help";
     } catch (e) {
@@ -77,6 +79,17 @@
       status.className = "help is-danger";
     }
   };
+  
+  const examples = {text: "# One movement drawn with the balances it leaves: the balance directives\n# state what each account held before it. Product IDs carry hyphens and a\n# name with spaces is quoted.\n\n2026-01-31 balance \"Liability:Savings:Alice Lovelace:easy-access\" 1000.00 GBP\n2026-01-31 balance Expense:Interest 50.00 GBP\n\n2026-01-31 * Interest applied\n  Expense:Interest -\u003e \"Liability:Savings:Alice Lovelace:easy-access\" \"interest\" 1.27 GBP\n", json: "{\n  \"accounts\": [\n    {\n      \"name\": \"Expense:Interest\",\n      \"short\": \"Interest\",\n      \"type\": \"Expense\"\n    },\n    {\n      \"name\": \"Liability:Savings:Alice Lovelace:easy-access\",\n      \"short\": \"easy-access\",\n      \"type\": \"Liability\"\n    }\n  ],\n  \"opening\": {\n    \"Expense:Interest\": 50,\n    \"Liability:Savings:Alice Lovelace:easy-access\": 1000\n  },\n  \"transactions\": [\n    {\n      \"date\": \"\",\n      \"flag\": \"*\",\n      \"payee\": \"Interest applied\",\n      \"movements\": [\n        {\n          \"from\": \"Expense:Interest\",\n          \"to\": \"Liability:Savings:Alice Lovelace:easy-access\",\n          \"amount\": 1.27,\n          \"commodity\": \"GBP\",\n          \"description\": \"interest\"\n        }\n      ]\n    }\n  ]\n}"};
+  let shown = document.getElementById("format").value === "json" ? "json" : "text";
+  document.getElementById("format").addEventListener("input", (e) => {
+    const want = e.target.value === "json" ? "json" : "text";
+    if (want !== shown) {
+      examples[shown] = document.getElementById("source").value;
+      document.getElementById("source").value = examples[want];
+      shown = want;
+    }
+  });
   for (const id of ["source", "format", "layout", "animate"]) {
     document.getElementById(id).addEventListener("input", draw);
   }

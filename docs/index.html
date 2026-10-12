@@ -17,6 +17,24 @@
   </div>
   
   <div class="box">
+    <h2 class="title is-4">Browser builds</h2>
+    <p>The tree-sitter grammars behind <code>render</code> are most of the full build. A page that holds the ledger as data loads a build without them and calls <code>renderModel</code> with the JSON model; TinyGo shrinks that further.</p>
+    <table class="table is-narrow">
+      <thead><tr><th>file</th><th>compiler</th><th>parser</th><th>functions</th><th class="has-text-right">size</th><th class="has-text-right">gzipped</th><th class="has-text-right">of full</th></tr></thead>
+      <tbody>
+      
+        <tr><td><code>pta2svg.wasm</code></td><td>Go</td><td>yes</td><td><code>render, renderModel</code></td><td class="has-text-right">23.9 MB</td><td class="has-text-right">15.3 MB</td><td class="has-text-right">100%</td></tr>
+      
+        <tr><td><code>pta2svg-lite.wasm</code></td><td>Go</td><td>no</td><td><code>renderModel</code></td><td class="has-text-right">4.0 MB</td><td class="has-text-right">1.1 MB</td><td class="has-text-right">17%</td></tr>
+      
+        <tr><td><code>pta2svg-tiny.wasm</code></td><td>TinyGo</td><td>no</td><td><code>renderModel</code></td><td class="has-text-right">0.7 MB</td><td class="has-text-right">0.2 MB</td><td class="has-text-right">3%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  
+  
+  <div class="box">
     <h2 class="title is-4"><a href="oranges.html">Orange Trading Business</a></h2>
     <ul>
     
