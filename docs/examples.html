@@ -25,6 +25,22 @@
     <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>General Examples</a></li></ul>
   </nav>
   <h1 class="title">General Examples</h1>
+  <div class="field is-grouped mb-5">
+    <div class="control">
+      <div class="select"><select id="layout">
+        <option value="lr">lr</option>
+        <option value="sugiyama">sugiyama</option>
+      </select></div>
+    </div>
+    <div class="control">
+      <div class="select"><select id="style">
+        <option value="afp">afp</option>
+        <option value="plain">plain</option>
+      </select></div>
+    </div>
+    <div class="control"><label class="checkbox"><input type="checkbox" id="animate"> animate</label></div>
+    <p id="status" class="help"></p>
+  </div>
   
   <div class="box mb-5">
     <h2 class="subtitle is-4">arrows.goluca</h2>
@@ -138,7 +154,93 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 709 330" width="709" height="330">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Groceries&#34;,
+      &#34;short&#34;: &#34;Groceries&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Transport&#34;,
+      &#34;short&#34;: &#34;Transport&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Utilities&#34;,
+      &#34;short&#34;: &#34;Utilities&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Standard arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 3000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;pay&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Slash arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Groceries&#34;,
+          &#34;amount&#34;: 85.5,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;weekly shop&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Unicode arrow&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Utilities&#34;,
+          &#34;amount&#34;: 120,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;electric bill&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Bare greater-than&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Transport&#34;,
+          &#34;amount&#34;: 45,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;commute&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 709 330" width="709" height="330">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -390,7 +492,145 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1012 388" width="1012" height="388">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Asset:Savings&#34;,
+      &#34;short&#34;: &#34;Savings&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Food&#34;,
+      &#34;short&#34;: &#34;Food&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Utilities&#34;,
+      &#34;short&#34;: &#34;Utilities&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;April salary&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 3200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net pay&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Tax withholding&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;PAYE&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Mortgage payment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 1100,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Groceries&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Food&#34;,
+          &#34;amount&#34;: 95,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;weekly shop&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Savings transfer&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Asset:Savings&#34;,
+          &#34;amount&#34;: 500,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;rainy day&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Utilities&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Utilities&#34;,
+          &#34;amount&#34;: 145,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;gas and electric&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Council tax&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 180,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;council tax&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1012 388" width="1012" height="388">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -551,7 +791,40 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 192" width="440" height="192">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Expense:Interest&#34;,
+      &#34;short&#34;: &#34;Interest&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Savings:Alice Lovelace:easy-access&#34;,
+      &#34;short&#34;: &#34;easy-access&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;opening&#34;: {
+    &#34;Expense:Interest&#34;: 50,
+    &#34;Liability:Savings:Alice Lovelace:easy-access&#34;: 1000
+  },
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Interest applied&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Expense:Interest&#34;,
+          &#34;to&#34;: &#34;Liability:Savings:Alice Lovelace:easy-access&#34;,
+          &#34;amount&#34;: 1.27,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;interest&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 192" width="440" height="192">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -718,7 +991,102 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 380" width="973" height="380">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Rent&#34;,
+      &#34;short&#34;: &#34;Rent&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Salary deposit&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 5000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;salary payment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Pay rent&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Rent&#34;,
+          &#34;amount&#34;: 1200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly rent&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Loan repayment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;repayment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Multi-leg payroll&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 4000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net salary&#34;,
+          &#34;linked&#34;: true
+        },
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 1000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;income tax&#34;,
+          &#34;linked&#34;: true
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 380" width="973" height="380">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -926,7 +1294,102 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 380" width="973" height="380">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Bank&#34;,
+      &#34;short&#34;: &#34;Bank&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Rent&#34;,
+      &#34;short&#34;: &#34;Rent&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Tax&#34;,
+      &#34;short&#34;: &#34;Tax&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Salary&#34;,
+      &#34;short&#34;: &#34;Salary&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Mortgage&#34;,
+      &#34;short&#34;: &#34;Mortgage&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;2024-01-15&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Salary deposit&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 5000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;salary payment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-01-20&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Pay rent&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Expense:Rent&#34;,
+          &#34;amount&#34;: 1200,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;monthly rent&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-01-25&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Loan repayment&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Bank&#34;,
+          &#34;to&#34;: &#34;Liability:Mortgage&#34;,
+          &#34;amount&#34;: 800,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;repayment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;2024-02-01&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Multi-leg payroll&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Asset:Bank&#34;,
+          &#34;amount&#34;: 4000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;net salary&#34;,
+          &#34;linked&#34;: true
+        },
+        {
+          &#34;from&#34;: &#34;Income:Salary&#34;,
+          &#34;to&#34;: &#34;Expense:Tax&#34;,
+          &#34;amount&#34;: 1000,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;income tax&#34;,
+          &#34;linked&#34;: true
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 973 380" width="973" height="380">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -1014,5 +1477,42 @@
   
 </div>
 </section>
+<script src="wasm_exec_tinygo.js"></script>
+<script>
+
+
+
+(async () => {
+  const status = document.getElementById("status");
+  const ids = ["layout", "style", "animate"];
+  const go = new Go();
+  let ready = false;
+  const load = WebAssembly.instantiateStreaming(fetch("pta2svg-tiny.wasm"), go.importObject)
+    .then((r) => { go.run(r.instance); ready = true; }); 
+  const draw = async () => {
+    if (!ready) {
+      status.textContent = "Loading pta2svg-tiny.wasm…";
+      await load;
+      status.textContent = "";
+    }
+    const opts = {
+      layout: document.getElementById("layout").value,
+      style: document.getElementById("style").value,
+      animate: document.getElementById("animate").checked,
+    };
+    for (const el of document.querySelectorAll(".svg-container[data-model]")) {
+      try {
+        el.innerHTML = pta2svg.renderModel(el.dataset.model, opts);
+      } catch (e) {
+        status.textContent = String(e.message || e);
+        status.className = "help is-danger";
+      }
+    }
+  };
+  for (const id of ids) {
+    document.getElementById(id).addEventListener("input", draw);
+  }
+})();
+</script>
 </body>
 </html>

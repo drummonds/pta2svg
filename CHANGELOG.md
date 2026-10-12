@@ -33,6 +33,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   page takes the JSON model as a format, drawn through `renderModel`;
   the index lists the browser builds with their sizes, raw and gzipped,
   against the full build. A favicon: a to b, two boxes and an arrow.
+  The example pages have layout (lr, sugiyama), style (afp, plain) and
+  animate controls that redraw every diagram on the page in the browser
+  from its JSON model with the TinyGo build.
 
 ### Changed
 - The default drawing is the afp style; `Style: "plain"` is the old

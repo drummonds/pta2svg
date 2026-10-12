@@ -224,6 +224,22 @@ const pageTmpl = `<!DOCTYPE html>
     <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>{{.Title}}</a></li></ul>
   </nav>
   <h1 class="title">{{.Title}}</h1>
+  <div class="field is-grouped mb-5">
+    <div class="control">
+      <div class="select"><select id="layout">
+        <option value="lr">lr</option>
+        <option value="sugiyama">sugiyama</option>
+      </select></div>
+    </div>
+    <div class="control">
+      <div class="select"><select id="style">
+        <option value="afp">afp</option>
+        <option value="plain">plain</option>
+      </select></div>
+    </div>
+    <div class="control"><label class="checkbox"><input type="checkbox" id="animate"> animate</label></div>
+    <p id="status" class="help"></p>
+  </div>
   {{range .Files}}
   <div class="box mb-5">
     <h2 class="subtitle is-4">{{.Name}}</h2>
@@ -238,13 +254,50 @@ const pageTmpl = `<!DOCTYPE html>
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container">{{.SVG}}</div>
+        <div class="svg-container" data-model="{{.Model}}">{{.SVG}}</div>
       </div>
     </div>
   </div>
   {{end}}
 </div>
 </section>
+<script src="wasm_exec_tinygo.js"></script>
+<script>
+// The diagrams above were drawn when the docs were built. The controls
+// redraw them in the browser from each example's JSON model, with the
+// TinyGo build of pta2svg.
+(async () => {
+  const status = document.getElementById("status");
+  const ids = ["layout", "style", "animate"];
+  const go = new Go();
+  let ready = false;
+  const load = WebAssembly.instantiateStreaming(fetch("pta2svg-tiny.wasm"), go.importObject)
+    .then((r) => { go.run(r.instance); ready = true; }); // installs window.pta2svg
+  const draw = async () => {
+    if (!ready) {
+      status.textContent = "Loading pta2svg-tiny.wasm…";
+      await load;
+      status.textContent = "";
+    }
+    const opts = {
+      layout: document.getElementById("layout").value,
+      style: document.getElementById("style").value,
+      animate: document.getElementById("animate").checked,
+    };
+    for (const el of document.querySelectorAll(".svg-container[data-model]")) {
+      try {
+        el.innerHTML = pta2svg.renderModel(el.dataset.model, opts);
+      } catch (e) {
+        status.textContent = String(e.message || e);
+        status.className = "help is-danger";
+      }
+    }
+  };
+  for (const id of ids) {
+    document.getElementById(id).addEventListener("input", draw);
+  }
+})();
+</script>
 </body>
 </html>
 `

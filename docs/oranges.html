@@ -25,6 +25,22 @@
     <ul><li><a href="index.html">Home</a></li><li class="is-active"><a>Orange Trading Business</a></li></ul>
   </nav>
   <h1 class="title">Orange Trading Business</h1>
+  <div class="field is-grouped mb-5">
+    <div class="control">
+      <div class="select"><select id="layout">
+        <option value="lr">lr</option>
+        <option value="sugiyama">sugiyama</option>
+      </select></div>
+    </div>
+    <div class="control">
+      <div class="select"><select id="style">
+        <option value="afp">afp</option>
+        <option value="plain">plain</option>
+      </select></div>
+    </div>
+    <div class="control"><label class="checkbox"><input type="checkbox" id="animate"> animate</label></div>
+    <p id="status" class="help"></p>
+  </div>
   
   <div class="box mb-5">
     <h2 class="subtitle is-4">01_investment.goluca</h2>
@@ -73,7 +89,36 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445 170" width="445" height="170">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Cash&#34;,
+      &#34;short&#34;: &#34;Cash&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Equity:Input&#34;,
+      &#34;short&#34;: &#34;Input&#34;,
+      &#34;type&#34;: &#34;Equity&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Investor puts cash into business&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Equity:Input&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;investment&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445 170" width="445" height="170">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -189,7 +234,55 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 170" width="670" height="170">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Cash&#34;,
+      &#34;short&#34;: &#34;Cash&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Equity:Input&#34;,
+      &#34;short&#34;: &#34;Input&#34;,
+      &#34;type&#34;: &#34;Equity&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Purchases&#34;,
+      &#34;short&#34;: &#34;Purchases&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Investor puts cash into business&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Equity:Input&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;investment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Buy 25 oranges from farmer&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Cash&#34;,
+          &#34;to&#34;: &#34;Expense:Purchases&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;oranges&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 670 170" width="670" height="170">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -339,7 +432,74 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934 192" width="934" height="192">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Cash&#34;,
+      &#34;short&#34;: &#34;Cash&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Equity:Input&#34;,
+      &#34;short&#34;: &#34;Input&#34;,
+      &#34;type&#34;: &#34;Equity&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Purchases&#34;,
+      &#34;short&#34;: &#34;Purchases&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Sales&#34;,
+      &#34;short&#34;: &#34;Sales&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Investor puts cash into business&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Equity:Input&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;investment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Buy 25 oranges from farmer&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Asset:Cash&#34;,
+          &#34;to&#34;: &#34;Expense:Purchases&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;oranges&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Sell 25 oranges at market&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Sales&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 37.5,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;market sales&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934 192" width="934" height="192">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -506,7 +666,79 @@
       </div>
       <div class="column is-7">
         <h3 class="heading">SVG Output</h3>
-        <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1302 264" width="1302" height="264">
+        <div class="svg-container" data-model="{
+  &#34;accounts&#34;: [
+    {
+      &#34;name&#34;: &#34;Asset:Cash&#34;,
+      &#34;short&#34;: &#34;Cash&#34;,
+      &#34;type&#34;: &#34;Asset&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Equity:Input&#34;,
+      &#34;short&#34;: &#34;Input&#34;,
+      &#34;type&#34;: &#34;Equity&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Expense:Purchases&#34;,
+      &#34;short&#34;: &#34;Purchases&#34;,
+      &#34;type&#34;: &#34;Expense&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Income:Sales&#34;,
+      &#34;short&#34;: &#34;Sales&#34;,
+      &#34;type&#34;: &#34;Income&#34;
+    },
+    {
+      &#34;name&#34;: &#34;Liability:Farmer&#34;,
+      &#34;short&#34;: &#34;Farmer&#34;,
+      &#34;type&#34;: &#34;Liability&#34;
+    }
+  ],
+  &#34;transactions&#34;: [
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Investor puts cash into business&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Equity:Input&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;investment&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Buy oranges on credit from farmer&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Liability:Farmer&#34;,
+          &#34;to&#34;: &#34;Expense:Purchases&#34;,
+          &#34;amount&#34;: 25,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;oranges on credit&#34;
+        }
+      ]
+    },
+    {
+      &#34;date&#34;: &#34;&#34;,
+      &#34;flag&#34;: &#34;*&#34;,
+      &#34;payee&#34;: &#34;Sell oranges at market&#34;,
+      &#34;movements&#34;: [
+        {
+          &#34;from&#34;: &#34;Income:Sales&#34;,
+          &#34;to&#34;: &#34;Asset:Cash&#34;,
+          &#34;amount&#34;: 37.5,
+          &#34;commodity&#34;: &#34;GBP&#34;,
+          &#34;description&#34;: &#34;market sales&#34;
+        }
+      ]
+    }
+  ]
+}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1302 264" width="1302" height="264">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -586,5 +818,42 @@
   
 </div>
 </section>
+<script src="wasm_exec_tinygo.js"></script>
+<script>
+
+
+
+(async () => {
+  const status = document.getElementById("status");
+  const ids = ["layout", "style", "animate"];
+  const go = new Go();
+  let ready = false;
+  const load = WebAssembly.instantiateStreaming(fetch("pta2svg-tiny.wasm"), go.importObject)
+    .then((r) => { go.run(r.instance); ready = true; }); 
+  const draw = async () => {
+    if (!ready) {
+      status.textContent = "Loading pta2svg-tiny.wasm…";
+      await load;
+      status.textContent = "";
+    }
+    const opts = {
+      layout: document.getElementById("layout").value,
+      style: document.getElementById("style").value,
+      animate: document.getElementById("animate").checked,
+    };
+    for (const el of document.querySelectorAll(".svg-container[data-model]")) {
+      try {
+        el.innerHTML = pta2svg.renderModel(el.dataset.model, opts);
+      } catch (e) {
+        status.textContent = String(e.message || e);
+        status.className = "help is-danger";
+      }
+    }
+  };
+  for (const id of ids) {
+    document.getElementById(id).addEventListener("input", draw);
+  }
+})();
+</script>
 </body>
 </html>
