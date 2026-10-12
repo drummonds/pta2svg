@@ -86,9 +86,13 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 		if len(e.Points) >= 2 {
 			// Use routed path from layout engine
 			pd = polylinePath(e.Points, e.ArrowHeadStart)
-			// Label at midpoint of the polyline
-			mid := e.Points[len(e.Points)/2]
-			midX, midY = mid[0], mid[1]
+			// Label at the middle of the polyline: halfway along its
+			// middle segment, so a straight edge carries it mid-gap.
+			a, b := e.Points[(len(e.Points)-1)/2], e.Points[len(e.Points)/2]
+			if len(e.Points)%2 == 0 {
+				a, b = e.Points[len(e.Points)/2-1], e.Points[len(e.Points)/2]
+			}
+			midX, midY = (a[0]+b[0])/2, (a[1]+b[1])/2
 		} else {
 			// Fallback: compute path from node positions
 			sx := e.From.X + e.From.W // right edge

@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Fixed
 - The Sugiyama layout drew nodes, and so the legend, in an order that changed from run to run.
 - The gap between columns grows to fit the widest arrow label (the description or the formatted amount, estimated from its length at the edge font with clearance either side), so a long label such as a movement code no longer sits over the boxes. Both layouts take the gap; the goldens are re-pinned.
+- A routed (Sugiyama) edge's label is drawn halfway along its path; it was drawn at the middle point of the polyline, which for a straight edge is its end, on the box.
 
 ## [0.3.0] - 2026-10-11
 

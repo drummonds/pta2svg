@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -97,5 +98,27 @@ func TestLabelWidth(t *testing.T) {
 	// "-1234567.89 GBP" is 15 characters, longer than "lunch".
 	if got, want := LabelWidth(d), 15*charWidth+labelClearance; got != want {
 		t.Errorf("LabelWidth = %v, want %v for the 15-character amount", got, want)
+	}
+}
+
+// A routed edge's label sits at the middle of its path: for a straight
+// two-point edge, halfway along it, not at its end.
+func TestRoutedEdgeLabelSitsMidPath(t *testing.T) {
+	d := model.NewDiagram()
+	a, b := d.GetOrCreateAccount("Expense:Interest"), d.GetOrCreateAccount("Liability:Savings")
+	m := model.Movement{From: a, To: b, Amount: -1.27, Commodity: "GBP", Description: "LDAS:FTDP:ACRU"}
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{m}}}
+	g := layout.Sugiyama{}.Layout(d, layout.DefaultOptions())
+	if len(g.Edges) != 1 || len(g.Edges[0].Points) != 2 {
+		t.Fatalf("edges %+v; want one straight routed edge", g.Edges)
+	}
+	p := g.Edges[0].Points
+	wantX := (p[0][0] + p[1][0]) / 2
+	var buf bytes.Buffer
+	if err := Render(&buf, g, Options{}); err != nil {
+		t.Fatal(err)
+	}
+	if want := `<text x="` + strconv.FormatFloat(wantX, 'f', -1, 64) + `"`; !strings.Contains(buf.String(), want) {
+		t.Errorf("label not at the path's middle %v:\n%s", wantX, buf.String())
 	}
 }

@@ -43,18 +43,18 @@
 
 <g class="edge">
   <path d="M180.0,65.0 L278.0,105.0" style="animation-delay: 0s"/>
-  <text x="278" y="97">investment</text>
-  <text x="278" y="119">25.00 GBP</text>
+  <text x="229" y="77">investment</text>
+  <text x="229" y="99">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M418.0,105.0 L516.0,105.0" style="animation-delay: 0.3s"/>
-  <text x="516" y="97">oranges</text>
-  <text x="516" y="119">25.00 GBP</text>
+  <text x="467" y="97">oranges</text>
+  <text x="467" y="119">25.00 GBP</text>
 </g>
 <g class="edge">
   <path d="M180.0,145.0 L278.0,105.0" style="animation-delay: 0.6s"/>
-  <text x="278" y="97">market sales</text>
-  <text x="278" y="119">37.50 GBP</text>
+  <text x="229" y="117">market sales</text>
+  <text x="229" y="139">37.50 GBP</text>
 </g>
 <g class="legend" transform="translate(20,250)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#EEB"/>
