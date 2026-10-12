@@ -93,5 +93,6 @@ The docs site's Try-it page is the full build.
 
 | | |
 |---|---|
+| Documentation | https://h3-pta2svg.docs.bytestone.uk/ |
 | Source | https://git.bytestone.uk/hum3/pta2svg |
 | Mirror (GitHub) | https://github.com/drummonds/pta2svg |
