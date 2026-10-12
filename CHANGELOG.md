@@ -11,27 +11,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   code: a symbol before the number and after its sign, the decimals
   shown and a thousands separator, so `{"GBP": {Symbol: "£", Decimals:
   2, Thousands: ","}}` writes `-£1,234.56`. A commodity not described
-  is written `1.27 GBP` as before. The column gap is sized to the amount
-  as written.
+  is written the default way (see Changed). The column gap is sized to
+  the amount as written.
 - `Options.Palette`: the fill of each account type's boxes by type name,
   legend swatch included; a type not named keeps pta2svg's own colour.
 - The browser builds read both from the options object:
   `renderModel(model, {commodities: {GBP: {symbol: "£", decimals: 2,
   thousands: ","}}, palette: {Asset: "#d1f0e2"}})`.
-- Box formatting, all off by default (#9): `Options.Shape` (`Stadium`
+- Box formatting (#9): `Options.Shape` (`Stadium`
   pill boxes beside the default `Rounded`), `Options.Strokes` (stroke
   width by account type name, as `Palette`), `Options.BalanceBelowName`
   (the balance in bold beneath the name rather than small in the
-  corner), and `Options.Style: "afp"`, the look of bytestone.uk/afp in
-  one option: stadium boxes, Income and Expense stroked at 3, the
-  balance beneath the name. A `Shape` or `Strokes` set alongside the
-  style applies on top; an unknown style is an error. The browser builds
+  corner), and `Options.Style`. Its default, `afp`, is the look of
+  bytestone.uk/afp: stadium boxes, Income and Expense stroked at 3, the
+  balance beneath the name; a `Shape` or `Strokes` set alongside it
+  applies on top. `"plain"` is the drawing without the preset; an
+  unknown style is an error. The browser builds
   read `shape`, `strokes`, `balanceBelowName` and `style`, and the Try-it
   page has a style choice.
 - Docs: each example shows its JSON model beside the source; the Try-it
   page takes the JSON model as a format, drawn through `renderModel`;
   the index lists the browser builds with their sizes, raw and gzipped,
   against the full build. A favicon: a to b, two boxes and an arrow.
+
+### Changed
+- The default drawing is the afp style; `Style: "plain"` is the old
+  look.
+- Money is written for people by default: GBP, USD, EUR and JPY with
+  their symbols, every commodity with thousands separated (`-£1,234.56`,
+  `¥123,456`, `1,234.50 XYZ`) where it was `-1234.56 GBP`.
+  `Commodity.Suffix` writes text after the number, so `{"GBP": {Suffix:
+  " GBP", Decimals: 2}}` keeps the old form. The TinyGo build grows by
+  under 1 KB.
 
 ### Fixed
 - A Sugiyama arrow's label is centred on the point halfway along the

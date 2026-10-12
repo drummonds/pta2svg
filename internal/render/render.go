@@ -31,12 +31,22 @@ const (
 )
 
 // Commodity is how a commodity's amounts are written: the symbol before
-// the number and after its sign, the decimals shown, and the separator
-// between thousands, if any. The commodity code is not written.
+// the number and after its sign, the decimals shown, the separator
+// between thousands, if any, and the suffix after the number.
 type Commodity struct {
 	Symbol    string `json:"symbol,omitempty"`
 	Decimals  int    `json:"decimals"`
 	Thousands string `json:"thousands,omitempty"`
+	Suffix    string `json:"suffix,omitempty"`
+}
+
+// currencies are written with their symbols unless the caller says
+// otherwise.
+var currencies = map[string]Commodity{
+	"GBP": {Symbol: "£", Decimals: 2, Thousands: ","},
+	"USD": {Symbol: "$", Decimals: 2, Thousands: ","},
+	"EUR": {Symbol: "€", Decimals: 2, Thousands: ","},
+	"JPY": {Symbol: "¥", Decimals: 0, Thousands: ","},
 }
 
 // fill is the colour an account type's boxes are drawn in: the palette's
@@ -48,17 +58,26 @@ func (o Options) fill(t model.AccountType) string {
 	return t.Fill()
 }
 
-// formatAmount writes an amount in its commodity: as the caller
-// described the commodity, or to two places with the code after.
-func (o Options) formatAmount(amount float64, commodity string) string {
-	c, ok := o.Commodities[commodity]
-	if !ok {
-		s := fmt.Sprintf("%.2f", amount)
-		if commodity != "" {
-			s += " " + commodity
-		}
-		return s
+// commodity is how amounts in code are written: as the caller described
+// it, else as the currency is, else to two places, thousands separated,
+// with the code after.
+func (o Options) commodity(code string) Commodity {
+	if c, ok := o.Commodities[code]; ok {
+		return c
 	}
+	if c, ok := currencies[code]; ok {
+		return c
+	}
+	c := Commodity{Decimals: 2, Thousands: ","}
+	if code != "" {
+		c.Suffix = " " + code
+	}
+	return c
+}
+
+// formatAmount writes an amount in its commodity.
+func (o Options) formatAmount(amount float64, code string) string {
+	c := o.commodity(code)
 	sign := ""
 	if amount < 0 {
 		sign, amount = "-", -amount
@@ -76,7 +95,7 @@ func (o Options) formatAmount(amount float64, commodity string) string {
 	if frac != "" {
 		whole += "." + frac
 	}
-	return sign + c.Symbol + whole
+	return sign + c.Symbol + whole + c.Suffix
 }
 
 const defs = `

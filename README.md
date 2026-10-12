@@ -54,23 +54,23 @@ err := parse.Render(w, src, parse.Goluca, pta2svg.Options{Title: "January"})
 
 `parse.Parse` returns the `Diagram`; `pta2svg.RenderDiagram` draws one built without text (`NewDiagram`, `GetOrCreateAccount`, `Transactions`, `Opening`, then `ComputeBalances`). The text parsers live in `parse` because their tree-sitter grammars are most of the size of a browser build; a program that holds the ledger as data imports only the root package.
 
-`Options` also takes how money is written and what colours the boxes are, so a drawing matches the page it sits on:
+Money is written for people by default: GBP, USD, EUR and JPY with their symbols and thousands separated (`-£1,234.56`, `¥123,456`), any other commodity separated with its code after (`1,234.50 XYZ`). `Options` also takes how money is written and what colours the boxes are, so a drawing matches the page it sits on:
 
 ```go
 pta2svg.Options{
-	Commodities: map[string]pta2svg.Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}}, // -£1,234.56; others "1.27 GBP"
+	Commodities: map[string]pta2svg.Commodity{"GBP": {Suffix: " GBP", Decimals: 2}}, // 1234.56 GBP rather than the default £1,234.56
 	Palette:     map[string]string{"Asset": "#d1f0e2", "Liability": "#fcd5dd"},                      // fill by account type; others keep their own
 }
 ```
 
-and how the boxes are drawn, all off by default:
+and how the boxes are drawn. The default style is `afp`, the look of bytestone.uk/afp: stadium boxes, Income and Expense outlined heavier, the balance in bold beneath the name. `Style: "plain"` drops the preset and leaves the three fields to set alone:
 
 ```go
 pta2svg.Options{
-	Shape:            pta2svg.Stadium,                  // pill-shaped boxes; Rounded is the default
+	Style:            "plain",                          // no preset; "afp" is the default
+	Shape:            pta2svg.Stadium,                  // pill-shaped boxes; Rounded is plain's
 	Strokes:          map[string]float64{"Income": 3},  // stroke width by account type; others 1.5
 	BalanceBelowName: true,                             // balance in bold beneath the name, not in the corner
-	Style:            "afp",                            // the look of bytestone.uk/afp: all three at once
 }
 ```
 
@@ -91,7 +91,7 @@ pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"}
 pta2svg.renderModel(model, {title: "", animate: false, layout: "lr"})
 ```
 
-Both take the library's `Options` as an object: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}, shape: "stadium", strokes: {Income: 3}, balanceBelowName: true, style: "afp"}`.
+Both take the library's `Options` as an object: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}, shape: "stadium", strokes: {Income: 3}, balanceBelowName: true, style: "plain"}`.
 
 The tree-sitter grammars behind `render` are the difference in size. A page that already holds the ledger as data uses the lite or tiny build and passes the model, as JSON text or as an object:
 

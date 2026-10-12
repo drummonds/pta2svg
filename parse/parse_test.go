@@ -17,7 +17,7 @@ func TestRenderPTA(t *testing.T) {
 		t.Fatalf("Render: %v", err)
 	}
 	svg := buf.String()
-	for _, want := range []string{"<svg", "<title>Interest</title>", "alice", "1001.27 GBP", "interest"} {
+	for _, want := range []string{"<svg", "<title>Interest</title>", "alice", "£1,001.27", "interest"} {
 		if !strings.Contains(svg, want) {
 			t.Errorf("svg should contain %q", want)
 		}

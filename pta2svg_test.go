@@ -22,7 +22,7 @@ func TestRenderDiagramBuiltWithoutText(t *testing.T) {
 	if err := RenderDiagram(&buf, lunch(), Options{Animate: true}); err != nil {
 		t.Fatalf("RenderDiagram: %v", err)
 	}
-	for _, want := range []string{"Cash", "90.00 GBP", "lunch", "animation"} {
+	for _, want := range []string{"Cash", "£90.00", "lunch", "animation"} {
 		if !strings.Contains(buf.String(), want) {
 			t.Errorf("svg should contain %q", want)
 		}
@@ -87,30 +87,34 @@ func TestLongArrowLabelsWidenTheGap(t *testing.T) {
 	}
 }
 
-// The afp style is the look of bytestone.uk/afp in one option: stadium
-// boxes, the P&L account types stroked heavier, the balance in bold
-// beneath the name. It is the same drawing as asking for the three
-// separately, which still apply on top of it; an unknown style is an
-// error.
+// The afp style is the look of bytestone.uk/afp in one option, and the
+// default: stadium boxes, the P&L account types stroked heavier, the
+// balance in bold beneath the name. It is the same drawing as asking for
+// the three separately, which still apply on top of it. "plain" is the
+// drawing without it; an unknown style is an error.
 func TestStyleAFP(t *testing.T) {
 	render := func(o Options) (string, error) {
 		var buf bytes.Buffer
 		err := RenderDiagram(&buf, lunch(), o)
 		return buf.String(), err
 	}
-	afp, err := render(Options{Style: "afp"})
+	byDefault, err := render(Options{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	separately, _ := render(Options{Shape: Stadium, Strokes: map[string]float64{"Income": 3, "Expense": 3}, BalanceBelowName: true})
+	afp, _ := render(Options{Style: "afp"})
+	if byDefault != afp {
+		t.Error("the default is not the afp style")
+	}
+	separately, _ := render(Options{Style: "plain", Shape: Stadium, Strokes: map[string]float64{"Income": 3, "Expense": 3}, BalanceBelowName: true})
 	if afp != separately {
 		t.Errorf("afp style differs from its three options:\n%s\nvs\n%s", afp, separately)
 	}
-	plain, _ := render(Options{})
-	if afp == plain {
-		t.Error("afp style draws the plain look")
+	plain, _ := render(Options{Style: "plain"})
+	if plain == afp || strings.Contains(plain, "style=") || !strings.Contains(plain, `class="balance"`) {
+		t.Errorf("plain style carries formatting:\n%s", plain)
 	}
-	heavier, _ := render(Options{Style: "afp", Strokes: map[string]float64{"Expense": 5}})
+	heavier, _ := render(Options{Strokes: map[string]float64{"Expense": 5}})
 	if !strings.Contains(heavier, `stroke-width: 5px`) {
 		t.Errorf("caller's stroke does not apply over the style:\n%s", heavier)
 	}

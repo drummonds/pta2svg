@@ -19,7 +19,7 @@ func TestRenderTextUnderWasm(t *testing.T) {
 	if err != nil {
 		t.Fatalf("renderText: %v", err)
 	}
-	for _, want := range []string{"<svg", "<title>Interest</title>", "1001.27 GBP", "interest"} {
+	for _, want := range []string{"<svg", "<title>Interest</title>", "£1,001.27", "interest"} {
 		if !strings.Contains(svg, want) {
 			t.Errorf("svg should contain %q", want)
 		}

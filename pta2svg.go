@@ -33,9 +33,11 @@ type Options struct {
 	Animate bool   // CSS flow animation along the arrows
 	Layout  Layout // layout engine; empty means LR
 
-	// Commodities is how each commodity's amounts are written, by code:
-	// {"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}} writes
-	// "-£1,234.56". A commodity not described is written "1.27 GBP".
+	// Commodities is how each commodity's amounts are written, by code,
+	// over the defaults: GBP, USD, EUR and JPY with their symbols and
+	// thousands separated ("-£1,234.56", "¥123,456"), any other commodity
+	// separated with its code after ("1,234.50 XYZ"). {"GBP": {Suffix:
+	// " GBP", Decimals: 2}} writes "1234.56 GBP".
 	Commodities map[string]Commodity
 	// Palette is the fill of each account type's boxes by type name
 	// ("Asset", "Liability", "Equity", "Income", "Expense", "Hub",
@@ -51,10 +53,11 @@ type Options struct {
 	// BalanceBelowName writes each balance in bold beneath the account
 	// name rather than small in the box's corner.
 	BalanceBelowName bool
-	// Style is a preset of the three above: "afp" is the look of
-	// bytestone.uk/afp, stadium boxes with the P&L types (Income and
-	// Expense) stroked at 3 and the balance beneath the name. A Shape or
-	// Strokes set alongside it applies on top. Empty means no preset.
+	// Style is a preset of the three above. "afp", the default, is the
+	// look of bytestone.uk/afp: stadium boxes with the P&L types (Income
+	// and Expense) stroked at 3 and the balance beneath the name. A Shape
+	// or Strokes set alongside it applies on top. "plain" is no preset:
+	// the three fields alone.
 	Style string
 }
 
@@ -70,9 +73,9 @@ const (
 // caller set.
 func (o Options) withStyle() (Options, error) {
 	switch o.Style {
-	case "":
+	case "plain":
 		return o, nil
-	case "afp":
+	case "", "afp":
 		if o.Shape == Rounded {
 			o.Shape = Stadium
 		}
@@ -84,7 +87,7 @@ func (o Options) withStyle() (Options, error) {
 		o.BalanceBelowName = true
 		return o, nil
 	}
-	return o, fmt.Errorf("unknown style %q (use afp)", o.Style)
+	return o, fmt.Errorf("unknown style %q (use afp or plain)", o.Style)
 }
 
 // Commodity is how a commodity's amounts are written.
