@@ -10,8 +10,8 @@
   .node text { font-family: sans-serif; font-size: 13px; fill: #333; text-anchor: middle; dominant-baseline: central; }
   .node .balance { font-size: 10px; fill: #666; text-anchor: end; dominant-baseline: auto; }
   .edge path { fill: none; stroke: #666; stroke-width: 1.5; marker-end: url(#arrowhead); }
-  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; }
-  .edge text.on-path { dominant-baseline: central; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
+  .edge text { font-family: sans-serif; font-size: 11px; fill: #555; text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }
+  .edge text.on-path { dominant-baseline: central; }
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }
   @keyframes flow {
@@ -34,8 +34,8 @@
 
 <g class="edge">
   <path d="M180.0,65.0 L260.0,65.0" style="animation-delay: 0s"/>
-  <text class="on-path" x="220" y="58">interest</text>
-  <text class="on-path" x="220" y="72">1.27 GBP</text>
+  <text x="220" y="57">interest</text>
+  <text x="220" y="79">1.27 GBP</text>
 </g>
 <g class="legend" transform="translate(20,170)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#FCC"/>

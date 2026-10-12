@@ -37,6 +37,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   same way instead of arcing off the top of the canvas, and an arrow to
   a box in its own column is a bracket through the gap to its left
   instead of a loop through its own box.
+- In the LR layout arrows meeting a box are spread along its side, in
+  order of where their other ends lie, instead of meeting at one point;
+  a run up or down a column gap keeps close to the box it serves, clear
+  of the labels in the middle of the gap; forward hops are straight. No
+  two arrows share a stretch of line.
+- A label whose arrow is horizontal at its middle is written above and
+  below the line rather than over it, and the first lane is far enough
+  below the boxes for its label. Every arrow label is haloed, so a line
+  crossing it passes behind the text.
 
 ## [0.4.0] - 2026-10-12
 

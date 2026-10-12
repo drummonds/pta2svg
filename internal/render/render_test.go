@@ -219,3 +219,43 @@ func TestRoutedEdgeLabelCentredHalfwayAlongPath(t *testing.T) {
 		t.Errorf("routed edge labels have no halo:\n%s", svg)
 	}
 }
+
+// When the point halfway along a routed edge falls on a horizontal
+// stretch, the label sits either side of the line, the description above
+// and the amount below, each clear of the line by the text's height, so
+// neither hides the arrow.
+func TestRoutedEdgeLabelStraddlesHorizontalStretch(t *testing.T) {
+	d := model.NewDiagram()
+	a, b := d.GetOrCreateAccount("Income:Salary"), d.GetOrCreateAccount("Asset:Bank")
+	m := model.Movement{From: a, To: b, Amount: 3200, Commodity: "GBP", Description: "net pay"}
+	from, to := &layout.Node{Account: a, W: 140, H: 50}, &layout.Node{Account: b, X: 300, W: 140, H: 50}
+	// 20 down, 260 across, 20 up: halfway is (140,120), on the lane.
+	g := &layout.Graph{Nodes: []*layout.Node{from, to}, Width: 500, Height: 200, Edges: []layout.Edge{
+		{From: from, To: to, Movement: m, Points: [][2]float64{{10, 100}, {10, 120}, {270, 120}, {270, 100}}},
+	}}
+	var buf bytes.Buffer
+	if err := Render(&buf, g, Options{}); err != nil {
+		t.Fatal(err)
+	}
+	pos := map[string][2]float64{}
+	for _, line := range strings.Split(buf.String(), "\n") {
+		for _, label := range []string{">net pay<", ">3200.00 GBP<"} {
+			if strings.Contains(line, label) {
+				var x, y float64
+				if _, err := fmt.Sscanf(line[strings.Index(line, "x="):], `x="%g" y="%g"`, &x, &y); err != nil {
+					t.Fatalf("label %q: %v", line, err)
+				}
+				pos[label] = [2]float64{x, y}
+			}
+		}
+	}
+	desc, amount := pos[">net pay<"], pos[">3200.00 GBP<"]
+	if desc[0] != 140 || amount[0] != 140 {
+		t.Errorf("labels at x=%v,%v, want 140", desc[0], amount[0])
+	}
+	// The description's baseline is above the line; the amount's top,
+	// 11px font above its baseline, is below it.
+	if !(desc[1] <= 116 && amount[1]-11 >= 122) {
+		t.Errorf("description at y=%v and amount at y=%v are not clear of the line at 120", desc[1], amount[1])
+	}
+}
