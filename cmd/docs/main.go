@@ -135,6 +135,12 @@ const tryTmpl = `<!DOCTYPE html>
             <option value="sugiyama">sugiyama</option>
           </select></div>
         </div>
+        <div class="control">
+          <div class="select"><select id="style">
+            <option value="">plain</option>
+            <option value="afp">afp</option>
+          </select></div>
+        </div>
         <div class="control"><label class="checkbox"><input type="checkbox" id="animate"> animate</label></div>
       </div>
       <textarea id="source" class="textarea source" spellcheck="false">{{.Example}}</textarea>
@@ -158,6 +164,7 @@ const tryTmpl = `<!DOCTYPE html>
       format: document.getElementById("format").value,
       layout: document.getElementById("layout").value,
       animate: document.getElementById("animate").checked,
+      style: document.getElementById("style").value,
     };
     const src = document.getElementById("source").value;
     try {
@@ -180,7 +187,7 @@ const tryTmpl = `<!DOCTYPE html>
       shown = want;
     }
   });
-  for (const id of ["source", "format", "layout", "animate"]) {
+  for (const id of ["source", "format", "layout", "style", "animate"]) {
     document.getElementById(id).addEventListener("input", draw);
   }
   draw();

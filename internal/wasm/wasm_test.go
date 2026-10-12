@@ -66,10 +66,18 @@ func TestOptions(t *testing.T) {
 	palette := js.Global().Get("Object").New()
 	palette.Set("Asset", "#d1f0e2")
 	obj.Set("palette", palette)
+	obj.Set("shape", "stadium")
+	strokes := js.Global().Get("Object").New()
+	strokes.Set("Income", 3)
+	obj.Set("strokes", strokes)
+	obj.Set("balanceBelowName", true)
+	obj.Set("style", "afp")
 	got := Options(obj)
 	want := pta2svg.Options{Title: "T", Animate: true, Layout: pta2svg.Sugiyama,
 		Commodities: map[string]pta2svg.Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}},
-		Palette:     map[string]string{"Asset": "#d1f0e2"}}
+		Palette:     map[string]string{"Asset": "#d1f0e2"},
+		Shape:       pta2svg.Stadium, Strokes: map[string]float64{"Income": 3},
+		BalanceBelowName: true, Style: "afp"}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Options = %+v, want %+v", got, want)
 	}

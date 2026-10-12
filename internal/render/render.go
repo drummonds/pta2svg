@@ -16,7 +16,19 @@ type Options struct {
 	Animate     bool
 	Commodities map[string]Commodity // how each commodity's amounts are written; others as "1.27 GBP"
 	Palette     map[string]string    // box fill by account type name ("Asset"); others keep their own
+
+	Shape            Shape              // box outline; the zero value is a rounded rectangle
+	Strokes          map[string]float64 // box stroke width by account type name; others keep the default
+	BalanceBelowName bool               // balance in bold beneath the name rather than small in the corner
 }
+
+// Shape is the outline of an account's box.
+type Shape string
+
+const (
+	Rounded Shape = ""        // rectangle with slightly rounded corners
+	Stadium Shape = "stadium" // pill: the ends fully rounded
+)
 
 // Commodity is how a commodity's amounts are written: the symbol before
 // the number and after its sign, the decimals shown, and the separator
@@ -83,6 +95,10 @@ const defs = `
   .legend text { font-family: sans-serif; font-size: 11px; fill: #333; dominant-baseline: central; }
   .legend rect { stroke: #999; stroke-width: 1; rx: 3; ry: 3; }`
 
+const balanceBelow = `
+  .node text.name-above { dominant-baseline: auto; }
+  .node .balance-below { font-size: 12px; font-weight: bold; fill: #333; dominant-baseline: hanging; }`
+
 const animation = `
   @keyframes flow {
     from { stroke-dashoffset: 100; }
@@ -103,6 +119,9 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 		fmt.Fprintf(&b, "\n<title>%s</title>", opts.Title)
 	}
 	b.WriteString(defs)
+	if opts.BalanceBelowName {
+		b.WriteString(balanceBelow)
+	}
 	if opts.Animate {
 		b.WriteString(animation)
 	}
@@ -116,11 +135,32 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 	for _, n := range g.Nodes {
 		fill := opts.fill(n.Account.Type)
 		fmt.Fprintf(&b, "\n<g class=\"node\" transform=\"translate(%v,%v)\">", n.X, n.Y)
-		fmt.Fprintf(&b, "\n  <rect width=\"%v\" height=\"%v\" fill=\"%s\"/>", n.W, n.H, fill)
-		fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>", n.W/2, n.H/2, n.Account.ShortName)
-		if n.Balance != 0 || n.Commodity != "" {
-			fmt.Fprintf(&b, "\n  <text class=\"balance\" x=\"%.0f\" y=\"%.0f\" dx=\"-4\" dy=\"-4\">%s</text>",
-				n.W, n.H, opts.formatAmount(n.Balance, n.Commodity))
+		// A box's own shape and stroke go in its inline style, which
+		// outranks the stylesheet's .node rect.
+		var style []string
+		if opts.Shape == Stadium {
+			style = append(style, fmt.Sprintf("rx: %vpx; ry: %vpx", n.H/2, n.H/2))
+		}
+		if w, ok := opts.Strokes[n.Account.Type.String()]; ok {
+			style = append(style, fmt.Sprintf("stroke-width: %vpx", w))
+		}
+		fmt.Fprintf(&b, "\n  <rect width=\"%v\" height=\"%v\" fill=\"%s\"", n.W, n.H, fill)
+		if len(style) > 0 {
+			fmt.Fprintf(&b, " style=\"%s\"", strings.Join(style, "; "))
+		}
+		b.WriteString("/>")
+		hasBalance := n.Balance != 0 || n.Commodity != ""
+		switch {
+		case opts.BalanceBelowName && hasBalance:
+			fmt.Fprintf(&b, "\n  <text class=\"name-above\" x=\"%v\" y=\"%v\">%s</text>", n.W/2, n.H/2-2, n.Account.ShortName)
+			fmt.Fprintf(&b, "\n  <text class=\"balance-below\" x=\"%v\" y=\"%v\">%s</text>",
+				n.W/2, n.H/2+2, opts.formatAmount(n.Balance, n.Commodity))
+		default:
+			fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>", n.W/2, n.H/2, n.Account.ShortName)
+			if hasBalance {
+				fmt.Fprintf(&b, "\n  <text class=\"balance\" x=\"%.0f\" y=\"%.0f\" dx=\"-4\" dy=\"-4\">%s</text>",
+					n.W, n.H, opts.formatAmount(n.Balance, n.Commodity))
+			}
 		}
 		b.WriteString("\n</g>")
 

@@ -86,3 +86,35 @@ func TestLongArrowLabelsWidenTheGap(t *testing.T) {
 		}
 	}
 }
+
+// The afp style is the look of bytestone.uk/afp in one option: stadium
+// boxes, the P&L account types stroked heavier, the balance in bold
+// beneath the name. It is the same drawing as asking for the three
+// separately, which still apply on top of it; an unknown style is an
+// error.
+func TestStyleAFP(t *testing.T) {
+	render := func(o Options) (string, error) {
+		var buf bytes.Buffer
+		err := RenderDiagram(&buf, lunch(), o)
+		return buf.String(), err
+	}
+	afp, err := render(Options{Style: "afp"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	separately, _ := render(Options{Shape: Stadium, Strokes: map[string]float64{"Income": 3, "Expense": 3}, BalanceBelowName: true})
+	if afp != separately {
+		t.Errorf("afp style differs from its three options:\n%s\nvs\n%s", afp, separately)
+	}
+	plain, _ := render(Options{})
+	if afp == plain {
+		t.Error("afp style draws the plain look")
+	}
+	heavier, _ := render(Options{Style: "afp", Strokes: map[string]float64{"Expense": 5}})
+	if !strings.Contains(heavier, `stroke-width: 5px`) {
+		t.Errorf("caller's stroke does not apply over the style:\n%s", heavier)
+	}
+	if _, err := render(Options{Style: "mermaid"}); err == nil || !strings.Contains(err.Error(), "mermaid") {
+		t.Errorf("unknown style: err = %v, want one naming it", err)
+	}
+}

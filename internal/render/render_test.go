@@ -259,3 +259,54 @@ func TestRoutedEdgeLabelStraddlesHorizontalStretch(t *testing.T) {
 		t.Errorf("description at y=%v and amount at y=%v are not clear of the line at 120", desc[1], amount[1])
 	}
 }
+
+// Formatting options, all off by default: a stadium shape rounds each box
+// to a pill, a stroke width per account type draws that type's boxes
+// heavier, and the balance can sit in bold, centred, beneath the name.
+func TestBoxFormatting(t *testing.T) {
+	d := model.NewDiagram()
+	a, b := d.GetOrCreateAccount("Income:Salary"), d.GetOrCreateAccount("Asset:Bank")
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{{From: a, To: b, Amount: 10, Commodity: "GBP"}}}}
+	d.ComputeBalances()
+	g := layout.LR{}.Layout(d, layout.DefaultOptions())
+	render := func(o Options) string {
+		var buf bytes.Buffer
+		if err := Render(&buf, g, o); err != nil {
+			t.Fatal(err)
+		}
+		return buf.String()
+	}
+	rect := func(svg, fill string) string {
+		for _, line := range strings.Split(svg, "\n") {
+			if strings.Contains(line, "<rect") && strings.Contains(line, `fill="`+fill+`"`) && strings.Contains(line, `height="50"`) {
+				return line
+			}
+		}
+		t.Fatalf("no box filled %s:\n%s", fill, svg)
+		return ""
+	}
+
+	plain := render(Options{})
+	// The stylesheet's rx and stroke-width outrank attributes, so a box's
+	// own shape and stroke must be in its inline style to show.
+	if r := rect(plain, model.Income.Fill()); strings.Contains(r, "style=") {
+		t.Errorf("default box carries formatting: %s", r)
+	}
+	if !strings.Contains(plain, `class="balance"`) {
+		t.Error("default balance is not in the corner")
+	}
+
+	styled := render(Options{Shape: Stadium, Strokes: map[string]float64{"Income": 3}, BalanceBelowName: true})
+	if r := rect(styled, model.Income.Fill()); !strings.Contains(r, `style="rx: 25px; ry: 25px; stroke-width: 3px"`) {
+		t.Errorf("income box not a heavy stadium: %s", r)
+	}
+	if r := rect(styled, model.Asset.Fill()); !strings.Contains(r, `style="rx: 25px; ry: 25px"`) {
+		t.Errorf("asset box not a plain-stroked stadium: %s", r)
+	}
+	if strings.Contains(styled, `class="balance"`) || !strings.Contains(styled, `class="balance-below"`) {
+		t.Errorf("balance not beneath the name:\n%s", styled)
+	}
+	if !strings.Contains(styled, ".balance-below { ") || !strings.Contains(styled, "font-weight: bold") {
+		t.Error("balance beneath the name is not bold")
+	}
+}

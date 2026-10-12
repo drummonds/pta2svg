@@ -17,10 +17,11 @@ import (
 // Renderer turns the page's argument into SVG under the given options.
 type Renderer func(arg js.Value, opts js.Value) (string, error)
 
-// Options reads {title, animate, layout, commodities, palette} from a JS
-// object: commodities as {GBP: {symbol, decimals, thousands}}, palette as
-// {Asset: "#d1f0e2"}. Anything else, undefined included, gives the zero
-// Options.
+// Options reads {title, animate, layout, commodities, palette, shape,
+// strokes, balanceBelowName, style} from a JS object: commodities as
+// {GBP: {symbol, decimals, thousands}}, palette as {Asset: "#d1f0e2"},
+// strokes as {Income: 3}. Anything else, undefined included, gives the
+// zero Options.
 func Options(v js.Value) pta2svg.Options {
 	o := pta2svg.Options{}
 	if v.Type() != js.TypeObject {
@@ -40,6 +41,18 @@ func Options(v js.Value) pta2svg.Options {
 	}
 	if p := v.Get("palette"); p.Type() == js.TypeObject {
 		_ = json.Unmarshal([]byte(stringify(p)), &o.Palette)
+	}
+	if s := v.Get("shape"); s.Type() == js.TypeString {
+		o.Shape = pta2svg.Shape(s.String())
+	}
+	if s := v.Get("strokes"); s.Type() == js.TypeObject {
+		_ = json.Unmarshal([]byte(stringify(s)), &o.Strokes)
+	}
+	if b := v.Get("balanceBelowName"); b.Type() == js.TypeBoolean {
+		o.BalanceBelowName = b.Bool()
+	}
+	if s := v.Get("style"); s.Type() == js.TypeString {
+		o.Style = s.String()
 	}
 	return o
 }

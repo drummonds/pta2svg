@@ -63,6 +63,17 @@ pta2svg.Options{
 }
 ```
 
+and how the boxes are drawn, all off by default:
+
+```go
+pta2svg.Options{
+	Shape:            pta2svg.Stadium,                  // pill-shaped boxes; Rounded is the default
+	Strokes:          map[string]float64{"Income": 3},  // stroke width by account type; others 1.5
+	BalanceBelowName: true,                             // balance in bold beneath the name, not in the corner
+	Style:            "afp",                            // the look of bytestone.uk/afp: all three at once
+}
+```
+
 ## Browser
 
 `task wasm:build` compiles three binaries into `docs/`. Each installs functions on the page that return an SVG string and throw a JS `Error` on failure:
@@ -80,7 +91,7 @@ pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"}
 pta2svg.renderModel(model, {title: "", animate: false, layout: "lr"})
 ```
 
-Both take `commodities` and `palette` as the library's `Options` do: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}}`.
+Both take the library's `Options` as an object: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}, shape: "stadium", strokes: {Income: 3}, balanceBelowName: true, style: "afp"}`.
 
 The tree-sitter grammars behind `render` are the difference in size. A page that already holds the ledger as data uses the lite or tiny build and passes the model, as JSON text or as an object:
 

@@ -41,6 +41,50 @@ type Options struct {
 	// ("Asset", "Liability", "Equity", "Income", "Expense", "Hub",
 	// "External"); a type not named keeps pta2svg's own colour.
 	Palette map[string]string
+
+	// Shape is the outline of every box: Rounded (the zero value) or
+	// Stadium, a pill.
+	Shape Shape
+	// Strokes is the stroke width of each account type's boxes by type
+	// name, as Palette; a type not named keeps the default 1.5.
+	Strokes map[string]float64
+	// BalanceBelowName writes each balance in bold beneath the account
+	// name rather than small in the box's corner.
+	BalanceBelowName bool
+	// Style is a preset of the three above: "afp" is the look of
+	// bytestone.uk/afp, stadium boxes with the P&L types (Income and
+	// Expense) stroked at 3 and the balance beneath the name. A Shape or
+	// Strokes set alongside it applies on top. Empty means no preset.
+	Style string
+}
+
+// Shape is the outline of an account's box.
+type Shape = render.Shape
+
+const (
+	Rounded = render.Rounded // rectangle with slightly rounded corners (default)
+	Stadium = render.Stadium // pill: the ends fully rounded
+)
+
+// withStyle is o with its Style's preset filled in under the fields the
+// caller set.
+func (o Options) withStyle() (Options, error) {
+	switch o.Style {
+	case "":
+		return o, nil
+	case "afp":
+		if o.Shape == Rounded {
+			o.Shape = Stadium
+		}
+		strokes := map[string]float64{"Income": 3, "Expense": 3}
+		for t, w := range o.Strokes {
+			strokes[t] = w
+		}
+		o.Strokes = strokes
+		o.BalanceBelowName = true
+		return o, nil
+	}
+	return o, fmt.Errorf("unknown style %q (use afp)", o.Style)
 }
 
 // Commodity is how a commodity's amounts are written.
@@ -77,9 +121,15 @@ func RenderDiagram(w io.Writer, d *Diagram, opts Options) error {
 	if err != nil {
 		return err
 	}
+	if opts, err = opts.withStyle(); err != nil {
+		return err
+	}
 	// The gap between columns is at least the room the widest arrow
 	// label needs, so the text sits between the boxes, not over them.
-	ro := render.Options{Title: opts.Title, Animate: opts.Animate, Commodities: opts.Commodities, Palette: opts.Palette}
+	ro := render.Options{
+		Title: opts.Title, Animate: opts.Animate, Commodities: opts.Commodities, Palette: opts.Palette,
+		Shape: opts.Shape, Strokes: opts.Strokes, BalanceBelowName: opts.BalanceBelowName,
+	}
 	lo := layout.DefaultOptions()
 	lo.PadX = max(lo.PadX, render.LabelWidth(d, ro))
 	g := layout.GraphFromDiagram(d, l, lo)

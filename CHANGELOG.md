@@ -18,6 +18,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - The browser builds read both from the options object:
   `renderModel(model, {commodities: {GBP: {symbol: "£", decimals: 2,
   thousands: ","}}, palette: {Asset: "#d1f0e2"}})`.
+- Box formatting, all off by default (#9): `Options.Shape` (`Stadium`
+  pill boxes beside the default `Rounded`), `Options.Strokes` (stroke
+  width by account type name, as `Palette`), `Options.BalanceBelowName`
+  (the balance in bold beneath the name rather than small in the
+  corner), and `Options.Style: "afp"`, the look of bytestone.uk/afp in
+  one option: stadium boxes, Income and Expense stroked at 3, the
+  balance beneath the name. A `Shape` or `Strokes` set alongside the
+  style applies on top; an unknown style is an error. The browser builds
+  read `shape`, `strokes`, `balanceBelowName` and `style`, and the Try-it
+  page has a style choice.
 - Docs: each example shows its JSON model beside the source; the Try-it
   page takes the JSON model as a format, drawn through `renderModel`;
   the index lists the browser builds with their sizes, raw and gzipped,
