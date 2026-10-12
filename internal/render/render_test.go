@@ -88,7 +88,7 @@ func TestRenderAnimate(t *testing.T) {
 func TestLabelWidth(t *testing.T) {
 	d := model.NewDiagram()
 	a, b := d.GetOrCreateAccount("Asset:Cash"), d.GetOrCreateAccount("Expense:Food")
-	if got := LabelWidth(d); got != 0 {
+	if got := LabelWidth(d, Options{}); got != 0 {
 		t.Errorf("no movements: %v, want 0", got)
 	}
 	d.Transactions = []model.Transaction{{Movements: []model.Movement{
@@ -96,8 +96,65 @@ func TestLabelWidth(t *testing.T) {
 		{From: a, To: b, Amount: -1234567.89, Commodity: "GBP"},
 	}}}
 	// "-1234567.89 GBP" is 15 characters, longer than "lunch".
-	if got, want := LabelWidth(d), 15*charWidth+labelClearance; got != want {
+	if got, want := LabelWidth(d, Options{}), 15*charWidth+labelClearance; got != want {
 		t.Errorf("LabelWidth = %v, want %v for the 15-character amount", got, want)
+	}
+	// Written as pounds, "-£1,234,567.89" is 14 characters.
+	pounds := Options{Commodities: map[string]Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}}}
+	if got, want := LabelWidth(d, pounds), 14*charWidth+labelClearance; got != want {
+		t.Errorf("LabelWidth = %v, want %v for the 14-character amount", got, want)
+	}
+}
+
+// A commodity the caller describes is written its way: the symbol before
+// the number and after its sign, the decimals given, the thousands
+// separated; one the caller does not is written as before. A palette
+// fills an account type's boxes, legend swatch included, in the caller's
+// colour; a type the palette leaves out keeps its own.
+func TestCommodityFormatAndPalette(t *testing.T) {
+	opts := Options{
+		Commodities: map[string]Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}, "JPY": {Symbol: "¥", Decimals: 0}},
+		Palette:     map[string]string{"Asset": "#d1f0e2", "Expense": "#ccfaf3"},
+	}
+	for _, c := range []struct {
+		amount    float64
+		commodity string
+		want      string
+	}{
+		{1234567.891, "GBP", "£1,234,567.89"},
+		{-1.27, "GBP", "-£1.27"},
+		{0, "GBP", "£0.00"},
+		{999, "GBP", "£999.00"},
+		{1000, "GBP", "£1,000.00"},
+		{123456, "JPY", "¥123456"},
+		{-5, "EUR", "-5.00 EUR"},
+		{5, "", "5.00"},
+	} {
+		if got := opts.formatAmount(c.amount, c.commodity); got != c.want {
+			t.Errorf("formatAmount(%v, %q) = %q, want %q", c.amount, c.commodity, got, c.want)
+		}
+	}
+
+	d := model.NewDiagram()
+	a, b, e := d.GetOrCreateAccount("Asset:Cash"), d.GetOrCreateAccount("Liability:Savings"), d.GetOrCreateAccount("Expense:Interest")
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{
+		{From: a, To: b, Amount: -1000, Commodity: "GBP", Description: "deposit"},
+		{From: e, To: b, Amount: -1.27, Commodity: "GBP", Description: "interest"},
+	}}}
+	d.ComputeBalances()
+	g := layout.LR{}.Layout(d, layout.DefaultOptions())
+	var buf bytes.Buffer
+	if err := Render(&buf, g, opts); err != nil {
+		t.Fatal(err)
+	}
+	svg := buf.String()
+	for _, want := range []string{"-£1,000.00", "-£1.27", `fill="#d1f0e2"`, `fill="#ccfaf3"`, `fill="` + model.Liability.Fill() + `"`} {
+		if !strings.Contains(svg, want) {
+			t.Errorf("svg lacks %q:\n%s", want, svg)
+		}
+	}
+	if strings.Contains(svg, "GBP") || strings.Contains(svg, model.Asset.Fill()) {
+		t.Errorf("svg still carries the commodity code or the default asset fill:\n%s", svg)
 	}
 }
 

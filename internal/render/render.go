@@ -12,8 +12,59 @@ import (
 
 // Options controls rendering.
 type Options struct {
-	Title   string
-	Animate bool
+	Title       string
+	Animate     bool
+	Commodities map[string]Commodity // how each commodity's amounts are written; others as "1.27 GBP"
+	Palette     map[string]string    // box fill by account type name ("Asset"); others keep their own
+}
+
+// Commodity is how a commodity's amounts are written: the symbol before
+// the number and after its sign, the decimals shown, and the separator
+// between thousands, if any. The commodity code is not written.
+type Commodity struct {
+	Symbol    string `json:"symbol,omitempty"`
+	Decimals  int    `json:"decimals"`
+	Thousands string `json:"thousands,omitempty"`
+}
+
+// fill is the colour an account type's boxes are drawn in: the palette's
+// when it names the type, else the type's own.
+func (o Options) fill(t model.AccountType) string {
+	if f, ok := o.Palette[t.String()]; ok {
+		return f
+	}
+	return t.Fill()
+}
+
+// formatAmount writes an amount in its commodity: as the caller
+// described the commodity, or to two places with the code after.
+func (o Options) formatAmount(amount float64, commodity string) string {
+	c, ok := o.Commodities[commodity]
+	if !ok {
+		s := fmt.Sprintf("%.2f", amount)
+		if commodity != "" {
+			s += " " + commodity
+		}
+		return s
+	}
+	sign := ""
+	if amount < 0 {
+		sign, amount = "-", -amount
+	}
+	s := fmt.Sprintf("%.*f", c.Decimals, amount)
+	whole, frac, _ := strings.Cut(s, ".")
+	if c.Thousands != "" {
+		var groups []string
+		for len(whole) > 3 {
+			groups = append([]string{whole[len(whole)-3:]}, groups...)
+			whole = whole[:len(whole)-3]
+		}
+		whole = strings.Join(append([]string{whole}, groups...), c.Thousands)
+	}
+	if frac != "" {
+		whole += "." + frac
+	}
+	return sign + c.Symbol + whole
 }
 
 const defs = `
@@ -62,13 +113,13 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 	seenTypes := make(map[model.AccountType]bool)
 
 	for _, n := range g.Nodes {
-		fill := n.Account.Type.Fill()
+		fill := opts.fill(n.Account.Type)
 		fmt.Fprintf(&b, "\n<g class=\"node\" transform=\"translate(%v,%v)\">", n.X, n.Y)
 		fmt.Fprintf(&b, "\n  <rect width=\"%v\" height=\"%v\" fill=\"%s\"/>", n.W, n.H, fill)
 		fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>", n.W/2, n.H/2, n.Account.ShortName)
 		if n.Balance != 0 || n.Commodity != "" {
 			fmt.Fprintf(&b, "\n  <text class=\"balance\" x=\"%.0f\" y=\"%.0f\" dx=\"-4\" dy=\"-4\">%s</text>",
-				n.W, n.H, formatAmount(n.Balance, n.Commodity))
+				n.W, n.H, opts.formatAmount(n.Balance, n.Commodity))
 		}
 		b.WriteString("\n</g>")
 
@@ -113,7 +164,7 @@ func Render(w io.Writer, g *layout.Graph, opts Options) error {
 			fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>", midX, midY-8, d)
 		}
 		fmt.Fprintf(&b, "\n  <text x=\"%v\" y=\"%v\">%s</text>\n</g>",
-			midX, midY+14, formatAmount(e.Movement.Amount, e.Movement.Commodity))
+			midX, midY+14, opts.formatAmount(e.Movement.Amount, e.Movement.Commodity))
 	}
 
 	if len(legend) > 0 {
@@ -168,14 +219,6 @@ func polylinePath(pts [][2]float64, arrowHeadStart bool) string {
 	return s
 }
 
-func formatAmount(amount float64, commodity string) string {
-	s := fmt.Sprintf("%.2f", amount)
-	if commodity != "" {
-		s += " " + commodity
-	}
-	return s
-}
-
 // The edge font is 11px sans-serif; charWidth is the room a character of
 // it takes on average, labelClearance the space left between a label and
 // the boxes either side of it.
@@ -186,13 +229,13 @@ const (
 
 // LabelWidth is the room the widest arrow label in d needs between the
 // boxes it runs between: the longer of each movement's description and
-// its formatted amount, estimated from the character count at the edge
-// font, with clearance either side. Zero when there are no movements.
-func LabelWidth(d *model.Diagram) float64 {
+// its amount as opts writes it, estimated from the character count at the
+// edge font, with clearance either side. Zero when there are no movements.
+func LabelWidth(d *model.Diagram, opts Options) float64 {
 	longest := 0
 	for _, tx := range d.Transactions {
 		for _, m := range tx.Movements {
-			longest = max(longest, len([]rune(m.Description)), len(formatAmount(m.Amount, m.Commodity)))
+			longest = max(longest, len([]rune(m.Description)), len([]rune(opts.formatAmount(m.Amount, m.Commodity))))
 		}
 	}
 	if longest == 0 {

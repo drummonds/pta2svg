@@ -54,6 +54,15 @@ err := parse.Render(w, src, parse.Goluca, pta2svg.Options{Title: "January"})
 
 `parse.Parse` returns the `Diagram`; `pta2svg.RenderDiagram` draws one built without text (`NewDiagram`, `GetOrCreateAccount`, `Transactions`, `Opening`, then `ComputeBalances`). The text parsers live in `parse` because their tree-sitter grammars are most of the size of a browser build; a program that holds the ledger as data imports only the root package.
 
+`Options` also takes how money is written and what colours the boxes are, so a drawing matches the page it sits on:
+
+```go
+pta2svg.Options{
+	Commodities: map[string]pta2svg.Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}}, // -£1,234.56; others "1.27 GBP"
+	Palette:     map[string]string{"Asset": "#d1f0e2", "Liability": "#fcd5dd"},                      // fill by account type; others keep their own
+}
+```
+
 ## Browser
 
 `task wasm:build` compiles three binaries into `docs/`. Each installs functions on the page that return an SVG string and throw a JS `Error` on failure:
@@ -70,6 +79,8 @@ The tiny build is the lite build compiled with [TinyGo](https://tinygo.org) and 
 pta2svg.render(text, {format: "goluca", title: "", animate: false, layout: "lr"})
 pta2svg.renderModel(model, {title: "", animate: false, layout: "lr"})
 ```
+
+Both take `commodities` and `palette` as the library's `Options` do: `{commodities: {GBP: {symbol: "£", decimals: 2, thousands: ","}}, palette: {Asset: "#d1f0e2"}}`.
 
 The tree-sitter grammars behind `render` are the difference in size. A page that already holds the ledger as data uses the lite or tiny build and passes the model, as JSON text or as an object:
 

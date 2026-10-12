@@ -4,6 +4,7 @@ package wasm
 
 import (
 	"errors"
+	"reflect"
 	"strings"
 	"syscall/js"
 	"testing"
@@ -55,12 +56,24 @@ func TestOptions(t *testing.T) {
 	obj.Set("title", "T")
 	obj.Set("animate", true)
 	obj.Set("layout", "sugiyama")
+	gbp := js.Global().Get("Object").New()
+	gbp.Set("symbol", "£")
+	gbp.Set("decimals", 2)
+	gbp.Set("thousands", ",")
+	commodities := js.Global().Get("Object").New()
+	commodities.Set("GBP", gbp)
+	obj.Set("commodities", commodities)
+	palette := js.Global().Get("Object").New()
+	palette.Set("Asset", "#d1f0e2")
+	obj.Set("palette", palette)
 	got := Options(obj)
-	want := pta2svg.Options{Title: "T", Animate: true, Layout: pta2svg.Sugiyama}
-	if got != want {
+	want := pta2svg.Options{Title: "T", Animate: true, Layout: pta2svg.Sugiyama,
+		Commodities: map[string]pta2svg.Commodity{"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}},
+		Palette:     map[string]string{"Asset": "#d1f0e2"}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Options = %+v, want %+v", got, want)
 	}
-	if Options(js.Undefined()) != (pta2svg.Options{}) {
+	if !reflect.DeepEqual(Options(js.Undefined()), pta2svg.Options{}) {
 		t.Error("undefined options should be the zero Options")
 	}
 }

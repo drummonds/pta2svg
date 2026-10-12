@@ -17,8 +17,10 @@ import (
 // Renderer turns the page's argument into SVG under the given options.
 type Renderer func(arg js.Value, opts js.Value) (string, error)
 
-// Options reads {title, animate, layout} from a JS object. Anything else,
-// undefined included, gives the zero Options.
+// Options reads {title, animate, layout, commodities, palette} from a JS
+// object: commodities as {GBP: {symbol, decimals, thousands}}, palette as
+// {Asset: "#d1f0e2"}. Anything else, undefined included, gives the zero
+// Options.
 func Options(v js.Value) pta2svg.Options {
 	o := pta2svg.Options{}
 	if v.Type() != js.TypeObject {
@@ -33,7 +35,18 @@ func Options(v js.Value) pta2svg.Options {
 	if l := v.Get("layout"); l.Type() == js.TypeString {
 		o.Layout = pta2svg.Layout(l.String())
 	}
+	if c := v.Get("commodities"); c.Type() == js.TypeObject {
+		_ = json.Unmarshal([]byte(stringify(c)), &o.Commodities)
+	}
+	if p := v.Get("palette"); p.Type() == js.TypeObject {
+		_ = json.Unmarshal([]byte(stringify(p)), &o.Palette)
+	}
 	return o
+}
+
+// stringify is a JS object as JSON text.
+func stringify(v js.Value) string {
+	return js.Global().Get("JSON").Call("stringify", v).String()
 }
 
 // RenderModel draws a pta2svg.Model given as JSON text or as a plain object.
@@ -43,7 +56,7 @@ func RenderModel(arg js.Value, opts js.Value) (string, error) {
 	case js.TypeString:
 		raw = arg.String()
 	case js.TypeObject:
-		raw = js.Global().Get("JSON").Call("stringify", arg).String()
+		raw = stringify(arg)
 	default:
 		return "", errors.New("renderModel: model must be JSON text or an object")
 	}

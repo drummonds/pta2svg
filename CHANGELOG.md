@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- `Options.Commodities`: how each commodity's amounts are written, by
+  code: a symbol before the number and after its sign, the decimals
+  shown and a thousands separator, so `{"GBP": {Symbol: "£", Decimals:
+  2, Thousands: ","}}` writes `-£1,234.56`. A commodity not described
+  is written `1.27 GBP` as before. The column gap is sized to the amount
+  as written.
+- `Options.Palette`: the fill of each account type's boxes by type name,
+  legend swatch included; a type not named keeps pta2svg's own colour.
+- The browser builds read both from the options object:
+  `renderModel(model, {commodities: {GBP: {symbol: "£", decimals: 2,
+  thousands: ","}}, palette: {Asset: "#d1f0e2"}})`.
+
 ## [0.4.0] - 2026-10-12
 
  - Label-aware column gap, the TinyGo lite build, direct SVG writing

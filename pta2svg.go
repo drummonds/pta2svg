@@ -32,7 +32,19 @@ type Options struct {
 	Title   string // SVG <title>
 	Animate bool   // CSS flow animation along the arrows
 	Layout  Layout // layout engine; empty means LR
+
+	// Commodities is how each commodity's amounts are written, by code:
+	// {"GBP": {Symbol: "£", Decimals: 2, Thousands: ","}} writes
+	// "-£1,234.56". A commodity not described is written "1.27 GBP".
+	Commodities map[string]Commodity
+	// Palette is the fill of each account type's boxes by type name
+	// ("Asset", "Liability", "Equity", "Income", "Expense", "Hub",
+	// "External"); a type not named keeps pta2svg's own colour.
+	Palette map[string]string
 }
+
+// Commodity is how a commodity's amounts are written.
+type Commodity = render.Commodity
 
 // The ledger model, for callers that build a Diagram without text.
 type (
@@ -67,10 +79,11 @@ func RenderDiagram(w io.Writer, d *Diagram, opts Options) error {
 	}
 	// The gap between columns is at least the room the widest arrow
 	// label needs, so the text sits between the boxes, not over them.
+	ro := render.Options{Title: opts.Title, Animate: opts.Animate, Commodities: opts.Commodities, Palette: opts.Palette}
 	lo := layout.DefaultOptions()
-	lo.PadX = max(lo.PadX, render.LabelWidth(d))
+	lo.PadX = max(lo.PadX, render.LabelWidth(d, ro))
 	g := layout.GraphFromDiagram(d, l, lo)
-	return render.Render(w, g, render.Options{Title: opts.Title, Animate: opts.Animate})
+	return render.Render(w, g, ro)
 }
 
 func layouter(l Layout) (layout.Layouter, error) {
