@@ -19,8 +19,8 @@
 
 ## Next
 
+- [ ] Safe text in the SVG: every piece of ledger text (title, account short names, payees, descriptions, commodities, legend labels) passes through one substitution in the renderer before it is written — `&` `<` `>` `"` `'` to entities, and characters XML 1.0 forbids (controls other than tab and newline) to U+FFFD. Today a description like `R&D` gives invalid SVG, and the wasm builds hand that raw text to a page that injects it. Substitute, never reject: the Diagram keeps the true names and escaping stays an output concern. Done when a test feeding hostile text through every field yields SVG that parses as XML and round-trips the original strings, and the goldens are unchanged
 - [ ] Smaller full wasm: the binary embeds all 206 gotreesitter grammar blobs (15 MB of 24 MB). A `grammar_set` build tag in gotreesitter covering pta, goluca and beancount would cut the Try-it page's build to roughly 9 MB; a page that holds the ledger as data already uses the 4 MB lite build or the 0.7 MB TinyGo build
-- [ ] Escape `<`, `&` and quotes in account names and descriptions in the SVG template
 
 ## Phase 1 — Better automatic layout
 
