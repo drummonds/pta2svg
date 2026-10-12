@@ -113,64 +113,85 @@ func (LR) Layout(d *model.Diagram, opts LayoutOptions) *Graph {
 	return g
 }
 
-// routeAroundBoxes gives an arrow whose curve would pass through a box in
-// a column between its ends a route around them instead, along a lane of
-// its own below the boxes it passes. An end that is the lowest box in its
-// column is left or entered through its bottom edge; otherwise the route
-// runs through the gap beside it, so it never crosses a box beneath. The
-// canvas grows to hold the lanes and their labels.
+// routeAroundBoxes routes every arrow that a curve between facing sides
+// would draw badly. An arrow to a box in its own column is a bracket out
+// through the gap to the column's left. An arrow back to an earlier
+// column, or forward through a box in a column between, runs along a lane
+// of its own below the boxes it passes. The canvas grows to hold the
+// lanes and their labels.
 func routeAroundBoxes(g *Graph, opts LayoutOptions) {
 	const laneStep = 36.0 // room for a two-line label between lanes
 	lane := 0
 	for i := range g.Edges {
 		e := &g.Edges[i]
-		sx, sy := e.From.X+e.From.W, e.From.Y+e.From.H/2
-		ex, ey := e.To.X, e.To.Y+e.To.H/2
-		if ex <= sx {
-			continue // backward arrows keep their arc
-		}
-		top, bottom := min(sy, ey), max(sy, ey)
-		blocked, lowest := false, 0.0
-		for _, n := range g.Nodes {
-			if n.X < sx || n.X+n.W > ex {
-				continue
-			}
-			lowest = max(lowest, n.Y+n.H)
-			if n.Y < bottom && n.Y+n.H > top {
-				blocked = true
-			}
-		}
-		if !blocked {
+		from, to := e.From, e.To
+		sy, ey := from.Y+from.H/2, to.Y+to.H/2
+		switch {
+		case from.X == to.X:
+			gx := from.X - min(opts.PadX, opts.MarginX)/2
+			e.Points = [][2]float64{{from.X, sy}, {gx, sy}, {gx, ey}, {to.X, ey}}
+			continue
+		case to.X > from.X && !blocked(g, from, to):
 			continue
 		}
-		fromBelow, intoBelow := lowestInColumn(g, e.From), lowestInColumn(g, e.To)
+		forward := to.X > from.X
+		left, right := min(from.X, to.X), max(from.X+from.W, to.X+to.W)
+		lowest := 0.0
+		for _, n := range g.Nodes {
+			if n.X >= left && n.X+n.W <= right && n != from && n != to {
+				lowest = max(lowest, n.Y+n.H)
+			}
+		}
+		fromBelow, intoBelow := lowestInColumn(g, from), lowestInColumn(g, to)
 		if fromBelow {
-			lowest = max(lowest, e.From.Y+e.From.H)
+			lowest = max(lowest, from.Y+from.H)
 		}
 		if intoBelow {
-			lowest = max(lowest, e.To.Y+e.To.H)
+			lowest = max(lowest, to.Y+to.H)
 		}
 		laneY := lowest + opts.PadY/2 + float64(lane)*laneStep
 		lane++
 
+		// Leave by the bottom, else by the side facing the way the arrow
+		// goes and down its gap; enter likewise.
 		var pts [][2]float64
 		if fromBelow {
-			cx := e.From.X + e.From.W/2
-			pts = append(pts, [2]float64{cx, e.From.Y + e.From.H}, [2]float64{cx, laneY})
+			cx := from.X + from.W/2
+			pts = append(pts, [2]float64{cx, from.Y + from.H}, [2]float64{cx, laneY})
 		} else {
-			out := sx + opts.PadX/2
-			pts = append(pts, [2]float64{sx, sy}, [2]float64{out, sy}, [2]float64{out, laneY})
+			side, gap := from.X+from.W, from.X+from.W+opts.PadX/2
+			if !forward {
+				side, gap = from.X, from.X-opts.PadX/2
+			}
+			pts = append(pts, [2]float64{side, sy}, [2]float64{gap, sy}, [2]float64{gap, laneY})
 		}
 		if intoBelow {
-			cx := e.To.X + e.To.W/2
-			pts = append(pts, [2]float64{cx, laneY}, [2]float64{cx, e.To.Y + e.To.H})
+			cx := to.X + to.W/2
+			pts = append(pts, [2]float64{cx, laneY}, [2]float64{cx, to.Y + to.H})
 		} else {
-			in := ex - opts.PadX/2
-			pts = append(pts, [2]float64{in, laneY}, [2]float64{in, ey}, [2]float64{ex, ey})
+			side, gap := to.X, to.X-opts.PadX/2
+			if !forward {
+				side, gap = to.X+to.W, to.X+to.W+opts.PadX/2
+			}
+			pts = append(pts, [2]float64{gap, laneY}, [2]float64{gap, ey}, [2]float64{side, ey})
 		}
 		e.Points = pts
 		g.Height = max(g.Height, laneY+laneStep/2+opts.MarginY/2)
 	}
+}
+
+// blocked reports whether a curve from from's right side to to's left
+// side would pass through a box in a column between them.
+func blocked(g *Graph, from, to *Node) bool {
+	sx, ex := from.X+from.W, to.X
+	sy, ey := from.Y+from.H/2, to.Y+to.H/2
+	top, bottom := min(sy, ey), max(sy, ey)
+	for _, n := range g.Nodes {
+		if n.X >= sx && n.X+n.W <= ex && n.Y < bottom && n.Y+n.H > top {
+			return true
+		}
+	}
+	return false
 }
 
 // lowestInColumn reports whether no box in n's column sits below it.

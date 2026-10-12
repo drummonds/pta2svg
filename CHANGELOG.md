@@ -33,7 +33,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   the boxes in between: it is routed along a lane of its own below them,
   leaving and entering through a box's bottom edge when nothing sits
   beneath it and through the column gap otherwise. The canvas grows to
-  hold the lanes.
+  hold the lanes. An arrow back to an earlier column takes a lane the
+  same way instead of arcing off the top of the canvas, and an arrow to
+  a box in its own column is a bracket through the gap to its left
+  instead of a loop through its own box.
 
 ## [0.4.0] - 2026-10-12
 

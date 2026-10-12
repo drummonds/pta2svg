@@ -67,11 +67,43 @@ func TestLRRoutesAroundIntermediateBoxes(t *testing.T) {
 		{From: cash, To: purchases, Amount: 25},
 		{From: sales, To: cash, Amount: 37.5},
 	}}}
-	g := LR{}.Layout(d, DefaultOptions())
+	assertClearRoutes(t, LR{}.Layout(d, DefaultOptions()))
+}
 
+// An arrow back to an earlier column, or to a box in its own column, is
+// routed like a column-jumping one rather than arced off the canvas or
+// through its own box. The budget ledger has both: Bank pays the
+// Mortgage to its left and the Savings beneath it.
+func TestLRRoutesBackwardAndSameColumnArrows(t *testing.T) {
+	d := model.NewDiagram()
+	salary, bank := d.GetOrCreateAccount("Income:Salary"), d.GetOrCreateAccount("Asset:Bank")
+	mortgage, savings := d.GetOrCreateAccount("Liability:Mortgage"), d.GetOrCreateAccount("Asset:Savings")
+	food, tax, utilities := d.GetOrCreateAccount("Expense:Food"), d.GetOrCreateAccount("Expense:Tax"), d.GetOrCreateAccount("Expense:Utilities")
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{
+		{From: salary, To: bank, Amount: 3200},
+		{From: salary, To: tax, Amount: 800},
+		{From: bank, To: mortgage, Amount: 1100},
+		{From: bank, To: food, Amount: 95},
+		{From: bank, To: savings, Amount: 500},
+		{From: bank, To: utilities, Amount: 145},
+		{From: bank, To: tax, Amount: 180},
+	}}}
+	assertClearRoutes(t, LR{}.Layout(d, DefaultOptions()))
+}
+
+// assertClearRoutes checks every arrow in g: one that is not a forward
+// hop is routed; no route crosses a box other than its own ends; every
+// point is on the canvas.
+func assertClearRoutes(t *testing.T, g *Graph) {
+	t.Helper()
 	for _, e := range g.Edges {
+		name := e.From.Account.Name + " -> " + e.To.Account.Name
 		pts := e.Points
 		if len(pts) == 0 {
+			if e.To.X <= e.From.X {
+				t.Errorf("%s runs backward or within its column but is not routed", name)
+				continue
+			}
 			// Unrouted: a curve within the box between its ends' facing sides.
 			pts = [][2]float64{{e.From.X + e.From.W, e.From.Y + e.From.H/2}, {e.To.X, e.To.Y + e.To.H/2}}
 		}
@@ -81,13 +113,13 @@ func TestLRRoutesAroundIntermediateBoxes(t *testing.T) {
 					continue
 				}
 				if crossesBox(pts[i-1], pts[i], n) {
-					t.Errorf("%s -> %s crosses %s on segment %v-%v", e.From.Account.Name, e.To.Account.Name, n.Account.Name, pts[i-1], pts[i])
+					t.Errorf("%s crosses %s on segment %v-%v", name, n.Account.Name, pts[i-1], pts[i])
 				}
 			}
 		}
 		for _, p := range pts {
 			if p[0] < 0 || p[0] > g.Width || p[1] < 0 || p[1] > g.Height {
-				t.Errorf("%s -> %s point %v off the %vx%v canvas", e.From.Account.Name, e.To.Account.Name, p, g.Width, g.Height)
+				t.Errorf("%s point %v off the %vx%v canvas", name, p, g.Width, g.Height)
 			}
 		}
 	}

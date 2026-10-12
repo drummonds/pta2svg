@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 170" width="440" height="170">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 183" width="440" height="183">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -27,11 +27,11 @@
 </g>
 
 <g class="edge">
-  <path d="M400.0,65.0 C610.0,-145.0 -170.0,-145.0 40.0,65.0"/>
-  <text x="220" y="57">interest</text>
-  <text x="220" y="79">1.27 GBP</text>
+  <path d="M330.0,90.0 L330.0,105.0 L110.0,105.0 L110.0,90.0"/>
+  <text class="on-path" x="220" y="98">interest</text>
+  <text class="on-path" x="220" y="112">1.27 GBP</text>
 </g>
-<g class="legend" transform="translate(20,170)" dy="-30">
+<g class="legend" transform="translate(20,183)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#DDD"/>
   <text x="18" y="-23">Liability</text>
   <rect x="100" y="-30" width="14" height="14" fill="#FCC"/>
