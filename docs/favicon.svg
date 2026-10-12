@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<rect x="2" y="12" width="22" height="40" rx="5" fill="#BCE" stroke="#555" stroke-width="3"/>
+<rect x="40" y="12" width="22" height="40" rx="5" fill="#CDA" stroke="#555" stroke-width="3"/>
+<path d="M24 32 H32" stroke="#555" stroke-width="5"/>
+<polygon points="31,24 40,32 31,40" fill="#555"/>
+<text x="13" y="40" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">a</text>
+<text x="51" y="40" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">b</text>
+</svg>

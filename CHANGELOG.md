@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - Docs: each example shows its JSON model beside the source; the Try-it
   page takes the JSON model as a format, drawn through `renderModel`;
   the index lists the browser builds with their sizes, raw and gzipped,
-  against the full build.
+  against the full build. A favicon: a to b, two boxes and an arrow.
 
 ### Fixed
 - A Sugiyama arrow's label is centred on the point halfway along the

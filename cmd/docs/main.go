@@ -34,10 +34,23 @@ var sections = []section{
 	{Title: "General Examples", Slug: "examples", Dir: "testdata/examples"},
 }
 
+// favicon is a to b: two account boxes in the diagram's colours joined by
+// an arrow, as the diagrams draw a movement.
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<rect x="2" y="12" width="22" height="40" rx="5" fill="#BCE" stroke="#555" stroke-width="3"/>
+<rect x="40" y="12" width="22" height="40" rx="5" fill="#CDA" stroke="#555" stroke-width="3"/>
+<path d="M24 32 H32" stroke="#555" stroke-width="5"/>
+<polygon points="31,24 40,32 31,40" fill="#555"/>
+<text x="13" y="40" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">a</text>
+<text x="51" y="40" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">b</text>
+</svg>
+`
+
 const indexTmpl = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>pta2svg — Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 </head>
@@ -87,6 +100,7 @@ const tryTmpl = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>pta2svg — Try it</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 <style>
@@ -180,6 +194,7 @@ const pageTmpl = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>pta2svg — {{.Title}}</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 <style>
@@ -238,6 +253,11 @@ func main() {
 			fmt.Fprintf(os.Stderr, "%s: %v\n", sections[i].Dir, err)
 			os.Exit(1)
 		}
+	}
+
+	if err := os.WriteFile("docs/favicon.svg", []byte(favicon), 0o644); err != nil {
+		fmt.Fprintf(os.Stderr, "favicon: %v\n", err)
+		os.Exit(1)
 	}
 
 	// Write index page
