@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" width="880" height="330">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1012 330" width="1012" height="330">
 <defs>
   <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
     <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -19,71 +19,71 @@
   <text x="70" y="25">Salary</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">-4000.00 GBP</text>
 </g>
-<g class="node" transform="translate(260,40)">
+<g class="node" transform="translate(304,40)">
   <rect width="140" height="50" fill="#DDD"/>
   <text x="70" y="25">Mortgage</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1100.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,40)">
+<g class="node" transform="translate(568,40)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Bank</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">1180.00 GBP</text>
 </g>
-<g class="node" transform="translate(480,120)">
+<g class="node" transform="translate(568,120)">
   <rect width="140" height="50" fill="#CDA"/>
   <text x="70" y="25">Savings</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">500.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,40)">
+<g class="node" transform="translate(832,40)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Food</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">95.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,120)">
+<g class="node" transform="translate(832,120)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Tax</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">980.00 GBP</text>
 </g>
-<g class="node" transform="translate(700,200)">
+<g class="node" transform="translate(832,200)">
   <rect width="140" height="50" fill="#FCC"/>
   <text x="70" y="25">Utilities</text>
   <text class="balance" x="140" y="50" dx="-4" dy="-4">145.00 GBP</text>
 </g>
 
 <g class="edge">
-  <path d="M180.0,65.0 C330.0,65.0 330.0,65.0 480.0,65.0"/>
-  <text x="330" y="57">net pay</text>
-  <text x="330" y="79">3200.00 GBP</text>
+  <path d="M180.0,65.0 C374.0,65.0 374.0,65.0 568.0,65.0"/>
+  <text x="374" y="57">net pay</text>
+  <text x="374" y="79">3200.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M180.0,65.0 C440.0,65.0 440.0,145.0 700.0,145.0"/>
-  <text x="440" y="97">PAYE</text>
-  <text x="440" y="119">800.00 GBP</text>
+  <path d="M180.0,65.0 C506.0,65.0 506.0,145.0 832.0,145.0"/>
+  <text x="506" y="97">PAYE</text>
+  <text x="506" y="119">800.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C830.0,-145.0 50.0,-145.0 260.0,65.0"/>
-  <text x="440" y="57">monthly</text>
-  <text x="440" y="79">1100.00 GBP</text>
+  <path d="M708.0,65.0 C940.0,-167.0 72.0,-167.0 304.0,65.0"/>
+  <text x="506" y="57">monthly</text>
+  <text x="506" y="79">1100.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,65.0 700.0,65.0"/>
-  <text x="660" y="57">weekly shop</text>
-  <text x="660" y="79">95.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,65.0 832.0,65.0"/>
+  <text x="770" y="57">weekly shop</text>
+  <text x="770" y="79">95.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C720.0,-35.0 380.0,45.0 480.0,145.0"/>
-  <text x="550" y="97">rainy day</text>
-  <text x="550" y="119">500.00 GBP</text>
+  <path d="M708.0,65.0 C808.0,-35.0 468.0,45.0 568.0,145.0"/>
+  <text x="638" y="97">rainy day</text>
+  <text x="638" y="119">500.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,225.0 700.0,225.0"/>
-  <text x="660" y="137">gas and electric</text>
-  <text x="660" y="159">145.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,225.0 832.0,225.0"/>
+  <text x="770" y="137">gas and electric</text>
+  <text x="770" y="159">145.00 GBP</text>
 </g>
 <g class="edge">
-  <path d="M620.0,65.0 C660.0,65.0 660.0,145.0 700.0,145.0"/>
-  <text x="660" y="97">council tax</text>
-  <text x="660" y="119">180.00 GBP</text>
+  <path d="M708.0,65.0 C770.0,65.0 770.0,145.0 832.0,145.0"/>
+  <text x="770" y="97">council tax</text>
+  <text x="770" y="119">180.00 GBP</text>
 </g>
 <g class="legend" transform="translate(20,330)" dy="-30">
   <rect x="0" y="-30" width="14" height="14" fill="#BCE"/>

@@ -65,7 +65,11 @@ func RenderDiagram(w io.Writer, d *Diagram, opts Options) error {
 	if err != nil {
 		return err
 	}
-	g := layout.GraphFromDiagram(d, l, layout.DefaultOptions())
+	// The gap between columns is at least the room the widest arrow
+	// label needs, so the text sits between the boxes, not over them.
+	lo := layout.DefaultOptions()
+	lo.PadX = max(lo.PadX, render.LabelWidth(d))
+	g := layout.GraphFromDiagram(d, l, lo)
 	return render.Render(w, g, render.Options{Title: opts.Title, Animate: opts.Animate})
 }
 

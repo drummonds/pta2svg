@@ -171,3 +171,28 @@ func formatAmount(amount float64, commodity string) string {
 	}
 	return s
 }
+
+// The edge font is 11px sans-serif; charWidth is the room a character of
+// it takes on average, labelClearance the space left between a label and
+// the boxes either side of it.
+const (
+	charWidth      = 6.5
+	labelClearance = 20.0
+)
+
+// LabelWidth is the room the widest arrow label in d needs between the
+// boxes it runs between: the longer of each movement's description and
+// its formatted amount, estimated from the character count at the edge
+// font, with clearance either side. Zero when there are no movements.
+func LabelWidth(d *model.Diagram) float64 {
+	longest := 0
+	for _, tx := range d.Transactions {
+		for _, m := range tx.Movements {
+			longest = max(longest, len([]rune(m.Description)), len(formatAmount(m.Amount, m.Commodity)))
+		}
+	}
+	if longest == 0 {
+		return 0
+	}
+	return float64(longest)*charWidth + labelClearance
+}

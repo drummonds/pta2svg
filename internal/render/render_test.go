@@ -80,3 +80,22 @@ func TestRenderAnimate(t *testing.T) {
 		t.Error("animated output should contain animation-delay")
 	}
 }
+
+// LabelWidth is the room the widest arrow label needs: the longer of a
+// movement's description and its formatted amount, estimated from the
+// character count at the edge font, with clearance either side.
+func TestLabelWidth(t *testing.T) {
+	d := model.NewDiagram()
+	a, b := d.GetOrCreateAccount("Asset:Cash"), d.GetOrCreateAccount("Expense:Food")
+	if got := LabelWidth(d); got != 0 {
+		t.Errorf("no movements: %v, want 0", got)
+	}
+	d.Transactions = []model.Transaction{{Movements: []model.Movement{
+		{From: a, To: b, Amount: 10, Commodity: "GBP", Description: "lunch"},
+		{From: a, To: b, Amount: -1234567.89, Commodity: "GBP"},
+	}}}
+	// "-1234567.89 GBP" is 15 characters, longer than "lunch".
+	if got, want := LabelWidth(d), 15*charWidth+labelClearance; got != want {
+		t.Errorf("LabelWidth = %v, want %v for the 15-character amount", got, want)
+	}
+}
